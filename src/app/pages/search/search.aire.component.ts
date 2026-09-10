@@ -3,7 +3,7 @@ import {Datasource, Provider, Service, Vocabulary} from '../../entities/eic-mode
 import {URLParameter} from '../../entities/url-parameter';
 import {Paging} from '../../entities/paging';
 import {PremiumSortFacetsPipe} from '../../shared/pipes/premium-sort.pipe';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ResourceService} from '../../services/resource.service';
 import {AuthenticationService} from '../../services/authentication.service';
@@ -43,14 +43,14 @@ export class SearchAireComponent implements OnInit {
   totalPages = 0;
   currentPage = 0;
 
-  public searchForm: FormGroup;
+  public searchForm: UntypedFormGroup;
   errorMessage: string;
   filtersMobileShown = false;
   urlParameters: URLParameter[] = [];
   loading = false;
 
 
-  constructor(public fb: FormBuilder, public router: Router, public route: ActivatedRoute,
+  constructor(public fb: UntypedFormBuilder, public router: Router, public route: ActivatedRoute,
               public resourceService: ResourceService, public authenticationService: AuthenticationService,
               public comparisonService: ComparisonService) {
     this.searchForm = fb.group({query: [''], searchFields: ['']});

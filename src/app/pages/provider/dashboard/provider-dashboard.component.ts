@@ -4,7 +4,7 @@ import {ProviderService} from '../../../services/provider.service';
 import {ProviderBundle} from '../../../entities/eic-model';
 import {UserService} from '../../../services/user.service';
 import {UserInfo} from '../../../entities/userInfo';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, Validators} from '@angular/forms';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class ProviderDashboardComponent implements OnInit {
   providerId: string = null;
   providerBundle: ProviderBundle = null;
   userInfo: UserInfo = null;
-  inviteeEmail: FormControl = this.fb.control(null, [Validators.email, Validators.required]);
+  inviteeEmail: UntypedFormControl = this.fb.control(null, [Validators.email, Validators.required]);
   invitationUrl: string = null;
   path: string = null;
 
@@ -25,7 +25,7 @@ export class ProviderDashboardComponent implements OnInit {
   title: string = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private providerService: ProviderService,
-              private userService: UserService, private fb: FormBuilder) {
+              private userService: UserService, private fb: UntypedFormBuilder) {
     this.router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {
           if (event.url.includes('home')) {

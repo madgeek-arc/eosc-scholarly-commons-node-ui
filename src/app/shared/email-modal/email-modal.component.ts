@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {UntypedFormBuilder, Validators} from '@angular/forms';
 import {NavigationService} from '../../services/navigation.service';
 import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from '../../services/resource.service';
@@ -19,7 +19,7 @@ export class EmailModalComponent {
   @Input() serviceIdsArray;
   public emailErrorMessage = '';
 
-  constructor(public fb: FormBuilder, public router: NavigationService, public route: ActivatedRoute,
+  constructor(public fb: UntypedFormBuilder, public router: NavigationService, public route: ActivatedRoute,
               public resourceService: ResourceService,
               public authenticationService: AuthenticationService, public comparisonService: ComparisonService,
               public navigationService: NavigationService, public emailService: EmailService) {

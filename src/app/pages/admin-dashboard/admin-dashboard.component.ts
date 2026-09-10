@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {UserInfo} from '../../entities/userInfo';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, Validators} from '@angular/forms';
 
 
 @Component({
@@ -13,7 +13,7 @@ import {FormBuilder, FormControl, Validators} from '@angular/forms';
 export class AdminDashboardComponent implements OnInit {
 
   userInfo: UserInfo = null;
-  inviteeEmail: FormControl = this.fb.control(null, [Validators.email, Validators.required]);
+  inviteeEmail: UntypedFormControl = this.fb.control(null, [Validators.email, Validators.required]);
   invitationUrl: string = null;
 
   path: string = null;
@@ -21,7 +21,7 @@ export class AdminDashboardComponent implements OnInit {
   titleIcon: string = null;
   title: string = null;
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private fb: UntypedFormBuilder) {
     this.router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {
           if (event.url.includes('services')) {

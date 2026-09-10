@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormControlService} from '../../services/form-control.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormArray, FormBuilder} from '@angular/forms';
+import {UntypedFormArray, UntypedFormBuilder} from '@angular/forms';
 import {Section, Field, HandleBitSet, Tab, Tabs} from '../../domain/dynamic-form-model';
 import BitSet from 'bitset';
 
@@ -48,7 +48,7 @@ export class ChapterEditComponent implements OnChanges{
   datasourceId = '';
 
   constructor(public route: ActivatedRoute,
-              protected fb: FormBuilder,
+              protected fb: UntypedFormBuilder,
               protected router: Router) {
   }
 
@@ -116,7 +116,7 @@ export class ChapterEditComponent implements OnChanges{
     // console.log(field.name);
 
     if (field.typeInfo.multiplicity) {
-      const formArray = this.form.get(field.accessPath) as FormArray;
+      const formArray = this.form.get(field.accessPath) as UntypedFormArray;
       let flag = false;
       for (let i = 0; i < formArray.length; i++) {
         if (formArray.controls[i].valid) {
@@ -190,7 +190,7 @@ export class ChapterEditComponent implements OnChanges{
   }
 
   handleBitSetOfGroup(data: Field) {
-    const formArray = this.form.get(data.accessPath) as FormArray;
+    const formArray = this.form.get(data.accessPath) as UntypedFormArray;
     let flag = false;
     for (let i = 0; i < formArray.length; i++) {
       if (formArray.controls[i].valid) {

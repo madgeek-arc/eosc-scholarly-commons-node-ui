@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Provider, Type} from '../../../entities/eic-model';
 import {ServiceProviderFormComponent} from './service-provider-form.component';
 import {ResourceService} from '../../../services/resource.service';
-import {FormBuilder} from '@angular/forms';
+import {UntypedFormBuilder} from '@angular/forms';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {ProviderService} from '../../../services/provider.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -18,7 +18,7 @@ export class UpdateServiceProviderComponent extends ServiceProviderFormComponent
   errorMessage: string;
   provider: Provider;
 
-  constructor(public fb: FormBuilder,
+  constructor(public fb: UntypedFormBuilder,
               public authService: AuthenticationService,
               public providerService: ProviderService,
               public resourceService: ResourceService,
