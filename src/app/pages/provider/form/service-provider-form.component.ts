@@ -10,7 +10,7 @@ import {ResourceService} from '../../../services/resource.service';
 import {environment} from '../../../../environments/environment';
 import {PremiumSortPipe} from '../../../shared/pipes/premium-sort.pipe';
 
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {ClassicEditor} from '../../../shared/ckeditor-classic-editor';
 
 declare let UIkit: any;
 

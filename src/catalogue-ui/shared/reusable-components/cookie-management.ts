@@ -16,7 +16,7 @@ export function deleteCookie(name) {
   setCookie(name, '', -1);
 }
 
-export function setCookie(name: string, value: string, expireDays: number, path: string = '') {
+export function setCookie(name: string, value: string, expireDays: number, path = '') {
   const d: Date = new Date();
   d.setTime(d.getTime() + expireDays * 24 * 60 * 60 * 1000);
   const expires = `expires=${d.toUTCString()}`;

@@ -551,6 +551,6 @@ export class SurveyComponent implements OnInit, OnChanges {
       const l = Math.floor(rng() * 55) + '%';
 
     return `hsl(${h},${s},${l})`;
-  };
+  }
 
 }
