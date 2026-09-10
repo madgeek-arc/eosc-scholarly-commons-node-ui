@@ -177,11 +177,10 @@ const appRoutes: Routes = [
     CommonModule,
     RouterModule.forRoot(appRoutes,
       {
-        relativeLinkResolution: 'legacy',
-        // scrollPositionRestoration: 'enabled',
-        scrollPositionRestoration: 'disabled',
-        onSameUrlNavigation: 'reload'
-      })
+    // scrollPositionRestoration: 'enabled',
+    scrollPositionRestoration: 'disabled',
+    onSameUrlNavigation: 'reload'
+})
   ],
   declarations: [],
   exports: [RouterModule]
