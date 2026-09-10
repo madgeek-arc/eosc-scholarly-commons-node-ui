@@ -55,7 +55,8 @@
         "@typescript-eslint/consistent-type-assertions": "off",
         "@angular-eslint/no-output-rename": "off",
         "@angular-eslint/contextual-lifecycle": "off",
-        "@angular-eslint/component-class-suffix": "off"
+        "@angular-eslint/component-class-suffix": "off",
+        "import/no-deprecated": "off"
       }
     },
     {
