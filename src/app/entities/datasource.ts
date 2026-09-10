@@ -63,5 +63,5 @@ export class Term {
   nativeName: string;
   encoding: string;
   code: string;
-  synonyms: string
+  synonyms: string;
 }

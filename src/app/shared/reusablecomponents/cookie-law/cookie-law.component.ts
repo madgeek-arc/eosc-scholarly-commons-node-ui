@@ -115,8 +115,8 @@ export class CookieLawComponent implements OnInit {
       }
 
       this.currentStyles = {
-        'top': this.position === 'top' ? '0' : null,
-        'bottom': this.position === 'top' ? 'initial' : null,
+        top: this.position === 'top' ? '0' : null,
+        bottom: this.position === 'top' ? 'initial' : null,
       };
     }
   }

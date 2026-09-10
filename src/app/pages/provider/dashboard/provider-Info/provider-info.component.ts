@@ -12,7 +12,7 @@ import {ResourceService} from '../../../../services/resource.service';
 export class ProviderInfoComponent implements OnInit, OnChanges {
 
   @Input() providerBundle: ProviderBundle = null;
-  provider: Provider = null
+  provider: Provider = null;
   vocabularies: Map<string, Object[]> = null;
 
   // vocabularies: Map<string, Vocabulary[]> = null;
@@ -60,7 +60,7 @@ export class ProviderInfoComponent implements OnInit, OnChanges {
   setVocabularies() {
     this.resourceService.getUiVocabularies().subscribe(
       res => {
-        this.vocabularies = res
+        this.vocabularies = res;
       }
     );
   }

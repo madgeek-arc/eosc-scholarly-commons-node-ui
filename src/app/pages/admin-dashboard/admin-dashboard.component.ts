@@ -45,7 +45,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
     this.userService.getUserInfo().subscribe(
       res => {this.userInfo = res;},
-      error => {console.error(error)}
+      error => {console.error(error);}
     );
     // this.route.params.subscribe(
     //   params => {
@@ -93,7 +93,7 @@ export class AdminDashboardComponent implements OnInit {
         this.invitationUrl = location.origin + '/join/' + res;
         // console.log(this.invitationUrl);
       },
-      error => {console.error(error)}
+      error => {console.error(error);}
     );
   }
 
@@ -117,13 +117,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   fallbackCopyTextToClipboard(text) { // this is deprecated support is not guaranteed
-    const textArea = document.createElement("textarea");
+    const textArea = document.createElement('textarea');
     textArea.value = text;
 
     // Avoid scrolling to bottom
-    textArea.style.top = "0";
-    textArea.style.left = "0";
-    textArea.style.position = "fixed";
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.position = 'fixed';
 
     document.body.appendChild(textArea);
     textArea.focus();

@@ -47,7 +47,7 @@ const serviceLandingPageRoutes: Routes = [
     ],
     runGuardsAndResolvers: 'always'
   }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forChild(serviceLandingPageRoutes)],

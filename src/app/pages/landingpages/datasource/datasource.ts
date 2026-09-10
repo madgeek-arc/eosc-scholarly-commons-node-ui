@@ -23,7 +23,7 @@ export class Datasource implements OnInit {
             if (next.results.length === 1)
               this.datasource = next.results[0];
           },
-          error => {console.log(error)}
+          error => {console.log(error);}
         );
       }
     );

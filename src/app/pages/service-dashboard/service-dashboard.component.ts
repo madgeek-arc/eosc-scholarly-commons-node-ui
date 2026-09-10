@@ -42,12 +42,12 @@ export class ServiceDashboardComponent implements OnInit {
           }
           // this.errorMessage = 'An error occurred while retrieving data for this service. ' + err.error;
         }
-      )
+      );
 
       this.resourceService.getDatasourceByServiceId(params['resourceId']).subscribe(
         suc => this.datasource = suc,
         err => console.log(err)
-      )
+      );
     });
   }
 

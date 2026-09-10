@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {LandingPageService} from "../../../services/landing-page.service";
-import {Subscriber} from "rxjs";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {LandingPageService} from '../../../services/landing-page.service';
+import {Subscriber} from 'rxjs';
 
 
 @Component({

@@ -40,7 +40,7 @@ export class HomeAireComponent implements OnInit {
 
   constructor(public fb: FormBuilder, public router: NavigationService,  public resourceService: ResourceService,
               private dataSharingService: DataSharingService) {
-    this.searchForm = fb.group({'query': ['']});
+    this.searchForm = fb.group({query: ['']});
   }
 
   ngOnInit() {

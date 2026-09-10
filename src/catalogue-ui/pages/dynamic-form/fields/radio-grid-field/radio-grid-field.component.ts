@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {Field} from "../../../../domain/dynamic-form-model";
-import {FormGroup, FormGroupDirective} from "@angular/forms";
+import {Component, Input, OnInit} from '@angular/core';
+import {Field} from '../../../../domain/dynamic-form-model';
+import {FormGroup, FormGroupDirective} from '@angular/forms';
 
 @Component({
   selector: 'app-radio-grid',

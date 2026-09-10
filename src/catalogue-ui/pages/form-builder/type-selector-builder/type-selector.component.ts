@@ -3,8 +3,8 @@ import {
   Input,
   OnChanges, OnInit,
   SimpleChanges
-} from "@angular/core";
-import {TypeInfo} from "../../../domain/dynamic-form-model";
+} from '@angular/core';
+import {TypeInfo} from '../../../domain/dynamic-form-model';
 
 
 @Component({

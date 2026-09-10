@@ -7,7 +7,7 @@ import {zip} from 'rxjs/internal/observable/zip';
 import {ResourceService} from '../../../../services/resource.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
-declare var UIkit: any;
+declare let UIkit: any;
 
 @Component({
   selector: 'app-provider-services',
@@ -16,13 +16,13 @@ declare var UIkit: any;
 
 export class ProviderServicesComponent implements OnInit {
 
-  @Input() providerBundle: ProviderBundle = null
+  @Input() providerBundle: ProviderBundle = null;
 
   services: Paging<Bundle<Service | Datasource>> = null;
   selectedService: Bundle<Service | Datasource> = null;
   vocabularies: Vocabulary[] = null;
   resourceState: Vocabulary[] = null;
-  queryParams: URLParameter[] = []
+  queryParams: URLParameter[] = [];
 
   // Paging
   pages: number[] = [];
@@ -93,7 +93,7 @@ export class ProviderServicesComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key});
+      this.queryParams = this.queryParams.filter(params => {return params.key != key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -102,11 +102,11 @@ export class ProviderServicesComponent implements OnInit {
         return;
       }
     }
-    this.queryParams.push({key: key, values: [value]});
+    this.queryParams.push({key, values: [value]});
   }
 
   navigateUsingParameters() {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     for (const urlParameter of this.queryParams) {
       map[urlParameter.key] = urlParameter.values.join(',');
     }
@@ -243,7 +243,7 @@ export class ProviderServicesComponent implements OnInit {
     }
   }
 
-  getPayload(bundle : Bundle<Service | Datasource>): Service | Datasource {
+  getPayload(bundle: Bundle<Service | Datasource>): Service | Datasource {
     return bundle.service != null ? bundle.service : bundle.datasource;
   }
 }

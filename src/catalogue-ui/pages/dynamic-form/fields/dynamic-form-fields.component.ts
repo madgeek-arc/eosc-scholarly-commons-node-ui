@@ -12,7 +12,7 @@ export class DynamicFormFieldsComponent {
   @Input() vocabularies: Map<string, object[]>;
   @Input() subVocabularies: Map<string, object[]> = null;
   @Input() editMode: any;
-  @Input() readonly : boolean = null;
+  @Input() readonly: boolean = null;
 
   @Output() hasChanges = new EventEmitter<boolean>();
   @Output() handleBitSets = new EventEmitter<Field>();
@@ -30,7 +30,7 @@ export class DynamicFormFieldsComponent {
 
   updateBitSetOfComposite(fieldData: Field, position: number) {
     if (fieldData.form.mandatory) {
-      let tmp = new HandleBitSet();
+      const tmp = new HandleBitSet();
       tmp.field = fieldData;
       tmp.position = position;
       this.handleBitSetsOfComposite.emit(tmp);

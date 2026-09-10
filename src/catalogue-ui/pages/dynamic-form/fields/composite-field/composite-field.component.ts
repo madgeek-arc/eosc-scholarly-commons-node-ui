@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet, UiVocabulary} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
-import {FormControlService} from "../../../../services/form-control.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet, UiVocabulary} from '../../../../domain/dynamic-form-model';
+import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-composite-field',
@@ -13,7 +13,7 @@ export class CompositeFieldComponent implements OnInit {
   @Input() vocabularies: Map<string, object[]>;
   @Input() subVocabularies: Map<string, object[]> = null;
   @Input() editMode: any;
-  @Input() readonly : boolean = null;
+  @Input() readonly: boolean = null;
   @Input() position?: number = null;
 
   @Output() hasChanges = new EventEmitter<boolean>();
@@ -64,7 +64,7 @@ export class CompositeFieldComponent implements OnInit {
   }
 
   movedElement(e, ) {
-    let newOrder: number[] = [];
+    const newOrder: number[] = [];
     e.target.childNodes.forEach(child => {
       newOrder.push(child.id);
     });
@@ -87,7 +87,7 @@ export class CompositeFieldComponent implements OnInit {
 
     const currentGroup = formArray.at(currentIndex);
     formArray.removeAt(currentIndex);
-    formArray.insert(newIndex, currentGroup)
+    formArray.insert(newIndex, currentGroup);
   }
 
   /** <-- Handle Arrays **/
@@ -122,7 +122,7 @@ export class CompositeFieldComponent implements OnInit {
 
   updateBitSetOfComposite(fieldData: Field, position: number) {
     if (fieldData.form.mandatory) {
-      let tmp = new HandleBitSet();
+      const tmp = new HandleBitSet();
       tmp.field = fieldData;
       tmp.position = position;
       this.handleBitSetsOfComposite.emit(tmp);

@@ -7,7 +7,7 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {ComparisonService} from '../../services/comparison.service';
 import {EmailService} from '../../services/email.service';
 
-declare var UIkit: any;
+declare let UIkit: any;
 
 @Component({
   selector: 'app-email-modal',

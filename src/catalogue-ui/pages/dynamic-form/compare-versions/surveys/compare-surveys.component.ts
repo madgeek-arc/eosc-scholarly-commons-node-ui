@@ -1,7 +1,7 @@
-import {Component, Input, OnChanges, SimpleChanges} from "@angular/core";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {Field, Model, Section} from "../../../../domain/dynamic-form-model";
-import {FormControlService} from "../../../../services/form-control.service";
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Field, Model, Section} from '../../../../domain/dynamic-form-model';
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-compare-surveys',
@@ -102,7 +102,7 @@ export class CompareSurveysComponent implements OnChanges{
   }
 
   pushToFormArray(form: FormGroup, name: string, length: number, arrayIndex?: number) {
-    let field = this.getModelData(this.model.sections, name);
+    const field = this.getModelData(this.model.sections, name);
     while (this.getFormControl(form, name, arrayIndex).length < length) {
       // for (let i = 0; i < length-1; i++) {
       this.getFormControl(form, name, arrayIndex).push(this.formControlService.createField(field));

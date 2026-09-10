@@ -21,6 +21,6 @@ export class UserService {
   getInvitationToken(email: string) {
     let params = new HttpParams();
     params = params.append('email', email);
-    return this.http.post(this.base + '/invitations' , {}, {params: params, responseType: 'text'});
+    return this.http.post(this.base + '/invitations' , {}, {params, responseType: 'text'});
   }
 }

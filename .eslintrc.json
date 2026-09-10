@@ -1,0 +1,73 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "e2e/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "off",
+          {
+            "accessibility": "explicit"
+          }
+        ],
+        "id-blacklist": "off",
+        "id-match": "off",
+        "no-underscore-dangle": "off",
+
+        "@typescript-eslint/member-ordering": "off",
+        "max-len": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/prefer-for-of": "off",
+        "prefer-arrow/prefer-arrow-functions": "off",
+        "radix": "off",
+        "eqeqeq": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "guard-for-in": "off",
+        "@angular-eslint/component-selector": "off",
+        "@typescript-eslint/no-shadow": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "no-console": "off",
+        "brace-style": "off",
+        "curly": "off",
+        "arrow-body-style": "off",
+        "@angular-eslint/use-lifecycle-interface": "off",
+        "@angular-eslint/no-output-native": "off",
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "@angular-eslint/no-output-rename": "off",
+        "@angular-eslint/contextual-lifecycle": "off",
+        "@angular-eslint/component-class-suffix": "off"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/template/eqeqeq": "off"
+      }
+    }
+  ]
+}

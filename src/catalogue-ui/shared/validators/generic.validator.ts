@@ -8,7 +8,7 @@ export const oneDecimal = /^(\d)*(\.)?([0-9]{1})?$/;    //Only digits and one de
 
 export function URLValidator(): ValidatorFn { //TODO Please validate me
   return (control: AbstractControl): ValidationErrors | null => {
-    let pattern = /^(https?:\/\/.+){0,1}$/;
+    const pattern = /^(https?:\/\/.+){0,1}$/;
     const url = pattern.test(control.value);
     return url ? {url: {value: control.value}} : null;
   };

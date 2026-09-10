@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {AbstractControl, FormArray, FormControl, FormGroup, FormGroupDirective} from "@angular/forms";
-import {FormControlService} from "../../../../services/form-control.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {AbstractControl, FormArray, FormControl, FormGroup, FormGroupDirective} from '@angular/forms';
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-string-url-email-field',
@@ -11,7 +11,7 @@ import {FormControlService} from "../../../../services/form-control.service";
 
 export class StringFieldComponent implements OnInit {
   @Input() fieldData: Field;
-  @Input() editMode: boolean = false;
+  @Input() editMode = false;
   @Input() position?: number = null;
 
   @Output() hasChanges = new EventEmitter<boolean>();
@@ -41,7 +41,7 @@ export class StringFieldComponent implements OnInit {
         value => {
             this.enableDisableField(value, this.fieldData.form.dependsOn.value);
           },
-        error => {console.log(error)}
+        error => {console.log(error);}
       );
     }
 
@@ -65,7 +65,7 @@ export class StringFieldComponent implements OnInit {
   }
 
   movedElement(e) {
-    let newOrder: number[] = [];
+    const newOrder: number[] = [];
     e.target.childNodes.forEach(child => {
       if (Number.isInteger((parseInt(child.id))))
         newOrder.push(child.id);
@@ -83,7 +83,7 @@ export class StringFieldComponent implements OnInit {
     const currentControl: AbstractControl = formArray.at(currentIndex);
 
     formArray.removeAt(currentIndex);
-    formArray.insert(newIndex, currentControl)
+    formArray.insert(newIndex, currentControl);
   }
 
   /** check fields validity--> **/
@@ -99,7 +99,7 @@ export class StringFieldComponent implements OnInit {
     if (formControl)
       return (!formControl.valid && (formControl.touched || formControl.dirty));
     else
-      return false
+      return false;
 
     // return ((this.fieldAsFormArray().get([position]).invalid && this.fieldAsFormArray().get([position]).touched)
     //   && (this.editMode || this.fieldAsFormArray().get([position]).dirty));

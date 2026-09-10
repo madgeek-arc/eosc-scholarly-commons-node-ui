@@ -23,12 +23,12 @@ export class DatasourceSearchComponent implements OnInit {
 
   public projectName = environment.projectName;
   searchResults: Paging<DatasourceDetails> = null;
-  datasourceTypes: DatasourceTypes = null
+  datasourceTypes: DatasourceTypes = null;
   private sortFacets = new PremiumSortFacetsPipe();
   searchQuery: string = null;
-  eoscDatasourceType: string = '';
-  orderField: string = 'registrationdate';
-  order: string = 'desc';
+  eoscDatasourceType = '';
+  orderField = 'registrationdate';
+  order = 'desc';
 
   // Paging
   pages: number[] = [];
@@ -70,8 +70,8 @@ export class DatasourceSearchComponent implements OnInit {
     });
 
     this.datasourceService.getDatasourceTypes().subscribe(
-      res => {this.datasourceTypes = res},
-      error => {console.log(error)}
+      res => {this.datasourceTypes = res;},
+      error => {console.log(error);}
     );
 
     fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
@@ -94,7 +94,7 @@ export class DatasourceSearchComponent implements OnInit {
     this.searchResults = searchResults;
 
     if (this.searchResults.results.length > 0 ) {
-      this.sortFacets.transform(this.searchResults.facets,['portfolios', 'users', 'trl', 'lifeCycleStatus'])
+      this.sortFacets.transform(this.searchResults.facets,['portfolios', 'users', 'trl', 'lifeCycleStatus']);
     }
     // update form values using URLParameters
     for (const urlParameter of this.urlParameters) {
@@ -158,11 +158,11 @@ export class DatasourceSearchComponent implements OnInit {
         return;
       }
     }
-    this.urlParameters.push({key: key, values: [value]});
+    this.urlParameters.push({key, values: [value]});
   }
 
   navigateUsingParameters() {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     for (const urlParameter of this.urlParameters) {
       map[urlParameter.key] = urlParameter.values.join(',');
     }

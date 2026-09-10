@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {FormArray, FormControl, FormGroup, FormGroupDirective} from "@angular/forms";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormArray, FormControl, FormGroup, FormGroupDirective} from '@angular/forms';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import {FormControlService} from "../../../../services/form-control.service";
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-rich-text-field',
@@ -46,7 +46,7 @@ export class RichTextFieldComponent implements OnInit {
         value => {
           this.enableDisableField(value, this.fieldData.form.dependsOn.value);
         },
-        error => {console.log(error)}
+        error => {console.log(error);}
       );
     }
   }

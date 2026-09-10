@@ -3,8 +3,8 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Field, Model, Required, Section} from '../domain/dynamic-form-model';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {urlRegEx} from "../shared/validators/generic.validator";
-import {Paging} from "../domain/paging";
+import {urlRegEx} from '../shared/validators/generic.validator';
+import {Paging} from '../domain/paging';
 
 @Injectable()
 export class FormControlService implements OnInit{
@@ -32,7 +32,7 @@ export class FormControlService implements OnInit{
     return this.http.get<Paging<Model>>(this.base + `/forms/models?name=${name}`);
   }
 
-  postItem(surveyId: string, item: any, edit:boolean) {
+  postItem(surveyId: string, item: any, edit: boolean) {
     return this.http[edit ? 'put' : 'post'](this.base + `/answers/${surveyId}/answer`, item, this.options);
   }
 
@@ -49,7 +49,7 @@ export class FormControlService implements OnInit{
   toFormGroup(form: Section[], checkImmutable: boolean) {
     const group: any = {};
     form.forEach(groups => {
-      groups.fields.sort((a, b) => a.form.display?.order - b.form.display?.order)
+      groups.fields.sort((a, b) => a.form.display?.order - b.form.display?.order);
       groups.required = new Required();
       groups.fields.forEach(formField => {
         if (formField.form.mandatory) {
@@ -78,7 +78,7 @@ export class FormControlService implements OnInit{
                 : new FormControl(null, Validators.pattern(this.urlRegEx));
             } else if (formField.typeInfo.type === 'composite' || formField.typeInfo.type === 'chooseOne') {
               if (group.hasOwnProperty(formField.name)) { // merge the controls to one formGroup
-                (group[formField.name] as FormGroup).controls = {...(group[formField.name] as FormGroup).controls, ...this.createCompositeField(formField).controls}
+                (group[formField.name] as FormGroup).controls = {...(group[formField.name] as FormGroup).controls, ...this.createCompositeField(formField).controls};
               } else
                 group[formField.name] = this.createCompositeField(formField);
             } else if (formField.typeInfo.type === 'email') {
@@ -114,7 +114,7 @@ export class FormControlService implements OnInit{
   createCompositeField(formField: Field) {
     const subGroup: any = {};
     // console.log(formField);
-    formField.subFields?.sort((a, b) => a.form.display?.order - b.form.display?.order)
+    formField.subFields?.sort((a, b) => a.form.display?.order - b.form.display?.order);
     formField.subFields?.forEach(subField => {
       if (subField.typeInfo.type === 'composite' || subField.typeInfo.type === 'radioGrid') {
         if (subField.typeInfo.multiplicity) {
@@ -158,7 +158,7 @@ export class FormControlService implements OnInit{
     return new FormGroup(subGroup);
   }
 
-  createField (formField: Field): FormControl | FormGroup {
+  createField(formField: Field): FormControl | FormGroup {
     if (formField.typeInfo.type === 'url') {
       return formField.form.mandatory ?
         new FormControl('', [Validators.required, Validators.pattern(this.urlRegEx)])
@@ -184,14 +184,14 @@ export class FormControlService implements OnInit{
       // }
 
     } else {
-      return new FormControl(null, Validators.required)
+      return new FormControl(null, Validators.required);
     }
   }
 
   calculateNumberOfDecimals(values: string[]): string {
     let decimals: string;
     if (values) {
-      let str = values[0].split('.');
+      const str = values[0].split('.');
 
       if (str.length > 0) {
         if (str[1].length === 1) {
@@ -199,7 +199,7 @@ export class FormControlService implements OnInit{
         } else if (str[1].length === 2) {
           decimals = '0,2';
         }
-        decimals = `0,${str[1].length}`
+        decimals = `0,${str[1].length}`;
       }
     } else
       decimals = '0';

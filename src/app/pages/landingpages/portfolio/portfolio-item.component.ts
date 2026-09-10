@@ -30,10 +30,10 @@ export class PortfolioItemComponent implements OnInit{
         this.portfolioVoc = res[0];
         this.response = res[1];
       },
-      error => {console.log(error)},
+      error => {console.log(error);},
       () => {
         // console.log(this.services);
-        this.ready = true
+        this.ready = true;
       }
     );
   }

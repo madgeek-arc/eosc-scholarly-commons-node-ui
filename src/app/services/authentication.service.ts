@@ -17,9 +17,9 @@ export class AuthenticationService {
   }
 
   tryLogin(manual?: boolean) {
-    let cookie = getCookie(this.cookieName);
-    if (cookie === null || cookie === (this.cookieName + "=") || !this.userLoggedIn) {
-      console.debug('Didn\'t find cookie, user is not logged in.' )
+    const cookie = getCookie(this.cookieName);
+    if (cookie === null || cookie === (this.cookieName + '=') || !this.userLoggedIn) {
+      console.debug('Didn\'t find cookie, user is not logged in.' );
       sessionStorage.setItem('redirectUrl', window.location.pathname);
       this.login();
     } else {
@@ -44,7 +44,7 @@ export class AuthenticationService {
 
   redirect() {
     if (sessionStorage.getItem('redirectUrl') !== null) {
-      let url = sessionStorage.getItem('redirectUrl');
+      const url = sessionStorage.getItem('redirectUrl');
       sessionStorage.removeItem('redirectUrl');
       this.router.navigate([url]);
     }

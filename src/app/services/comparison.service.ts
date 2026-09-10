@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {NavigationService} from './navigation.service';
 import {Service} from '../entities/eic-model';
 
-declare var UIkit;
+declare let UIkit;
 
 @Injectable()
 export class ComparisonService {

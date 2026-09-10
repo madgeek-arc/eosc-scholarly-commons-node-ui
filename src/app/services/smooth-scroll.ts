@@ -12,7 +12,7 @@ export class SmoothScroll {
   private whitelist = [];
 
   constructor(private router: Router) {
-    if(typeof window !== "undefined") {
+    if(typeof window !== 'undefined') {
       this.sub = router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {
           if (this.interval) {
@@ -33,7 +33,7 @@ export class SmoothScroll {
                 }
                 const yOffset = -100;
                 let position = 0;
-                let interval = setInterval(() => {
+                const interval = setInterval(() => {
                   if (position !== element.getBoundingClientRect().top) {
                     position = element.getBoundingClientRect().top;
                   } else {
@@ -57,8 +57,8 @@ export class SmoothScroll {
   }
 
   private getUrl(url: string): string {
-    let full = url.split('?')[0].split('#')[0];
-    let route = this.whitelist.find(_ => full.includes(_));
+    const full = url.split('?')[0].split('#')[0];
+    const route = this.whitelist.find(_ => full.includes(_));
     return (route)?(route):full;
   }
 

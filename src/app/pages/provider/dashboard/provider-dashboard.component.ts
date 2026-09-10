@@ -56,8 +56,8 @@ export class ProviderDashboardComponent implements OnInit {
         this.providerId = params['providerId'];
         if (this.providerId) {
           this.providerService.getProviderBundleById(this.providerId).subscribe(
-            res => {this.providerBundle = res},
-            error => {console.error(error)}
+            res => {this.providerBundle = res;},
+            error => {console.error(error);}
           );
         }
       }
@@ -65,7 +65,7 @@ export class ProviderDashboardComponent implements OnInit {
 
     this.userService.getUserInfo().subscribe(
       res => {this.userInfo = res;},
-      error => {console.error(error)}
+      error => {console.error(error);}
     );
   }
 

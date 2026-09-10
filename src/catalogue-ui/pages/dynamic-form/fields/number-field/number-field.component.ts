@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
-import {FormControlService} from "../../../../services/form-control.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-number-field',
@@ -22,7 +22,7 @@ export class NumberFieldComponent implements OnInit {
   form!: FormGroup;
   hideField: boolean = null;
 
-  step: string = '';
+  step = '';
 
   constructor(private rootFormGroup: FormGroupDirective, private formControlService: FormControlService) {
   }
@@ -45,7 +45,7 @@ export class NumberFieldComponent implements OnInit {
     }
 
     if (this.fieldData.typeInfo.values) {
-      this.step = this.fieldData.typeInfo.values[0]
+      this.step = this.fieldData.typeInfo.values[0];
     }
   }
 
@@ -92,7 +92,7 @@ export class NumberFieldComponent implements OnInit {
     if (this.fieldData.typeInfo.values) {
       return this.fieldData.typeInfo.values[0].split('.')[1].length;
     }
-    return 0
+    return 0;
   }
 
   enableDisableField(value, enableValue) {

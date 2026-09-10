@@ -1,10 +1,10 @@
-import {Injectable} from "@angular/core";
-import {Router} from "@angular/router";
-import {URLParameter} from "../domain/url-parameter";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Paging} from "../domain/paging";
-import {environment} from "../../environments/environment";
-import {Subject} from "rxjs";
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {URLParameter} from '../domain/url-parameter';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Paging} from '../domain/paging';
+import {environment} from '../../environments/environment';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class SearchService {

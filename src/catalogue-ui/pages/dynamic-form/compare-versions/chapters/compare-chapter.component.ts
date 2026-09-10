@@ -1,7 +1,7 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
-import {FormGroup} from "@angular/forms";
-import {Section, Tab} from "../../../../domain/dynamic-form-model";
-import BitSet from "bitset";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {Section, Tab} from '../../../../domain/dynamic-form-model';
+import BitSet from 'bitset';
 
 @Component({
   selector: 'app-chapter-compare',
@@ -26,7 +26,7 @@ export class CompareChapterComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.fields) {
-      this.ready = true
+      this.ready = true;
     }
   }
 
@@ -41,7 +41,7 @@ export class CompareChapterComponent implements OnChanges {
       return;
     }
     this.tabIndex = i;
-    let element: HTMLElement = document.getElementById(this.chapter.id + '-tab' + i) as HTMLElement
+    const element: HTMLElement = document.getElementById(this.chapter.id + '-tab' + i) as HTMLElement;
     element.click();
     // console.log(element)
   }

@@ -6,7 +6,7 @@ import {ResourceService} from '../../../services/resource.service';
 import {URLParameter} from '../../../entities/url-parameter';
 import {FacetValue} from '../../../entities/facet';
 
-declare var UIkit: any;
+declare let UIkit: any;
 
 @Component({
   selector: 'app-admin-all-datasources-dashboard',
@@ -18,8 +18,8 @@ export class AllDatasourcesDashboardComponent implements OnInit {
   datasources: Paging<Bundle<Datasource>> = null;
   selectedDatasource: Bundle<Datasource> = null;
   datasourceState: Vocabulary[] = null;
-  providerFacet: FacetValue[] = []
-  queryParams: URLParameter[] = []
+  providerFacet: FacetValue[] = [];
+  queryParams: URLParameter[] = [];
 
   // Paging
   pages: number[] = [];
@@ -30,7 +30,7 @@ export class AllDatasourcesDashboardComponent implements OnInit {
 
   // Filter
   order: string = null;
-  activeStatus: string = '';
+  activeStatus = '';
   status: string = null;
   provider: string = null;
 
@@ -164,7 +164,7 @@ export class AllDatasourcesDashboardComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key});
+      this.queryParams = this.queryParams.filter(params => {return params.key != key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -173,11 +173,11 @@ export class AllDatasourcesDashboardComponent implements OnInit {
         return;
       }
     }
-    this.queryParams.push({key: key, values: [value]});
+    this.queryParams.push({key, values: [value]});
   }
 
   navigateUsingParameters() {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     for (const urlParameter of this.queryParams) {
       map[urlParameter.key] = urlParameter.values.join(',');
     }

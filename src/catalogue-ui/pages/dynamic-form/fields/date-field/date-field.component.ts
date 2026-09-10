@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-date-field',
@@ -40,7 +40,7 @@ export class DateFieldComponent implements OnInit {
         value => {
           this.enableDisableField(value, this.fieldData.form.dependsOn.value);
         },
-        error => {console.log(error)}
+        error => {console.log(error);}
       );
     }
 

@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet, UiVocabulary} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormGroup, FormGroupDirective} from "@angular/forms";
-import {FormControlService} from "../../../../services/form-control.service";
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet, UiVocabulary} from '../../../../domain/dynamic-form-model';
+import {FormArray, FormGroup, FormGroupDirective} from '@angular/forms';
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-choose-one',
@@ -37,7 +37,7 @@ export class ChooseOneComponent implements OnInit {
     if (this.fieldData.typeInfo.multiplicity){
       this.chooseOne(Object.entries((this.form.controls[0] as FormGroup).controls)[0][0], 0);
     } else {
-      this.chooseOne(Object.entries(this.form.controls)[0][0])
+      this.chooseOne(Object.entries(this.form.controls)[0][0]);
     }
   }
 
@@ -89,7 +89,7 @@ export class ChooseOneComponent implements OnInit {
 
   updateBitSetOfComposite(fieldData: Field, position: number) {
     if (fieldData.form.mandatory) {
-      let tmp = new HandleBitSet();
+      const tmp = new HandleBitSet();
       tmp.field = fieldData;
       tmp.position = position;
       this.handleBitSetsOfComposite.emit(tmp);

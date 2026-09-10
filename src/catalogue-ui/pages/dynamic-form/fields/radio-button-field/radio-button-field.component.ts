@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormControl, FormGroup, FormGroupDirective} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {FormControl, FormGroup, FormGroupDirective} from '@angular/forms';
 
 @Component({
   selector: 'app-radio-button-field',
@@ -11,7 +11,7 @@ export class RadioButtonFieldComponent implements OnInit {
 
   @Input() fieldData: Field;
   @Input() editMode: any;
-  @Input() readonly : boolean = null;
+  @Input() readonly: boolean = null;
   @Input() position?: number = null;
 
   @Output() hasChanges = new EventEmitter<boolean>();
@@ -43,7 +43,7 @@ export class RadioButtonFieldComponent implements OnInit {
       // console.log(this.fieldData.name);
       this.form.get(this.fieldData.form.dependsOn.name).valueChanges.subscribe(value => {
         this.enableDisableField(value, this.fieldData.form.dependsOn.value);
-      }, error => {console.log(error)});
+      }, error => {console.log(error);});
     }
   }
 

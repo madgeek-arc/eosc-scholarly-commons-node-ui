@@ -1,6 +1,6 @@
-import {APP_INITIALIZER, ErrorHandler, NgModule} from "@angular/core";
-import {Router} from "@angular/router";
-import * as Sentry from "@sentry/angular-ivy";
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
+import {Router} from '@angular/router';
+import * as Sentry from '@sentry/angular-ivy';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -37,7 +37,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {UserService} from './services/user.service';
 
 
-declare var require: any;
+declare let require: any;
 
 @NgModule({
   declarations: [

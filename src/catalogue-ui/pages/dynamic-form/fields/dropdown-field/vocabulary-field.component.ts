@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
-import {FormControlService} from "../../../../services/form-control.service";
-import {URLValidator} from "../../../../shared/validators/generic.validator";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {FormControlService} from '../../../../services/form-control.service';
+import {URLValidator} from '../../../../shared/validators/generic.validator';
 import {ActivatedRoute} from '@angular/router';
 import {edit} from 'brace';
 

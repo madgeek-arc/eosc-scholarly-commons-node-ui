@@ -1,16 +1,16 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from "@angular/core";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {Router} from "@angular/router";
-import {FormControlService} from "../../services/form-control.service";
-import {Section, Field, Model, Tabs} from "../../domain/dynamic-form-model";
-import {Columns, Content, DocDefinition, PdfImage, PdfMetadata, PdfTable, TableDefinition} from "../../domain/PDFclasses";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-import BitSet from "bitset";
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {FormControlService} from '../../services/form-control.service';
+import {Section, Field, Model, Tabs} from '../../domain/dynamic-form-model';
+import {Columns, Content, DocDefinition, PdfImage, PdfMetadata, PdfTable, TableDefinition} from '../../domain/PDFclasses';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import BitSet from 'bitset';
 
-import UIkit from "uikit";
+import UIkit from 'uikit';
 pdfMake.vfs = pdfFonts.vfs;
-declare var require: any;
+declare let require: any;
 const seedRandom = require('seedrandom');
 
 @Component({
@@ -29,7 +29,7 @@ export class SurveyComponent implements OnInit, OnChanges {
   @Input() subVocabularies: Map<string, object[]> = null;
   @Input() tabsHeader: string = null;
   @Input() mandatoryFieldsText: string = null;
-  @Input() downloadPDF: boolean = false;
+  @Input() downloadPDF = false;
   @Output() valid = new EventEmitter<boolean>();
   @Output() submit = new EventEmitter<[FormGroup, boolean]>();
 
@@ -38,13 +38,13 @@ export class SurveyComponent implements OnInit, OnChanges {
   currentChapter: Section = null;
   chapterForSubmission: Section = null;
   sortedSurveyAnswers: Object = {};
-  editMode: boolean = false;
-  bitset: Tabs = new Tabs;
+  editMode = false;
+  bitset: Tabs = new Tabs();
 
-  ready: boolean = false;
-  readonly: boolean = false;
-  freeView: boolean = false;
-  validate: boolean = false;
+  ready = false;
+  readonly = false;
+  freeView = false;
+  validate = false;
   errorMessage = '';
   successMessage = '';
 
@@ -111,7 +111,7 @@ export class SurveyComponent implements OnInit, OnChanges {
 
       if (this.activeUsers?.length > 0) {
         setTimeout(()=> {
-          let users = [];
+          const users = [];
           this.activeUsers.forEach(user => {
             users.push(' '+user.fullname);
           });
@@ -137,7 +137,7 @@ export class SurveyComponent implements OnInit, OnChanges {
       console.log('Invalid form');
       this.form.markAllAsTouched();
       let str = '';
-      for (let key in this.form.value) {
+      for (const key in this.form.value) {
         // console.log(this.form.get('extras.'+key));
         console.log(key + ': '+ this.form.get(key).valid);
         if (!this.form.get(key).valid) {
@@ -180,7 +180,7 @@ export class SurveyComponent implements OnInit, OnChanges {
       postMethod = 'postItem';
       firstParam = this.payload.id;
     } else {
-      postMethod = 'postGenericItem'
+      postMethod = 'postGenericItem';
       firstParam = this.model.resourceType;
     }
     this.formControlService[postMethod](firstParam, this.form.value, this.editMode).subscribe(
@@ -253,7 +253,7 @@ export class SurveyComponent implements OnInit, OnChanges {
   }
 
   pushToFormArray(name: string, length: number, arrayIndex?: number) {
-    let field = this.getModelData(this.model.sections, name);
+    const field = this.getModelData(this.model.sections, name);
     while (this.getFormControl(this.form, name, arrayIndex).length < length) {
       this.getFormControl(this.form, name, arrayIndex).push(this.formControlService.createField(field));
     }
@@ -326,7 +326,7 @@ export class SurveyComponent implements OnInit, OnChanges {
 
   /** Generate PDF --> **/
   generatePDF() {
-    let docDefinition: DocDefinition = new DocDefinition();
+    const docDefinition: DocDefinition = new DocDefinition();
     docDefinition.content.push(new Content(this.model.name, ['title']));
     if (this.model.notice)
       docDefinition.content.push({text: this.strip(this.model.notice), italics: true, alignment: 'justify'});
@@ -334,7 +334,7 @@ export class SurveyComponent implements OnInit, OnChanges {
 
     let description = 'none';
     if (this.model.name === 'Survey on National Contributions to EOSC 2022') {
-      description = 'end'
+      description = 'end';
     }
     this.createDocumentDefinition(this.form, docDefinition, description);
 
@@ -355,8 +355,8 @@ export class SurveyComponent implements OnInit, OnChanges {
             questionNumber = field.label.text.split('. ')[0];
           }
           // let term = field.form.description.text.split('-')[0]
-          let components = this.strip(field.form.description.text).split(' - ');
-          let content = {
+          const components = this.strip(field.form.description.text).split(' - ');
+          const content = {
             style: ['mt_3'],
             text: [
               questionNumber,
@@ -365,20 +365,20 @@ export class SurveyComponent implements OnInit, OnChanges {
               ' - ',
               components.join('-')
             ]
-          }
+          };
           // descriptionAtEnd.content.push(new Content(questionNumber + ' ' + components.shift() + '-' + components.join('-'), ['mt_3']));
           descriptionAtEnd.content.push(content);
         }
         if (description === 'show')
           docDefinition.content.push(new Content(field.form.description.text, ['mt_3']));
       }
-      let answerValues = this.findVal(this.payload?.answer, field.name);
+      const answerValues = this.findVal(this.payload?.answer, field.name);
       if (field.typeInfo.type === 'radio') {
-        let values = field.typeInfo.values
+        const values = field.typeInfo.values;
         // if (field.kind === 'conceal-reveal')
         //   values = this.getModelData(this.model.sections, field.parent).typeInfo.values;
         for (const value of values) {
-          let content = new Columns();
+          const content = new Columns();
           if (value === answerValues?.[0]){
             content.columns.push(new PdfImage('radioChecked', 10, 10, ['marginTopCheckBox']));
           }
@@ -390,7 +390,7 @@ export class SurveyComponent implements OnInit, OnChanges {
         }
       } else if (field.typeInfo.type === 'checkbox') {
         docDefinition.content.pop();
-        let content = new Columns(['mx_1']);
+        const content = new Columns(['mx_1']);
         if (answerValues?.[0]) {
           content.columns.push(new PdfImage('checked', 10, 10, ['mt_1']));
         } else {
@@ -419,7 +419,7 @@ export class SurveyComponent implements OnInit, OnChanges {
   }
 
   createDocumentDefinition(group: FormGroup | FormArray, docDefinition: DocDefinition, description: string) {
-    let descriptionsAtEnd = new DocDefinition();
+    const descriptionsAtEnd = new DocDefinition();
 
     if (this.model.name === 'Survey on National Contributions to EOSC 2022') {
       docDefinition.content.push(new Content('Definitions of key terms can be found in Appendix A', ['mt_3']));
@@ -448,7 +448,7 @@ export class SurveyComponent implements OnInit, OnChanges {
       docDefinition.content.push(...descriptionsAtEnd.content);
 
       docDefinition.content.push(new Content('Appendix B', ['title']));
-      let content = [
+      const content = [
         {
           style: ['mt_3'],
           text: ['Visit the ',
@@ -457,7 +457,7 @@ export class SurveyComponent implements OnInit, OnChanges {
             {text: 'EOSC Observatory Zenodo Community', link: 'https://zenodo.org/communities/eoscobservatory', color: 'cornflowerblue', decoration: 'underline'},
             ' to access all relevant documents for the surveys and EOSC Observatory.']
         }
-      ]
+      ];
       docDefinition.content.push(content);
     }
 
@@ -468,15 +468,15 @@ export class SurveyComponent implements OnInit, OnChanges {
   findVal(obj, key) {
     if (!obj)
       return null;
-    let seen = new Set, active = [obj];
+    const seen = new Set(); let active = [obj];
     while (active.length) {
-      let new_active = [], found = [];
+      const new_active = []; const found = [];
       for (let i=0; i<active.length; i++) {
         Object.keys(active[i]).forEach(function(k){
-          let x = active[i][k];
+          const x = active[i][k];
           if (k === key) {
             found.push(x);
-          } else if (x && typeof x === "object" &&
+          } else if (x && typeof x === 'object' &&
             !seen.has(x)) {
             seen.add(x);
             new_active.push(x);
@@ -490,8 +490,8 @@ export class SurveyComponent implements OnInit, OnChanges {
   }
 
   strip(html){
-    let doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || "";
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
   }
 
   /** <-- Generate PDF **/
@@ -514,7 +514,7 @@ export class SurveyComponent implements OnInit, OnChanges {
   }
 
   getInitials(fullName: string) {
-    return fullName.split(" ").map((n)=>n[0]).join("")
+    return fullName.split(' ').map((n)=>n[0]).join('');
   }
 
   actionIcon(action: string) {
@@ -545,10 +545,10 @@ export class SurveyComponent implements OnInit, OnChanges {
 
   getRandomDarkColor(sessionId: string) { // (use for background with white/light font color)
     const rng = seedRandom(sessionId);
-    const h = Math.floor(rng() * 360),
-      s = Math.floor(rng() * 100) + '%',
+    const h = Math.floor(rng() * 360);
+      const s = Math.floor(rng() * 100) + '%';
       // max value of l is 100, but set it to 55 in order to generate dark colors
-      l = Math.floor(rng() * 55) + '%';
+      const l = Math.floor(rng() * 55) + '%';
 
     return `hsl(${h},${s},${l})`;
   };

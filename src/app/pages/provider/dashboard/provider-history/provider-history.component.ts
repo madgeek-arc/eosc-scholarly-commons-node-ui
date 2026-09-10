@@ -8,7 +8,7 @@ import {ProviderBundle} from '../../../../entities/eic-model';
 
 export class ProviderHistoryComponent implements OnInit {
 
-  @Input() providerBundle: ProviderBundle = null
+  @Input() providerBundle: ProviderBundle = null;
 
   constructor() {
   }

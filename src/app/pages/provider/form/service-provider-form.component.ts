@@ -12,7 +12,7 @@ import {PremiumSortPipe} from '../../../shared/pipes/premium-sort.pipe';
 
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-declare var UIkit: any;
+declare let UIkit: any;
 
 @Component({
   selector: 'app-new-service-provider',
@@ -43,8 +43,8 @@ export class ServiceProviderFormComponent implements OnInit {
   disable = false;
   showLoader = false;
   tabsError: boolean[] = [false, false, false, false, false, false, false, false];
-  selectedTab: number = 0;
-  selectTab(index: number): void {this.selectedTab = index}
+  selectedTab = 0;
+  selectTab(index: number): void {this.selectedTab = index;}
   isPortalAdmin = false;
 
   codeOfConduct = false;
@@ -312,7 +312,7 @@ export class ServiceProviderFormComponent implements OnInit {
       this.showLoader = true;
       window.scrollTo(0, 0);
 
-      let token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (token) {
         this.providerService.createNewServiceProviderWithToken(this.newProviderForm.value, token).subscribe(
           res => {

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-checkbox-field',

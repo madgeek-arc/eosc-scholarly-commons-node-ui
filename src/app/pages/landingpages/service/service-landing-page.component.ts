@@ -55,9 +55,9 @@ export class ServiceLandingPageComponent implements OnInit, OnDestroy {
                   }
                   else {
                     this.resourceService.getServicesByIdArray(this.resourcePayload.relatedResources).subscribe(
-                      next => {this.relatedServices = next},
-                      error => {console.log(error)},
-                      () => {this.ready = true}
+                      next => {this.relatedServices = next;},
+                      error => {console.log(error);},
+                      () => {this.ready = true;}
                     );
                   }
                 },

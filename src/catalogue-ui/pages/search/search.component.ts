@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {Subscription} from "rxjs";
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {Paging} from '../../domain/paging';
 import {URLParameter} from '../../domain/url-parameter';
 import {PremiumSortFacetsPipe} from '../../shared/pipes/premium-sort.pipe';
-import {SearchService} from "../../services/search.service";
+import {SearchService} from '../../services/search.service';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class SearchComponent implements OnInit {
   foundResults = true;
   errorMessage: string;
   searchForm: FormGroup;
-  itemPath = '/service/'
+  itemPath = '/service/';
 
   searchResults: Paging<Object>;
   facetOrder = ['category', 'trl', 'lifeCycleStatus', 'provider'];
@@ -47,7 +47,7 @@ export class SearchComponent implements OnInit {
   constructor(public fb: FormBuilder, public route: ActivatedRoute, public searchService: SearchService,
               // public authenticationService: AuthenticationService,
               public router: Router) {
-    this.searchForm = fb.group({'query': [''], 'searchFields': ['']});
+    this.searchForm = fb.group({query: [''], searchFields: ['']});
   }
 
   ngOnInit() {
@@ -120,7 +120,7 @@ export class SearchComponent implements OnInit {
     if (this.searchResults.results.length === 0) {
       this.foundResults = false;
     } else {
-      this.sortFacets.transform(this.searchResults.facets,['Portfolios', 'Users', 'TRL', 'Life Cycle Status'])
+      this.sortFacets.transform(this.searchResults.facets,['Portfolios', 'Users', 'TRL', 'Life Cycle Status']);
     }
     // update form values using URLParameters
     for (const urlParameter of this.urlParameters) {
@@ -190,7 +190,7 @@ export class SearchComponent implements OnInit {
   }
 
   updateSearchField(event) {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     const params = this.route.snapshot.params;
     let found = false;
     this.urlParameters = [];
@@ -281,7 +281,7 @@ export class SearchComponent implements OnInit {
   }
 
   navigateUsingParameters() {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     for (const urlParameter of this.urlParameters) {
       map[urlParameter.key] = urlParameter.values.join(',');
     }
@@ -316,7 +316,7 @@ export class SearchComponent implements OnInit {
 
   goToPage(page: number) {
     this.currentPage = page;
-    let from: number = (this.currentPage - 1) * this.pageSize
+    const from: number = (this.currentPage - 1) * this.pageSize;
     this.updatePagingURLParameters(from);
     return this.navigateUsingParameters();
   }

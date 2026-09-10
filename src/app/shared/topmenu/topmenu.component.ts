@@ -22,9 +22,9 @@ export class AireTopMenuComponent implements OnInit {
   refresh = false;
   user: UserInfo = null;
   myProviders: Provider[] = [];
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
-  dashboardMode: boolean = false;
+  dashboardMode = false;
 
   public portfolioItemActive: string = null;
 
@@ -52,16 +52,16 @@ export class AireTopMenuComponent implements OnInit {
         this.isLoggedIn = next;
         if (this.isLoggedIn) {
           this.userService.getUserInfo().subscribe(
-            res => {this.user = res},
+            res => {this.user = res;},
             error => {
               this.isLoggedIn = false;
               console.error(error);
             }
-          )
+          );
           this.userService.getMyProviders().subscribe(
-            res => {this.myProviders = res},
-            error => {console.error(error)}
-          )
+            res => {this.myProviders = res;},
+            error => {console.error(error);}
+          );
         } else {
           this.user = null;
         }
@@ -94,7 +94,7 @@ export class AireTopMenuComponent implements OnInit {
   }
 
   getInitials(fullName: string) {
-    return fullName.split(" ").map((n)=>n[0]).join("")
+    return fullName.split(' ').map((n)=>n[0]).join('');
   }
 
   isInDashboardMode() {

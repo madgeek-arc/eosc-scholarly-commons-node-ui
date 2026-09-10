@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HelpContentService} from '../../services/help-content.service';
 import {AsideHelpContentComponent, HelpContentComponent} from './help-content.component';
 import {ReadMoreComponent, ReadMoreTextComponent} from './read-more.component';
-import {HttpClientJsonpModule, HttpClientModule} from "@angular/common/http";
+import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     imports: [

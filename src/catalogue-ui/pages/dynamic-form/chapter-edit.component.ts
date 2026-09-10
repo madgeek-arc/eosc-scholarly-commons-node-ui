@@ -3,7 +3,7 @@ import {FormControlService} from '../../services/form-control.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {Section, Field, HandleBitSet, Tab, Tabs} from '../../domain/dynamic-form-model';
-import BitSet from "bitset";
+import BitSet from 'bitset';
 
 import UIkit from 'uikit';
 
@@ -17,8 +17,8 @@ export class ChapterEditComponent implements OnChanges{
   @Input() form: any = null;
   @Input() tabsHeader: string;
   @Input() mandatoryFieldsText: string = null;
-  @Input() readonly : boolean = null;
-  @Input() validate : boolean = null;
+  @Input() readonly: boolean = null;
+  @Input() validate: boolean = null;
   @Input() vocabularies: Map<string, object[]> = null;
   @Input() subVocabularies: Map<string, object[]> = null;
   @Input() chapter: Section = null;
@@ -29,7 +29,7 @@ export class ChapterEditComponent implements OnChanges{
 
   editMode = true;
 
-  bitset: Tabs = new Tabs;
+  bitset: Tabs = new Tabs();
   errorMessage = '';
   successMessage = '';
   ready = false;
@@ -38,7 +38,7 @@ export class ChapterEditComponent implements OnChanges{
   pendingService = false;
 
   showBitsets = false;
-  loaderBitSet = new BitSet;
+  loaderBitSet = new BitSet();
   loaderPercentage = 0;
   tabIndex= 0;
 
@@ -68,10 +68,10 @@ export class ChapterEditComponent implements OnChanges{
     }
   }
 
-  ngOnChanges(changes:SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.fields) {
       this.initializations();
-      this.ready = true
+      this.ready = true;
     }
   }
 
@@ -83,14 +83,14 @@ export class ChapterEditComponent implements OnChanges{
 
   initializations() {
     /** Initialize tab bitsets **/
-    let requiredTabs = 0, requiredTotal = 0;
-    let obj = new Map();
+    let requiredTabs = 0; let requiredTotal = 0;
+    const obj = new Map();
     this.fields.forEach(group => {
-      let tab = new Tab();
+      const tab = new Tab();
       tab.requiredOnTab = tab.remainingOnTab = group.required.topLevel;
       tab.valid = false;
       tab.order = group.order;
-      tab.bitSet = new BitSet;
+      tab.bitSet = new BitSet();
       // obj[group.group.id] = tab;
       obj.set(group.id, tab);
       if (group.required.topLevel > 0) {
@@ -100,7 +100,7 @@ export class ChapterEditComponent implements OnChanges{
     });
     this.bitset.tabs = obj;
     this.bitset.completedTabs = 0;
-    this.bitset.completedTabsBitSet = new BitSet;
+    this.bitset.completedTabsBitSet = new BitSet();
     this.bitset.requiredTabs = requiredTabs;
     this.bitset.requiredTotal = requiredTotal;
   }
@@ -111,12 +111,12 @@ export class ChapterEditComponent implements OnChanges{
   }
 
   handleBitSetOfComposite(data: HandleBitSet) {
-    let field = data.field;
-    let pos = data.position;
+    const field = data.field;
+    const pos = data.position;
     // console.log(field.name);
 
     if (field.typeInfo.multiplicity) {
-      let formArray = this.form.get(field.accessPath) as FormArray;
+      const formArray = this.form.get(field.accessPath) as FormArray;
       let flag = false;
       for (let i = 0; i < formArray.length; i++) {
         if (formArray.controls[i].valid) {
@@ -131,7 +131,7 @@ export class ChapterEditComponent implements OnChanges{
       }
       if (!flag) {
         // console.log('didn't find valid array field')
-        let found = new Array(field.subFields.length);
+        const found = new Array(field.subFields.length);
         for (let j = 0; j < field.subFields.length; j++) {
           for (let i = 0; i < formArray.length; i++) {
             if (field.subFields[j].form.mandatory && formArray.controls[i].get(field.subFields[j].name).valid) {
@@ -190,7 +190,7 @@ export class ChapterEditComponent implements OnChanges{
   }
 
   handleBitSetOfGroup(data: Field) {
-    let formArray = this.form.get(data.accessPath) as FormArray;
+    const formArray = this.form.get(data.accessPath) as FormArray;
     let flag = false;
     for (let i = 0; i < formArray.length; i++) {
       if (formArray.controls[i].valid) {
@@ -252,7 +252,7 @@ export class ChapterEditComponent implements OnChanges{
       return;
     }
     this.tabIndex = i;
-    let element: HTMLElement = document.getElementById(this.chapter.id + '-tab' + i) as HTMLElement
+    const element: HTMLElement = document.getElementById(this.chapter.id + '-tab' + i) as HTMLElement;
     element.click();
     // console.log(element)
   }
