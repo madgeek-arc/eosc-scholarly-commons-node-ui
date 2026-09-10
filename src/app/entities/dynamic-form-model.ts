@@ -1,4 +1,4 @@
-import BitSet from 'bitset/bitset';
+import BitSet from 'bitset';
 
 export class Group {
   id: string;
