@@ -1,8 +1,8 @@
 import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {Router} from '@angular/router';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
@@ -55,7 +55,6 @@ declare let require: any;
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     ReusableComponentsModule,
@@ -115,6 +114,7 @@ declare let require: any;
       deps: [Sentry.TraceService],
       multi: true,
     },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
   exports: [
     AireFooterComponent,

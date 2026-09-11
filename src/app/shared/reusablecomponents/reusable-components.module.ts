@@ -4,15 +4,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HelpContentService} from '../../services/help-content.service';
 import {AsideHelpContentComponent, HelpContentComponent} from './help-content.component';
 import {ReadMoreComponent, ReadMoreTextComponent} from './read-more.component';
-import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi, withJsonpSupport} from '@angular/common/http';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        HttpClientJsonpModule
+        ReactiveFormsModule
     ],
     declarations: [
         ReadMoreComponent,
@@ -27,7 +25,8 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
         AsideHelpContentComponent
     ],
     providers: [
-        HelpContentService
+        HelpContentService,
+        provideHttpClient(withInterceptorsFromDi(), withJsonpSupport())
     ]
 })
 export class ReusableComponentsModule {

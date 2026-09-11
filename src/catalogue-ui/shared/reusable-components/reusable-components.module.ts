@@ -1,14 +1,10 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {ReadMoreComponent, ReadMoreTextComponent} from './read-more.component';
-import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi, withJsonpSupport} from '@angular/common/http';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        HttpClientJsonpModule
-    ],
+    imports: [CommonModule],
     declarations: [
         ReadMoreComponent,
         ReadMoreTextComponent,
@@ -17,7 +13,7 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
         ReadMoreComponent,
         ReadMoreTextComponent,
     ],
-    providers: []
+    providers: [provideHttpClient(withInterceptorsFromDi(), withJsonpSupport())]
 })
 export class ReusableComponentsModule {
 }

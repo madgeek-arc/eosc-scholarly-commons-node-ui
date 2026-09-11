@@ -1,6 +1,6 @@
 import { enableProdMode, ErrorHandler } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
@@ -10,13 +10,11 @@ if (!environment.disableSentry)
     dsn: environment.sentry.dsn,
     environment: environment.sentry.environment,
     integrations: [
-      new Sentry.BrowserTracing({
-        routingInstrumentation: Sentry.routingInstrumentation,
-      }),
-      new Sentry.Integrations.Breadcrumbs({
+      Sentry.browserTracingIntegration(),
+      Sentry.breadcrumbsIntegration({
         console: true,
       }),
-      new Sentry.Replay(),
+      Sentry.replayIntegration(),
     ],
     // Performance Monitoring
     tracesSampleRate: environment.sentry.tracesSampleRate, // Capture 100% of the transactions
