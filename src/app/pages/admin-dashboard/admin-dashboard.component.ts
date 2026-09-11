@@ -8,6 +8,7 @@ import {UntypedFormBuilder, UntypedFormControl, Validators} from '@angular/forms
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: 'admin-dashboard.component.html',
+  standalone: false
 })
 
 export class AdminDashboardComponent implements OnInit {

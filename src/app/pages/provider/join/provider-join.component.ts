@@ -3,7 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-join',
-  templateUrl: 'provider-join.component.html'
+  templateUrl: 'provider-join.component.html',
+  standalone: false
 })
 
 export class ProviderJoinComponent implements OnInit {

@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-log',
-  templateUrl: 'change-log.component.html'
+  templateUrl: 'change-log.component.html',
+  standalone: false
 })
 
 export class ChangeLogComponent {

@@ -12,7 +12,8 @@ import {environment} from '../../../environments/environment';
         <div [innerHTML]="content.content" class="uk-margin-medium-bottom"></div>
       </ng-template>
     </ng-template>
-  `
+  `,
+  standalone: false
 })
 export class HelpContentComponent implements OnInit {
   @Input() position: string;
@@ -54,7 +55,8 @@ export class HelpContentComponent implements OnInit {
              class="uk-card uk-card-body uk-card-default sidemenu uk-margin-bottom"></div>
       </ng-template>
     </ng-template>
-  `
+  `,
+  standalone: false
 })
 export class AsideHelpContentComponent extends HelpContentComponent {
 }

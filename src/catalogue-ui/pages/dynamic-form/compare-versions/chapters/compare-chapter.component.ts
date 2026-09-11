@@ -5,7 +5,8 @@ import BitSet from 'bitset';
 
 @Component({
   selector: 'app-chapter-compare',
-  templateUrl: 'compare-chapter.component.html'
+  templateUrl: 'compare-chapter.component.html',
+  standalone: false
 })
 
 export class CompareChapterComponent implements OnChanges {

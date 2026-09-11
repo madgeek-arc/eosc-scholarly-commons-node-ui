@@ -16,7 +16,8 @@ import {fromEvent} from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.aire.component.html'
+  templateUrl: './search.aire.component.html',
+  standalone: false
 })
 
 export class SearchAireComponent implements OnInit {

@@ -4,7 +4,8 @@ import {ClassicEditor} from '../../../domain/ckeditor-classic-editor';
 
 @Component({
   selector: 'app-field-builder',
-  templateUrl: './field-builder.component.html'
+  templateUrl: './field-builder.component.html',
+  standalone: false
 })
 
 export class FieldBuilderComponent implements OnInit {

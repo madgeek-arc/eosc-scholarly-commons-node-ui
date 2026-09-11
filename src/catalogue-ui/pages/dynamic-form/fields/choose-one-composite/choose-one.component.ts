@@ -6,7 +6,8 @@ import {FormControlService} from '../../../../services/form-control.service';
 @Component({
   selector: 'app-choose-one',
   templateUrl: './choose-one.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 
 export class ChooseOneComponent implements OnInit {

@@ -3,7 +3,8 @@ import {ProviderBundle} from '../../../../entities/eic-model';
 
 @Component({
   selector: 'app-provider-full-history',
-  templateUrl: 'provider-full-history.component.html'
+  templateUrl: 'provider-full-history.component.html',
+  standalone: false
 })
 
 export class ProviderFullHistoryComponent implements OnInit {

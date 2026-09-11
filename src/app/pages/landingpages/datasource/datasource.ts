@@ -6,7 +6,8 @@ import {DatasourceDetails} from '../../../entities/datasource';
 @Component({
   selector: 'app-datasource-landing',
   templateUrl: 'datasource.html',
-  providers: [DatasourceService]
+  providers: [DatasourceService],
+  standalone: false
 })
 
 export class Datasource implements OnInit {

@@ -8,7 +8,8 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'app-provider-home',
-  templateUrl: 'provider-home.component.html'
+  templateUrl: 'provider-home.component.html',
+  standalone: false
 })
 
 export class ProviderHomeComponent implements OnInit, OnChanges {

@@ -10,6 +10,7 @@ import {UntypedFormBuilder, UntypedFormControl, Validators} from '@angular/forms
 @Component({
   selector: 'app-provider-dashboard',
   templateUrl: 'provider-dashboard.component.html',
+  standalone: false
 })
 
 export class ProviderDashboardComponent implements OnInit {

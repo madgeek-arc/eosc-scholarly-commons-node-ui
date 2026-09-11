@@ -17,7 +17,8 @@ declare let UIkit: any;
 @Component({
   selector: 'app-new-service-provider',
   templateUrl: './service-provider-form.component.html',
-  styleUrls: ['./service-provider-form.component.css']
+  styleUrls: ['./service-provider-form.component.css'],
+  standalone: false
 })
 export class ServiceProviderFormComponent implements OnInit {
 

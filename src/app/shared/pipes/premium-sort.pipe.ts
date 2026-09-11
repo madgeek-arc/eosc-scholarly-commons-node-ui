@@ -2,7 +2,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {Facet, FacetValue} from '../../entities/facet';
 import {UiVocabulary} from '../../entities/dynamic-form-model';
 
-@Pipe({name: 'premiumSort'})
+@Pipe({name: 'premiumSort', standalone: false})
 export class PremiumSortPipe implements PipeTransform {
   transform(arr: UiVocabulary[], weights: string[]): any {
     const ret = (arr || []).sort((a, b): number => {
@@ -24,7 +24,7 @@ export class PremiumSortPipe implements PipeTransform {
   }
 }
 
-@Pipe({name: 'premiumSortFacets'})
+@Pipe({name: 'premiumSortFacets', standalone: false})
 export class PremiumSortFacetsPipe implements PipeTransform {
   transform(arr: Facet[], weights: string[]): any {
     const ret = (arr || []).sort((a, b): number => {
@@ -46,7 +46,7 @@ export class PremiumSortFacetsPipe implements PipeTransform {
   }
 }
 
-@Pipe({name: 'premiumSortFacetValues'})
+@Pipe({name: 'premiumSortFacetValues', standalone: false})
 export class PremiumSortFacetValuesPipe implements PipeTransform {
   transform(arr: FacetValue[], weights: string[]): any {
     const ret = (arr || []).sort((a, b): number => {

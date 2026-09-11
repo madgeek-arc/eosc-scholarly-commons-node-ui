@@ -6,7 +6,8 @@ import {FormControlService} from '../../../../services/form-control.service';
 @Component({
   selector: 'app-number-field',
   templateUrl: './number-field.component.html',
-  styles: ['.clear-style { height: 0 !important;}']
+  styles: ['.clear-style { height: 0 !important;}'],
+  standalone: false
 })
 
 export class NumberFieldComponent implements OnInit {

@@ -14,6 +14,7 @@ import {filter, map} from 'rxjs/operators';
   selector: 'app-top-menu-aire',
   templateUrl: './topmenu.component.html',
   styleUrls: ['./topmenu.component.css'],
+  standalone: false
 })
 
 export class AireTopMenuComponent implements OnInit {

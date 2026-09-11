@@ -4,7 +4,8 @@ import {UntypedFormGroup, FormGroupDirective} from '@angular/forms';
 
 @Component({
   selector: 'app-radio-grid',
-  templateUrl: './radio-grid-field.component.html'
+  templateUrl: './radio-grid-field.component.html',
+  standalone: false
 })
 
 export class RadioGridFieldComponent implements OnInit {

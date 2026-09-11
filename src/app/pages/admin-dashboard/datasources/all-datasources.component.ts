@@ -10,7 +10,8 @@ declare let UIkit: any;
 
 @Component({
   selector: 'app-admin-all-datasources-dashboard',
-  templateUrl: 'all-datasources.component.html'
+  templateUrl: 'all-datasources.component.html',
+  standalone: false
 })
 
 export class AllDatasourcesDashboardComponent implements OnInit {

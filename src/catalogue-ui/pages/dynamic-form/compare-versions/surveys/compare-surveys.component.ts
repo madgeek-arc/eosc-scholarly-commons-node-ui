@@ -6,7 +6,8 @@ import {FormControlService} from '../../../../services/form-control.service';
 @Component({
   selector: 'app-compare-surveys',
   templateUrl: 'compare-surveys.component.html',
-  providers: [FormControlService]
+  providers: [FormControlService],
+  standalone: false
 })
 
 export class CompareSurveysComponent implements OnChanges{

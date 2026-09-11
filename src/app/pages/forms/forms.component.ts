@@ -13,7 +13,8 @@ import * as uikit from 'uikit';
 @Component({
   selector: 'app-form',
   templateUrl: 'forms.component.html',
-  providers: [FormControlService]
+  providers: [FormControlService],
+  standalone: false
 })
 
 export class FormsComponent implements OnInit{

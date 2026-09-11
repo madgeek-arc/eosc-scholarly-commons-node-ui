@@ -4,7 +4,8 @@ import {UntypedFormControl, UntypedFormGroup, FormGroupDirective} from '@angular
 
 @Component({
   selector: 'app-radio-button-field',
-  templateUrl: './radio-button-field.component.html'
+  templateUrl: './radio-button-field.component.html',
+  standalone: false
 })
 
 export class RadioButtonFieldComponent implements OnInit {

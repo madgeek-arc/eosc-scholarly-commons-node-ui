@@ -6,7 +6,8 @@ import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-rich-text-field',
-  templateUrl: './rich-text-field.component.html'
+  templateUrl: './rich-text-field.component.html',
+  standalone: false
 })
 
 export class RichTextFieldComponent implements OnInit {

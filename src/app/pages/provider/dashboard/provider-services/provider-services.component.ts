@@ -11,7 +11,8 @@ declare let UIkit: any;
 
 @Component({
   selector: 'app-provider-services',
-  templateUrl: 'provider-services.component.html'
+  templateUrl: 'provider-services.component.html',
+  standalone: false
 })
 
 export class ProviderServicesComponent implements OnInit {

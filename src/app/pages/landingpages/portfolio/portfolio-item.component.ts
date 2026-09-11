@@ -9,6 +9,7 @@ import {Paging} from '../../../entities/paging';
 @Component({
   selector: 'app-portfolio-item',
   templateUrl: './portfolio-item.component.html',
+  standalone: false
 })
 export class PortfolioItemComponent implements OnInit{
 

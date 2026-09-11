@@ -5,7 +5,8 @@ import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-composite-field',
-  templateUrl: './composite-field.component.html'
+  templateUrl: './composite-field.component.html',
+  standalone: false
 })
 
 export class CompositeFieldComponent implements OnInit {

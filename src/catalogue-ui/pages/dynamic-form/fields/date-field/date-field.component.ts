@@ -4,7 +4,8 @@ import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirecti
 
 @Component({
   selector: 'app-date-field',
-  templateUrl: 'date-field.component.html'
+  templateUrl: 'date-field.component.html',
+  standalone: false
 })
 
 export class DateFieldComponent implements OnInit {

@@ -3,7 +3,8 @@ import {Section, Field, GroupedFields} from '../../../domain/dynamic-form-model'
 
 @Component({
   selector: 'app-side-menu',
-  templateUrl: './side-menu.component.html'
+  templateUrl: './side-menu.component.html',
+  standalone: false
 })
 
 export class SideMenuComponent implements OnInit {

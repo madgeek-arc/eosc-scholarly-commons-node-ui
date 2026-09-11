@@ -4,7 +4,8 @@ import {Service, URL} from '../../../../entities/eic-model';
 @Component({
   selector: 'app-service-landing-page-misc',
   templateUrl: 'miscellaneous.component.html',
-  // styleUrls: ['../../landing-page.component.css']
+  // styleUrls: ['../../landing-page.component.css'],
+  standalone: false
 })
 export class MiscellaneousComponent {
 

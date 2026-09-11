@@ -4,7 +4,8 @@ import {Field, HandleBitSet} from '../../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-field',
-  templateUrl: './dynamic-form-fields.component.html'
+  templateUrl: './dynamic-form-fields.component.html',
+  standalone: false
 })
 export class DynamicFormFieldsComponent {
   @Input() fieldData: Field;

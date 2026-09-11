@@ -4,7 +4,8 @@ import {ClassicEditor} from '../../../domain/ckeditor-classic-editor';
 
 @Component({
   selector: 'app-chapter-builder',
-  templateUrl: 'chapter-builder.component.html'
+  templateUrl: 'chapter-builder.component.html',
+  standalone: false
 })
 
 export class ChapterBuilderComponent {

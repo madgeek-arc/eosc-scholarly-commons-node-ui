@@ -10,6 +10,7 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-service-dashboard',
   templateUrl: './service-dashboard.component.html',
+  standalone: false
 })
 export class ServiceDashboardComponent implements OnInit {
 

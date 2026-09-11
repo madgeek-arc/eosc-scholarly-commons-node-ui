@@ -16,7 +16,8 @@ const seedRandom = require('seedrandom');
 @Component({
   selector: 'app-survey',
   templateUrl: 'survey.component.html',
-  providers: [FormControlService]
+  providers: [FormControlService],
+  standalone: false
 })
 
 export class SurveyComponent implements OnInit, OnChanges {

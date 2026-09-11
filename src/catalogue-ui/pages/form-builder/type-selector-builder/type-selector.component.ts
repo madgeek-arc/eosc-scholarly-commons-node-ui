@@ -9,7 +9,8 @@ import {TypeInfo} from '../../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-type-selector',
-  templateUrl: 'type-selector.component.html'
+  templateUrl: 'type-selector.component.html',
+  standalone: false
 })
 
 export class TypeSelectorComponent {

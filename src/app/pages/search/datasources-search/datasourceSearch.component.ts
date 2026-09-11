@@ -14,7 +14,8 @@ import {fromEvent} from 'rxjs';
 @Component({
   selector: 'app-search',
   templateUrl: './datasourceSearch.component.html',
-  providers: [DatasourceService]
+  providers: [DatasourceService],
+  standalone: false
 })
 
 export class DatasourceSearchComponent implements OnInit {

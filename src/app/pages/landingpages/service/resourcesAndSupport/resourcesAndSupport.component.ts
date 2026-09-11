@@ -4,6 +4,7 @@ import { Service, URL } from '../../../../entities/eic-model';
 @Component({
   selector: 'app-service-landing-page-resources-and-support',
   templateUrl: 'resourcesAndSupport.component.html',
+  standalone: false
 })
 
 export class ResourcesAndSupportComponent {

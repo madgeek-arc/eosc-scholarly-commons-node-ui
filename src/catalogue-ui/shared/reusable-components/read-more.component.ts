@@ -24,7 +24,8 @@ import {
     div.collapsed {
       overflow: hidden;
     }
-  `]
+  `],
+  standalone: false
 })
 export class ReadMoreComponent implements AfterContentInit {
   //the text that need to be put in the container
@@ -65,7 +66,8 @@ export class ReadMoreComponent implements AfterContentInit {
     div.collapsed {
       overflow: hidden;
     }
-  `]
+  `],
+  standalone: false
 })
 export class ReadMoreTextComponent extends ReadMoreComponent implements OnChanges, AfterViewInit {
 

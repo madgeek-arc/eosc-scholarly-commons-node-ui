@@ -10,7 +10,8 @@ import { zip } from 'rxjs/internal/observable/zip';
 @Component({
   selector: 'app-service-landing-page',
   templateUrl: './service-static-landing-page.component.html',
-  // styleUrls: ['../landing-page.component.css']
+  // styleUrls: ['../landing-page.component.css'],
+  standalone: false
 })
 export class ServiceLandingPageComponent implements OnInit, OnDestroy {
 

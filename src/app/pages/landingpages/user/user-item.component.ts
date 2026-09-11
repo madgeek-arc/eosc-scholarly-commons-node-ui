@@ -8,6 +8,7 @@ import {zip} from 'rxjs/internal/observable/zip';
 @Component({
   selector: 'app-user-item',
   templateUrl: './user-item.component.html',
+  standalone: false
 })
 export class UserItemComponent implements OnInit {
 

@@ -9,7 +9,8 @@ import {edit} from 'brace';
 @Component({
   selector: 'app-vocabulary-field',
   templateUrl: './vocabulary-field.component.html',
-  styleUrls: ['./vocabulary-field.component.scss']
+  styleUrls: ['./vocabulary-field.component.scss'],
+  standalone: false
 })
 
 export class VocabularyFieldComponent implements OnInit {

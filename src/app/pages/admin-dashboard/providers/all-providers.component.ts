@@ -11,7 +11,8 @@ declare let UIkit: any;
 
 @Component({
   selector: 'app-admin-all-providers-dashboard',
-  templateUrl: 'all-providers.component.html'
+  templateUrl: 'all-providers.component.html',
+  standalone: false
 })
 
 export class AllProvidersDashboardComponent implements OnInit {

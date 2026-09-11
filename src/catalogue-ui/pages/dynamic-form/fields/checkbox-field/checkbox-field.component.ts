@@ -4,7 +4,8 @@ import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirecti
 
 @Component({
   selector: 'app-checkbox-field',
-  templateUrl: './checkbox-field.component.html'
+  templateUrl: './checkbox-field.component.html',
+  standalone: false
 })
 
 export class CheckboxFieldComponent implements OnInit {

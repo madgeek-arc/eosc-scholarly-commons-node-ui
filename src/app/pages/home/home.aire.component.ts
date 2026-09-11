@@ -11,7 +11,8 @@ import * as uikit from 'uikit';
 @Component({
   selector: 'app-home',
   templateUrl: './home.aire.component.html',
-  styleUrls: ['./home.aire.component.css']
+  styleUrls: ['./home.aire.component.css'],
+  standalone: false
 })
 export class HomeAireComponent implements OnInit {
   public searchForm: UntypedFormGroup;

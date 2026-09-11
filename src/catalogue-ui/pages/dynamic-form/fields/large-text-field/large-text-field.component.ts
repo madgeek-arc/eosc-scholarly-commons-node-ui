@@ -4,7 +4,8 @@ import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-large-text-field',
-  templateUrl: './large-text-field.component.html'
+  templateUrl: './large-text-field.component.html',
+  standalone: false
 })
 
 export class LargeTextFieldComponent implements OnInit {

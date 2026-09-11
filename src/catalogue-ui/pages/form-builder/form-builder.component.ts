@@ -3,7 +3,8 @@ import {Section} from '../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-form-builder',
-  templateUrl: 'form-builder.component.html'
+  templateUrl: 'form-builder.component.html',
+  standalone: false
 })
 
 export class FormBuilderComponent implements OnInit {

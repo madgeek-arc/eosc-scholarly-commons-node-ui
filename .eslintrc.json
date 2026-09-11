@@ -59,7 +59,8 @@
         "@angular-eslint/no-output-rename": "off",
         "@angular-eslint/contextual-lifecycle": "off",
         "@angular-eslint/component-class-suffix": "off",
-        "import/no-deprecated": "off"
+        "import/no-deprecated": "off",
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
     {
