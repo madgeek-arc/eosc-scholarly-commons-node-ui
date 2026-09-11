@@ -4,7 +4,6 @@ import {Bundle, Datasource, LoggingInfo, Provider, ProviderBundle, Service, Serv
 import {ProviderService} from '../../../../services/provider.service';
 import {ResourceService} from '../../../../services/resource.service';
 import {DatePipe} from '@angular/common';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-provider-home',

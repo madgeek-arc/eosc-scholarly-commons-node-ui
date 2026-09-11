@@ -23,7 +23,6 @@ import {HomeAireComponent} from './pages/home/home.aire.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {ProviderModule} from './pages/provider/provider.module';
 import {NgxMatomoModule, NgxMatomoRouterModule} from 'ngx-matomo-client';
-import {HighchartsChartModule} from 'highcharts-angular';
 import {environment} from '../environments/environment';
 import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
 import {UserItemComponent} from './pages/landingpages/user/user-item.component';
@@ -60,7 +59,6 @@ declare let require: any;
     ReusableComponentsModule,
     SharedModule,
     ProviderModule,
-    HighchartsChartModule,
     CookieLawModule,
     NgSelectModule,
     NgxMatomoModule.forRoot({
