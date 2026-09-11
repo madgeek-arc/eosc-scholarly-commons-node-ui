@@ -4,7 +4,6 @@ import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirecti
 import {FormControlService} from '../../../../services/form-control.service';
 import {URLValidator} from '../../../../shared/validators/generic.validator';
 import {ActivatedRoute} from '@angular/router';
-import {edit} from 'brace';
 
 @Component({
   selector: 'app-vocabulary-field',
