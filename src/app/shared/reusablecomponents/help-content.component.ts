@@ -7,12 +7,12 @@ import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-help-content',
   template: `
-    <ng-template [ngIf]="contents && contents.length>0">
-      <ng-template ngFor let-content [ngForOf]="contents">
+    @if (contents && contents.length>0) {
+      @for (content of contents; track content) {
         <div [innerHTML]="content.content" class="uk-margin-medium-bottom"></div>
-      </ng-template>
-    </ng-template>
-  `,
+      }
+    }
+    `,
   standalone: false
 })
 export class HelpContentComponent implements OnInit {
@@ -49,13 +49,13 @@ export class HelpContentComponent implements OnInit {
 @Component({
   selector: 'app-aside-help-content',
   template: `
-    <ng-template [ngIf]="contents && contents.length>0">
-      <ng-template ngFor let-content [ngForOf]="contents">
+    @if (contents && contents.length>0) {
+      @for (content of contents; track content) {
         <div [innerHTML]="content.content"
-             class="uk-card uk-card-body uk-card-default sidemenu uk-margin-bottom"></div>
-      </ng-template>
-    </ng-template>
-  `,
+        class="uk-card uk-card-body uk-card-default sidemenu uk-margin-bottom"></div>
+      }
+    }
+    `,
   standalone: false
 })
 export class AsideHelpContentComponent extends HelpContentComponent {

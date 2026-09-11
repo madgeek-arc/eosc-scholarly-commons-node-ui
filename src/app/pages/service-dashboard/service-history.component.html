@@ -1,24 +1,21 @@
 <div class="uk-section uk-section-small">
   <div class="uk-container uk-container-expand">
 
-    <div *ngIf="serviceBundle?.loggingInfo" class="uk-margin-medium-top">
-      <div class="uk-container uk-container-center">
-<!--        <div class="uk-flex" style="margin-bottom: -10px">-->
-<!--          <div class="uk-button uk-button-action uk-disabled uk-margin-small-top uk-flex uk-align-center uk-margin-small-bottom" style="color: #ffffff; background-color: #1d193c">Today</div>-->
-<!--        </div>-->
-
+    @if (serviceBundle?.loggingInfo) {
+      <div class="uk-margin-medium-top">
+        <div class="uk-container uk-container-center">
+          <!--        <div class="uk-flex" style="margin-bottom: -10px">-->
+          <!--          <div class="uk-button uk-button-action uk-disabled uk-margin-small-top uk-flex uk-align-center uk-margin-small-bottom" style="color: #ffffff; background-color: #1d193c">Today</div>-->
+        <!--        </div>-->
         <div class="al_timeline">
-
-          <ng-container *ngIf="serviceBundle?.loggingInfo?.length>0">
-            <ng-container *ngFor="let history of serviceBundle.loggingInfo; let i = index">
-              <ng-container *ngIf="i < 6">
-
+          @if (serviceBundle?.loggingInfo?.length>0) {
+            @for (history of serviceBundle.loggingInfo; track history; let i = $index) {
+              @if (i < 6) {
                 <div class="al_timeline_block update">
                   <div class="al_timeline_image uk-scrollspy-init-inview uk-scrollspy-inview uk-animation-scale-up uk-flex uk-flex-middle uk-flex-center">
                     <span class="material-icons">history</span>
                   </div>
                   <div class="al_timeline_content uk-scrollspy-init-inview uk-scrollspy-inview uk-animation-slide-right">
-
                     <div class="uk-flex uk-flex-between">
                       <div class="uk-label">
                         {{history.type | titlecase}}
@@ -27,46 +24,60 @@
                         <span class="uk-text-meta">Update: </span>{{history.date | date: 'medium'}}
                       </div>
                     </div>
-
                     <div class="uk-margin-top">
-                      <h6 *ngIf="history.type === 'onboard'">Onboarding - {{history.actionType | titlecase}}</h6>
-                      <h6 *ngIf="history.type === 'update'">Update - {{history.actionType | titlecase}}</h6>
-                      <h6 *ngIf="history.type === 'audit'">Audited as {{history.actionType | titlecase}}</h6>
-                      <h6 *ngIf="history.type === 'draft'">Saved as Draft</h6>
+                      @if (history.type === 'onboard') {
+                        <h6>Onboarding - {{history.actionType | titlecase}}</h6>
+                      }
+                      @if (history.type === 'update') {
+                        <h6>Update - {{history.actionType | titlecase}}</h6>
+                      }
+                      @if (history.type === 'audit') {
+                        <h6>Audited as {{history.actionType | titlecase}}</h6>
+                      }
+                      @if (history.type === 'draft') {
+                        <h6>Saved as Draft</h6>
+                      }
                     </div>
                     <div>
-                      <span *ngIf="history.userFullName || history.userEmail || history.userRole">by</span>
+                      @if (history.userFullName || history.userEmail || history.userRole) {
+                        <span>by</span>
+                      }
                       {{history.userFullName}}
-                      <span *ngIf="history.userFullName && history.userEmail">-</span>
+                      @if (history.userFullName && history.userEmail) {
+                        <span>-</span>
+                      }
                       {{history.userEmail}}
-                      <span *ngIf="history.userRole">({{history.userRole}})</span>
+                      @if (history.userRole) {
+                        <span>({{history.userRole}})</span>
+                      }
                     </div>
-                    <div *ngIf="history.comment && history.comment!=='null'" class="uk-margin-medium-top">
-                      <span class="comment"><i class="fa fa-comment uk-margin-small-right"></i>{{history.comment}}</span>
-                    </div>
-
+                    @if (history.comment && history.comment!=='null') {
+                      <div class="uk-margin-medium-top">
+                        <span class="comment"><i class="fa fa-comment uk-margin-small-right"></i>{{history.comment}}</span>
+                      </div>
+                    }
                   </div>
                 </div>
-
-              </ng-container>
-            </ng-container>
-          </ng-container>
-
+              }
+            }
+          }
         </div>
         <!--        *ngIf="i > 10"-->
-<!--        <div class="uk-margin-top uk-text-center">-->
-<!--          <a-->
-<!--            [routerLink]="['/service-dashboard/' + serviceBundle?.service.resourceOrganisation + '/' + serviceBundle.id + '/fullHistory']"-->
-<!--            class="uk-h3 uk-link">See all results...</a>-->
-<!--        </div>-->
-      </div>
-
-      <div class="uk-margin-top uk-text-center">
-        <a *ngIf="serviceBundle?.loggingInfo?.length>0"
-           [routerLink]="['/service-dashboard/' + serviceBundle?.service.resourceOrganisation + '/' + serviceBundle.id + '/fullHistory']"
-           class="uk-h3 uk-link">See all results...</a>
-      </div>
-    </div>
-
+        <!--        <div class="uk-margin-top uk-text-center">-->
+        <!--          <a-->
+        <!--            [routerLink]="['/service-dashboard/' + serviceBundle?.service.resourceOrganisation + '/' + serviceBundle.id + '/fullHistory']"-->
+      <!--            class="uk-h3 uk-link">See all results...</a>-->
+    <!--        </div>-->
   </div>
+  <div class="uk-margin-top uk-text-center">
+    @if (serviceBundle?.loggingInfo?.length>0) {
+      <a
+        [routerLink]="['/service-dashboard/' + serviceBundle?.service.resourceOrganisation + '/' + serviceBundle.id + '/fullHistory']"
+      class="uk-h3 uk-link">See all results...</a>
+    }
+  </div>
+</div>
+}
+
+</div>
 </div>

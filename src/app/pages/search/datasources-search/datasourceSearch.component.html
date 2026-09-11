@@ -3,7 +3,7 @@
 
     <!-- TOP HELP CONTENT -->
     <app-help-content #topHelperContent [position]="'top'"
-                      [ngClass]="topHelperContent.isPresent()?'uk-margin-medium-top uk-margin-medium-bottom':'clear-style'">
+      [ngClass]="topHelperContent.isPresent()?'uk-margin-medium-top uk-margin-medium-bottom':'clear-style'">
     </app-help-content>
 
     <div class="uk-grid uk-margin-medium-bottom uk-margin-medium-top">
@@ -12,7 +12,7 @@
           <div class="uk-inline">
             <span class="uk-form-icon" uk-icon="icon: search"></span>
             <input type="text" #searchInput class="uk-input menuSearch" placeholder="Search OpenAIRE Catalogue..."
-                   [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}">
+              [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}">
           </div>
         </div>
       </div>
@@ -23,31 +23,30 @@
       <!--FILTERS LAPTOP & PAD LANDSCAPE-->
       <aside id="tm-sidebar" class="tm-sidebar uk-width-1-4@m uk-visible@m">
 
-        <div *ngIf="datasourceTypes?.terms.length > 0 && searchResults" class="sidemenu refines">
-
-          <p class="big-text-header">Filters</p>
-          <div class="uk-margin-medium-top">
-            <p class="big-text uk-inline">Types</p>
-
-            <div class="uk-margin-small-bottom">
-              <label>
-                <input class="uk-margin-small-right uk-radio" type="radio" name="type" value=""
-                       [(ngModel)]="eoscDatasourceType" (change)="onSelect('eoscDatasourceType', eoscDatasourceType)">
-                All
-              </label>
+        @if (datasourceTypes?.terms.length > 0 && searchResults) {
+          <div class="sidemenu refines">
+            <p class="big-text-header">Filters</p>
+            <div class="uk-margin-medium-top">
+              <p class="big-text uk-inline">Types</p>
+              <div class="uk-margin-small-bottom">
+                <label>
+                  <input class="uk-margin-small-right uk-radio" type="radio" name="type" value=""
+                    [(ngModel)]="eoscDatasourceType" (change)="onSelect('eoscDatasourceType', eoscDatasourceType)">
+                  All
+                </label>
+              </div>
+              @for (type of datasourceTypes.terms; track type) {
+                <div class="uk-margin-small-bottom">
+                  <label>
+                    <input class="uk-margin-small-right uk-radio" type="radio" name="type" value="{{type.code}}"
+                      [(ngModel)]="eoscDatasourceType" (change)="onSelect('eoscDatasourceType', eoscDatasourceType)">
+                    {{type.englishName}}
+                  </label>
+                </div>
+              }
             </div>
-            <div *ngFor="let type of datasourceTypes.terms" class="uk-margin-small-bottom">
-              <label>
-                <input class="uk-margin-small-right uk-radio" type="radio" name="type" value="{{type.code}}"
-                       [(ngModel)]="eoscDatasourceType" (change)="onSelect('eoscDatasourceType', eoscDatasourceType)">
-                {{type.englishName}}
-              </label>
-            </div>
-          </div>
-
-<!--          <div class="uk-margin-medium-top">-->
-
-<!--            <ng-template ngFor let-facet [ngForOf]="searchResults.facets">-->
+            <!--          <div class="uk-margin-medium-top">-->
+            <!--            <ng-template ngFor let-facet [ngForOf]="searchResults.facets">-->
 <!--              <div *ngIf="facet.field === 'life_cycle_status' || facet.field === 'trl' || facet.field === 'users'-->
 <!--                        || facet.field === 'portfolios'" class="uk-margin-medium-top">-->
 <!--                <read-more [maxHeight]="235">-->
@@ -65,29 +64,38 @@
 <!--          </div>-->
 
         </div>
+}
 
       </aside>
 
       <div class="uk-width-expand@m uk-first-column">
 
-        <div *ngIf="errorMessage" class="">
+        @if (errorMessage) {
+<div class="">
           <div data-uk-alert="" class="uk-alert uk-alert-danger">
             <p>{{errorMessage}}</p>
           </div>
         </div>
+}
 
-        <div *ngIf="!errorMessage" class="">
-          <div *ngIf="searchResults?.results?.length === 0">
+        @if (!errorMessage) {
+<div class="">
+          @if (searchResults?.results?.length === 0) {
+<div>
             <div data-uk-alert="" class="uk-alert uk-alert-warning">
               <p>No results found</p>
             </div>
           </div>
+}
 
-          <div *ngIf="loading" class="whiteFilm">
+          @if (loading) {
+<div class="whiteFilm">
             <i class="fa fa-spinner fa-spin fa-5x uk-position-center loader" aria-hidden="true"></i>
           </div>
+}
 
-          <div *ngIf="searchResults?.results.length > 0">
+          @if (searchResults?.results.length > 0) {
+<div>
 
             <div class="uk-grid uk-row-first uk-margin-bottom uk-margin-top">
               <div class="uk-width-1-1">
@@ -100,21 +108,31 @@
                   </p>
 
                   <ul class="uk-pagination uk-visible@m">
-                    <li *ngIf="currentPage > 2 && totalPages > 5">
+                    @if (currentPage > 2 && totalPages > 5) {
+<li>
                       <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
                     </li>
-                    <li *ngIf="currentPage > 1">
+}
+                    @if (currentPage > 1) {
+<li>
                       <a (click)="previousPage()"><span uk-pagination-previous></span></a>
                     </li>
-                    <li *ngFor="let i of pages" [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
+}
+                    @for (i of pages; track i) {
+<li [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
                       <a (click)="goToPage(i - 1)">{{i}}</a>
                     </li>
-                    <li *ngIf="currentPage !== totalPages">
+}
+                    @if (currentPage !== totalPages) {
+<li>
                       <a (click)="nextPage()"><span uk-pagination-next></span></a>
                     </li>
-                    <li *ngIf="currentPage < totalPages && totalPages > 5">
+}
+                    @if (currentPage < totalPages && totalPages > 5) {
+<li>
                       <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
                     </li>
+}
                   </ul>
 
                 </div>
@@ -131,145 +149,140 @@
                   <div class="uk-inline">
                     <select id="orderBy" [(ngModel)]="orderField" [ngModelOptions]="{standalone: true}"
                             (change)="onSelect('orderField', orderField)">
-                      <option value="registrationdate" selected="selected">Date</option>
-                      <option value="officialname">Name</option>
-                    </select>
-                  </div>
+                    <option value="registrationdate" selected="selected">Date</option>
+                    <option value="officialname">Name</option>
+                  </select>
                 </div>
-                <div class="uk-inline">
-                  <label class="uk-margin-small-right" for="sortBy">Sort by: </label>
-                  <div class="uk-inline">
-                    <select id="sortBy" [(ngModel)]="order" [ngModelOptions]="{standalone: true}"
-                            (change)="onSelect('order', order)">
-                      <option value="desc" selected>Descending</option>
-                      <option value="asc">Ascending</option>
-                    </select>
-                  </div>
-                </div>
-<!--                </div>-->
               </div>
-
-              <ng-container *ngFor="let datasource of searchResults.results ; let i = index">
-
-                <a [routerLink]="['/datasource/' + datasource.id]" class="serviceDetails">
-                  <div class="uk-card uk-card-default uk-card-hover uk-margin-bottom">
-
-                    <!--LAPTOP & PAD LANDSCAPE-->
-                    <div class="service-details-card-content uk-visible@m uk-flex">
-
-                      <div *ngIf="datasource.eoscDatasourceType" class="portfolioSection">
-                        <div>
-                          <span>{{datasource.eoscDatasourceType}}</span>
-                        </div>
-                      </div>
-
-                      <div class="">
-                        <div class="uk-flex">
-
-                          <div class="uk-width-3-4@m uk-card-body">
-                            <div>
-                              <h5 class="uk-margin-remove uk-text-left@m uk-text-center uk-scrollspy-inview uk-animation-fade uk-inline"
-                                uk-scrollspy-class="" style="">
-                                {{datasource.officialname || "Not Available"}}
-                              </h5>
-                            </div>
-                            <div *ngIf="datasource.websiteurl" class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade service-pricing"
-                                 uk-scrollspy-class="">
-                              <span class="field-label">Website URL: </span>
-                              <span class="field-value uk-margin-small-left">{{datasource.websiteurl}}</span>
-                            </div>
-                            <div class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade serviceDescription line-clamp"
-                                 uk-scrollspy-class="">
-                              <p [innerHTML]="datasource.description"></p>
-                            </div>
-                          </div>
-
-                          <div class="uk-width-1-4@m uk-padding-remove uk-position-bottom-right uk-overlay uk-overlay-default service-image uk-flex uk-flex-bottom">
-                            <img src="{{datasource.logourl}}" style="border-radius: 0 6px 6px 0;" alt="resource image">
-                          </div>
-
-                        </div>
-                      </div>
-
-                    </div>
-
-                    <!--MOBILE & PAD PORTRAIT-->
-                    <div class="service-details-card-content uk-hidden@m">
-
-                      <div class="uk-padding-remove service-image">
-                        <img src="{{datasource.logourl}}" >
-                      </div>
-
-                      <div class="">
-                        <!--<div class="uk-grid" uk-grid="">-->
-                        <div>
-
-                          <div class="uk-card-body">
-                            <div>
-                              <h5 class="uk-margin-remove uk-text-left uk-scrollspy-inview uk-animation-fade uk-inline"
-                                  uk-scrollspy-class="" style="">
-                                {{datasource.officialname || "Not Available"}}
-                              </h5>
-                            </div>
-                            <div class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade serviceDescription line-clamp"
-                                 uk-scrollspy-class="" style="">
-                              <p [innerHTML]="datasource.description"></p>
-                            </div>
-
-                          </div>
-
-                        </div>
-                      </div>
-
-                      <div *ngIf="datasource.eoscDatasourceType" class="portfolioSection">
-                        {{datasource.eoscDatasourceType}}
-                      </div>
-
-                    </div>
-
-                  </div>
-                </a>
-
-              </ng-container>
-
-            </div>
-
-            <ul class="uk-pagination uk-flex-right uk-margin">
-              <li *ngIf="currentPage > 2 && totalPages > 5">
-                <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
-              </li>
-              <li *ngIf="currentPage > 1">
-                <a (click)="previousPage()"><span uk-pagination-previous></span></a>
-              </li>
-              <li *ngFor="let i of pages" [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
-                <a (click)="goToPage(i-1)">{{i}}</a>
-              </li>
-              <li *ngIf="currentPage !== totalPages">
-                <a (click)="nextPage()"><span uk-pagination-next></span></a>
-              </li>
-              <li *ngIf="currentPage < totalPages && totalPages > 5">
-                <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
-              </li>
-            </ul>
-
+              <div class="uk-inline">
+                <label class="uk-margin-small-right" for="sortBy">Sort by: </label>
+                <div class="uk-inline">
+                  <select id="sortBy" [(ngModel)]="order" [ngModelOptions]="{standalone: true}"
+                    (change)="onSelect('order', order)">
+                    <option value="desc" selected>Descending</option>
+                    <option value="asc">Ascending</option>
+                  </select>
+                </div>
+              </div>
+            <!--                </div>-->
           </div>
-
+          @for (datasource of searchResults.results ; track datasource; let i = $index) {
+            <a [routerLink]="['/datasource/' + datasource.id]" class="serviceDetails">
+              <div class="uk-card uk-card-default uk-card-hover uk-margin-bottom">
+                <!--LAPTOP & PAD LANDSCAPE-->
+                <div class="service-details-card-content uk-visible@m uk-flex">
+                  @if (datasource.eoscDatasourceType) {
+                    <div class="portfolioSection">
+                      <div>
+                        <span>{{datasource.eoscDatasourceType}}</span>
+                      </div>
+                    </div>
+                  }
+                  <div class="">
+                    <div class="uk-flex">
+                      <div class="uk-width-3-4@m uk-card-body">
+                        <div>
+                          <h5 class="uk-margin-remove uk-text-left@m uk-text-center uk-scrollspy-inview uk-animation-fade uk-inline"
+                            uk-scrollspy-class="" style="">
+                            {{datasource.officialname || "Not Available"}}
+                          </h5>
+                        </div>
+                        @if (datasource.websiteurl) {
+                          <div class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade service-pricing"
+                            uk-scrollspy-class="">
+                            <span class="field-label">Website URL: </span>
+                            <span class="field-value uk-margin-small-left">{{datasource.websiteurl}}</span>
+                          </div>
+                        }
+                        <div class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade serviceDescription line-clamp"
+                          uk-scrollspy-class="">
+                          <p [innerHTML]="datasource.description"></p>
+                        </div>
+                      </div>
+                      <div class="uk-width-1-4@m uk-padding-remove uk-position-bottom-right uk-overlay uk-overlay-default service-image uk-flex uk-flex-bottom">
+                        <img src="{{datasource.logourl}}" style="border-radius: 0 6px 6px 0;" alt="resource image">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--MOBILE & PAD PORTRAIT-->
+                <div class="service-details-card-content uk-hidden@m">
+                  <div class="uk-padding-remove service-image">
+                    <img src="{{datasource.logourl}}" >
+                  </div>
+                  <div class="">
+                    <!--<div class="uk-grid" uk-grid="">-->
+                    <div>
+                      <div class="uk-card-body">
+                        <div>
+                          <h5 class="uk-margin-remove uk-text-left uk-scrollspy-inview uk-animation-fade uk-inline"
+                            uk-scrollspy-class="" style="">
+                            {{datasource.officialname || "Not Available"}}
+                          </h5>
+                        </div>
+                        <div class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade serviceDescription line-clamp"
+                          uk-scrollspy-class="" style="">
+                          <p [innerHTML]="datasource.description"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @if (datasource.eoscDatasourceType) {
+                    <div class="portfolioSection">
+                      {{datasource.eoscDatasourceType}}
+                    </div>
+                  }
+                </div>
+              </div>
+            </a>
+          }
         </div>
+        <ul class="uk-pagination uk-flex-right uk-margin">
+          @if (currentPage > 2 && totalPages > 5) {
+            <li>
+              <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
+            </li>
+          }
+          @if (currentPage > 1) {
+            <li>
+              <a (click)="previousPage()"><span uk-pagination-previous></span></a>
+            </li>
+          }
+          @for (i of pages; track i) {
+            <li [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
+              <a (click)="goToPage(i-1)">{{i}}</a>
+            </li>
+          }
+          @if (currentPage !== totalPages) {
+            <li>
+              <a (click)="nextPage()"><span uk-pagination-next></span></a>
+            </li>
+          }
+          @if (currentPage < totalPages && totalPages > 5) {
+            <li>
+              <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
+            </li>
+          }
+        </ul>
       </div>
-
-      <!-- RIGHT HELP CONTENT -->
-      <app-aside-help-content #rightHelperContent [position]="'right'"
-                              [ngClass]="rightHelperContent.isPresent()?'tm-sidebar uk-width-1-4@m uk-first-column':'clear-style'">
-      </app-aside-help-content>
-
-    </div>
-
-    <!-- BOTTOM HELP CONTENT -->
-    <app-help-content #bottomHelperContent [position]="'bottom'"
-                      [ngClass]="bottomHelperContent.isPresent()?'uk-margin-medium-top uk-margin-medium-bottom':'clear-style'">
-    </app-help-content>
-
+    }
   </div>
+}
+</div>
+
+<!-- RIGHT HELP CONTENT -->
+<app-aside-help-content #rightHelperContent [position]="'right'"
+  [ngClass]="rightHelperContent.isPresent()?'tm-sidebar uk-width-1-4@m uk-first-column':'clear-style'">
+</app-aside-help-content>
+
+</div>
+
+<!-- BOTTOM HELP CONTENT -->
+<app-help-content #bottomHelperContent [position]="'bottom'"
+  [ngClass]="bottomHelperContent.isPresent()?'uk-margin-medium-top uk-margin-medium-bottom':'clear-style'">
+</app-help-content>
+
+</div>
 </div>
 
 
@@ -287,23 +300,29 @@
       <p class="big-text-header uk-width-1-1 uk-text-center uk-margin-remove">Filters</p>
     </div>
 
-    <div *ngIf="searchResults != null" class="uk-padding">
-      <ng-template ngFor let-facet [ngForOf]="searchResults.facets">
-        <div *ngIf="facet.field === 'life_cycle_status' || facet.field === 'trl' || facet.field === 'users'
-                        || facet.field === 'portfolios'" class="uk-margin-medium-bottom">
-          <read-more [maxHeight]="235">
-            <p class="big-text uk-inline">{{facet.label}}</p><a class="uk-inline uk-link uk-margin-left uk-margin-small-bottom"
-                                                                (click)="clearSelections($event, facet.field)">Clear</a>
-            <div class="refineOption" *ngFor="let facetValue of facet.values">
-              <input type="checkbox" (change)="this.onSelection($event, facet.field, facetValue.value)"
-                     [checked]="facetValue.isChecked">
-              {{facetValue.label}}
-              <span>({{facetValue.count}})</span>
-            </div>
-          </read-more>
-        </div>
-      </ng-template>
+    @if (searchResults != null) {
+      <div class="uk-padding">
+        @for (facet of searchResults.facets; track facet) {
+          @if (facet.field === 'life_cycle_status' || facet.field === 'trl' || facet.field === 'users'
+            || facet.field === 'portfolios') {
+            <div class="uk-margin-medium-bottom">
+              <read-more [maxHeight]="235">
+                <p class="big-text uk-inline">{{facet.label}}</p><a class="uk-inline uk-link uk-margin-left uk-margin-small-bottom"
+              (click)="clearSelections($event, facet.field)">Clear</a>
+              @for (facetValue of facet.values; track facetValue) {
+                <div class="refineOption">
+                  <input type="checkbox" (change)="this.onSelection($event, facet.field, facetValue.value)"
+                    [checked]="facetValue.isChecked">
+                  {{facetValue.label}}
+                  <span>({{facetValue.count}})</span>
+                </div>
+              }
+            </read-more>
+          </div>
+        }
+      }
     </div>
+  }
 
-  </div>
+</div>
 </div>

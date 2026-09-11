@@ -3,21 +3,25 @@
 
     <div class="uk-flex uk-flex-middle">
       <div class="uk-margin-small-right uk-text-muted">Filter by: </div>
-      <div *ngIf="resourceState" class="uk-margin-small-right">
-        <ng-select id="provider" (change)="filterSelection('resource_organisation', provider)"
-                   [items]="providerFacet" [(ngModel)]="provider"
-                   placeholder="Provider" bindLabel="label" bindValue="value" clearAllText="Clear" style="width: 180px">
-        </ng-select>
-      </div>
-      <div *ngIf="resourceState" class="uk-margin-small-right">
-        <ng-select id="resourceState" (change)="filterSelection('status', status)"
-                   [items]="resourceState" [(ngModel)]="status"
-                   placeholder="Approvement status" bindLabel="name" bindValue="id" clearAllText="Clear">
-        </ng-select>
-      </div>
+      @if (resourceState) {
+        <div class="uk-margin-small-right">
+          <ng-select id="provider" (change)="filterSelection('resource_organisation', provider)"
+            [items]="providerFacet" [(ngModel)]="provider"
+            placeholder="Provider" bindLabel="label" bindValue="value" clearAllText="Clear" style="width: 180px">
+          </ng-select>
+        </div>
+      }
+      @if (resourceState) {
+        <div class="uk-margin-small-right">
+          <ng-select id="resourceState" (change)="filterSelection('status', status)"
+            [items]="resourceState" [(ngModel)]="status"
+            placeholder="Approvement status" bindLabel="name" bindValue="id" clearAllText="Clear">
+          </ng-select>
+        </div>
+      }
       <div class="uk-margin-small-right">
         <ng-select id="validationStatus" (change)="filterSelection('active', activeStatus)"
-                   placeholder="Activation Status" [(ngModel)]="activeStatus" clearAllText="Clear">
+          placeholder="Activation Status" [(ngModel)]="activeStatus" clearAllText="Clear">
           <ng-option [value]="''">All activation statuses</ng-option>
           <ng-option [value]="'true'">Active</ng-option>
           <ng-option [value]="'false'">Inactive</ng-option>
@@ -27,7 +31,7 @@
       <div class="uk-margin-small-right uk-text-muted">Sort by: </div>
       <div class="uk-margin-small-right">
         <ng-select id="order" [(ngModel)]="order" clearAllText="Clear" placeholder="Modification Order"
-                   (change)="this.updateURLParameters('orderField', 'modifiedAt'); filterSelection('order', order)">
+          (change)="this.updateURLParameters('orderField', 'modifiedAt'); filterSelection('order', order)">
           <ng-option [value]="'desc'">Most recently modified</ng-option>
           <ng-option [value]="'asc'">Least recently modified</ng-option>
         </ng-select>
@@ -40,158 +44,196 @@
 <div class="uk-section uk-section-xsmall">
   <div class="uk-container uk-container-expand">
 
-    <div *ngIf="showLoader" class="whiteFilm">
-      <i class="fa fa-spinner fa-spin fa-5x uk-position-center loader" aria-hidden="true"></i>
-    </div>
+    @if (showLoader) {
+      <div class="whiteFilm">
+        <i class="fa fa-spinner fa-spin fa-5x uk-position-center loader" aria-hidden="true"></i>
+      </div>
+    }
 
-    <ng-container *ngIf="services?.results.length > 0">
-
+    @if (services?.results.length > 0) {
       <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-bottom uk-margin-top">
         <p class="big-text uk-margin-remove">
           <span class="uk-text-bold">{{services.total}}</span> Services, Page <span class="uk-text-bold">{{this.currentPage}}</span> of {{this.totalPages}}
         </p>
         <ul class="uk-pagination uk-visible@m">
-          <li *ngIf="currentPage > 2 && totalPages > 5">
-            <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
-          </li>
-          <li *ngIf="currentPage > 1">
-            <a (click)="previousPage()"><span uk-pagination-previous></span></a>
-          </li>
-          <li *ngFor="let i of pages" [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
-            <a (click)="goToPage(i - 1)">{{i}}</a>
-          </li>
-          <li *ngIf="currentPage !== totalPages">
-            <a (click)="nextPage()"><span uk-pagination-next></span></a>
-          </li>
-          <li *ngIf="currentPage < totalPages && totalPages > 5">
-            <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
-          </li>
+          @if (currentPage > 2 && totalPages > 5) {
+            <li>
+              <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
+            </li>
+          }
+          @if (currentPage > 1) {
+            <li>
+              <a (click)="previousPage()"><span uk-pagination-previous></span></a>
+            </li>
+          }
+          @for (i of pages; track i) {
+            <li [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
+              <a (click)="goToPage(i - 1)">{{i}}</a>
+            </li>
+          }
+          @if (currentPage !== totalPages) {
+            <li>
+              <a (click)="nextPage()"><span uk-pagination-next></span></a>
+            </li>
+          }
+          @if (currentPage < totalPages && totalPages > 5) {
+            <li>
+              <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
+            </li>
+          }
         </ul>
       </div>
-
       <div class="uk-grid uk-child-width-1-3 uk-grid-match uk-grid-small" uk-height-match="target: > div > .uk-card > .uk-card-body">
-
-        <div *ngFor="let resourceInfo of services.results ; let i = index" class="uk-grid-margin">
-
-          <div class="uk-card service-list-card-dashboard">
-
-            <div class="uk-card-body uk-flex uk-flex-column uk-flex-between">
-              <div>
-                <div class="uk-flex uk-flex-right">
-                  <div *ngIf="resourceInfo?.active === false" class="inactive">
-                    <div class="uk-label uk-margin-small-right">Inactive</div>
+        @for (resourceInfo of services.results ; track resourceInfo; let i = $index) {
+          <div class="uk-grid-margin">
+            <div class="uk-card service-list-card-dashboard">
+              <div class="uk-card-body uk-flex uk-flex-column uk-flex-between">
+                <div>
+                  <div class="uk-flex uk-flex-right">
+                    @if (resourceInfo?.active === false) {
+                      <div class="inactive">
+                        <div class="uk-label uk-margin-small-right">Inactive</div>
+                      </div>
+                    }
+                    @if (resourceInfo?.status==='approved resource') {
+                      <div class="approved">
+                        <div class="uk-label">Approved</div>
+                      </div>
+                    }
+                    @if (resourceInfo?.status==='pending resource') {
+                      <div class="pending">
+                        <div class="uk-label">Pending</div>
+                      </div>
+                    }
+                    @if (resourceInfo?.status==='rejected resource') {
+                      <div class="rejected">
+                        <div class="uk-label">Rejected</div>
+                      </div>
+                    }
                   </div>
-                  <div *ngIf="resourceInfo?.status==='approved resource'" class="approved">
-                    <div class="uk-label">Approved</div>
+                  <div class="uk-margin-top">
+                    <img src="{{resourceInfo.service.logo}}" width="140px" height="62px">
                   </div>
-                  <div *ngIf="resourceInfo?.status==='pending resource'" class="pending">
-                    <div class="uk-label">Pending</div>
+                  <div class="uk-margin-top">
+                    <a class="uk-link" [routerLink]="['/service-dashboard', resourceInfo.service.resourceOrganisation, resourceInfo.service.id]">
+                      <h6 class="uk-text-blue">{{resourceInfo.service.name}}</h6>
+                    </a>
                   </div>
-                  <div *ngIf="resourceInfo?.status==='rejected resource'" class="rejected">
-                    <div class="uk-label">Rejected</div>
+                  <div class="uk-margin-small-top">
+                    <p>
+                      <span class="uk-text-italic uk-text-muted uk-margin-small-right">Updated:</span>
+                      <span>{{resourceInfo.metadata?.modifiedAt | date}}</span>
+                      <!--                <span class="uk-margin-small-right uk-margin-small-left">.</span>-->
+                      @if (resourceInfo.metadata?.registeredAt !== '0') {
+                        <span>
+                          <span class="uk-margin-small-right uk-margin-small-left" style="display: inline-block; font-size: 17px; color: #000000;">•</span>
+                          <span class="uk-text-italic uk-text-muted uk-margin-small-right">Created:</span>
+                          <span>{{ resourceInfo.metadata?.registeredAt | date}}</span>
+                        </span>
+                      }
+                    </p>
+                  </div>
+                  <div class="uk-margin-top">
+                    <p [innerHTML]="resourceInfo.service.extras['pitch']"></p>
                   </div>
                 </div>
-
-                <div class="uk-margin-top">
-                  <img src="{{resourceInfo.service.logo}}" width="140px" height="62px">
-                </div>
-
-                <div class="uk-margin-top">
-                  <a class="uk-link" [routerLink]="['/service-dashboard', resourceInfo.service.resourceOrganisation, resourceInfo.service.id]">
-                    <h6 class="uk-text-blue">{{resourceInfo.service.name}}</h6>
-                  </a>
-                </div>
-
-                <div class="uk-margin-small-top">
-                  <p>
-                    <span class="uk-text-italic uk-text-muted uk-margin-small-right">Updated:</span>
-                    <span>{{resourceInfo.metadata?.modifiedAt | date}}</span>
-                    <!--                <span class="uk-margin-small-right uk-margin-small-left">.</span>-->
-                    <span *ngIf="resourceInfo.metadata?.registeredAt !== '0'">
-                      <span class="uk-margin-small-right uk-margin-small-left" style="display: inline-block; font-size: 17px; color: #000000;">•</span>
-                      <span class="uk-text-italic uk-text-muted uk-margin-small-right">Created:</span>
-                      <span>{{ resourceInfo.metadata?.registeredAt | date}}</span>
-                    </span>
-                  </p>
-                </div>
-
-                <div class="uk-margin-top">
-                  <p [innerHTML]="resourceInfo.service.extras['pitch']"></p>
+                <div class="uk-flex uk-flex-middle uk-flex-between uk-margin-top">
+                  <div class="uk-flex uk-flex-middle">
+                    <a class="uk-link uk-margin-right uk-flex uk-flex-middle" [routerLink]="['/service/edit', resourceInfo.id]">
+                      <span class="material-icons">edit</span>Update
+                    </a>
+                    @if (resourceInfo.status==='approved resource') {
+                      <a class="uk-link uk-margin-right uk-flex uk-flex-middle" (click)="toggleServiceActive(resourceInfo)">
+                        @if (resourceInfo.active === false) {
+                          <span class="material-icons">hide_source</span>Activate
+                        }
+                        @if (resourceInfo.active === true) {
+                          <span class="material-icons">hide_source</span>Deactivate
+                        }
+                      </a>
+                    }
+                    <a class="uk-link uk-flex uk-flex-middle" (click)="showDeletionModal(resourceInfo)">
+                      <ng-container><span class="material-icons">delete</span>Delete</ng-container>
+                    </a>
+                  </div>
+                  @if (resourceInfo.status==='pending resource') {
+                    <div class="uk-flex uk-flex-middle">
+                      <button class="uk-button uk-button-link"><span class="material-icons">more_vert</span></button>
+                      <div uk-dropdown="mode: click">
+                        <ul class="uk-nav uk-dropdown-nav uk-dropdown-close">
+                          <li (click)="verifyService(resourceInfo.id, true, 'approved resource')" class="uk-margin-bottom">
+                            <a><i class="fa fa-thumbs-o-up fa-lg uk-margin-small-right"></i>Approve Service</a>
+                          </li>
+                          <li (click)="verifyService(resourceInfo.id, false, 'rejected resource')">
+                            <a><i class="fa fa-thumbs-o-down fa-lg uk-margin-small-right"></i>Reject Service</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  }
                 </div>
               </div>
-
-              <div class="uk-flex uk-flex-middle uk-flex-between uk-margin-top">
-                <div class="uk-flex uk-flex-middle">
-                  <a class="uk-link uk-margin-right uk-flex uk-flex-middle" [routerLink]="['/service/edit', resourceInfo.id]">
-                    <span class="material-icons">edit</span>Update
-                  </a>
-                  <a *ngIf="resourceInfo.status==='approved resource'" class="uk-link uk-margin-right uk-flex uk-flex-middle" (click)="toggleServiceActive(resourceInfo)">
-                    <ng-container *ngIf="resourceInfo.active === false"><span class="material-icons">hide_source</span>Activate</ng-container>
-                    <ng-container *ngIf="resourceInfo.active === true"><span class="material-icons">hide_source</span>Deactivate</ng-container>
-                  </a>
-                  <a class="uk-link uk-flex uk-flex-middle" (click)="showDeletionModal(resourceInfo)">
-                    <ng-container><span class="material-icons">delete</span>Delete</ng-container>
-                  </a>
-                </div>
-                <div *ngIf="resourceInfo.status==='pending resource'" class="uk-flex uk-flex-middle">
-                  <button class="uk-button uk-button-link"><span class="material-icons">more_vert</span></button>
-                  <div uk-dropdown="mode: click">
-                    <ul class="uk-nav uk-dropdown-nav uk-dropdown-close">
-                      <li (click)="verifyService(resourceInfo.id, true, 'approved resource')" class="uk-margin-bottom">
-                        <a><i class="fa fa-thumbs-o-up fa-lg uk-margin-small-right"></i>Approve Service</a>
-                      </li>
-                      <li (click)="verifyService(resourceInfo.id, false, 'rejected resource')">
-                        <a><i class="fa fa-thumbs-o-down fa-lg uk-margin-small-right"></i>Reject Service</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
-
-        </div>
-
+        }
       </div>
-
       <ul class="uk-pagination uk-flex-right uk-margin">
-        <li *ngIf="currentPage > 2 && totalPages > 5">
-          <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
-        </li>
-        <li *ngIf="currentPage > 1">
-          <a (click)="previousPage()"><span uk-pagination-previous></span></a>
-        </li>
-        <li *ngFor="let i of pages" [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
-          <a (click)="goToPage(i-1)">{{i}}</a>
-        </li>
-        <li *ngIf="currentPage !== totalPages">
-          <a (click)="nextPage()"><span uk-pagination-next></span></a>
-        </li>
-        <li *ngIf="currentPage < totalPages && totalPages > 5">
-          <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
-        </li>
+        @if (currentPage > 2 && totalPages > 5) {
+          <li>
+            <a (click)="goToPage(0)"><span uk-pagination-previous></span><span uk-pagination-previous></span></a>
+          </li>
+        }
+        @if (currentPage > 1) {
+          <li>
+            <a (click)="previousPage()"><span uk-pagination-previous></span></a>
+          </li>
+        }
+        @for (i of pages; track i) {
+          <li [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
+            <a (click)="goToPage(i-1)">{{i}}</a>
+          </li>
+        }
+        @if (currentPage !== totalPages) {
+          <li>
+            <a (click)="nextPage()"><span uk-pagination-next></span></a>
+          </li>
+        }
+        @if (currentPage < totalPages && totalPages > 5) {
+          <li>
+            <a (click)="goToPage(totalPages-1)"><span uk-pagination-next></span><span uk-pagination-next></span></a>
+          </li>
+        }
       </ul>
-    </ng-container>
+    }
   </div>
 </div>
 
 <div id="deletionModal" uk-modal>
-  <div *ngIf="!loadingMessage" class="uk-modal-dialog uk-modal-header uk-h4">Delete Service</div>
-  <div *ngIf="!loadingMessage" class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-    <div *ngIf="selectedService">
-      <h6>Are you sure you want to delete "{{ selectedService.service.name }}" ?</h6>
-      <p>Deleting a Service is an irreversible action.</p>
+  @if (!loadingMessage) {
+    <div class="uk-modal-dialog uk-modal-header uk-h4">Delete Service</div>
+  }
+  @if (!loadingMessage) {
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      @if (selectedService) {
+        <div>
+          <h6>Are you sure you want to delete "{{ selectedService.service.name }}" ?</h6>
+          <p>Deleting a Service is an irreversible action.</p>
+        </div>
+      }
+      <div class="uk-text-right">
+        <button class="uk-button uk-button-secondary uk-modal-close uk-margin-small-right" type="button">Cancel</button>
+        @if (selectedService) {
+          <button class="uk-button uk-button-danger uk-modal-close" type="button" (click)="deleteService(selectedService)">Delete</button>
+        }
+      </div>
     </div>
-    <div class="uk-text-right">
-      <button class="uk-button uk-button-secondary uk-modal-close uk-margin-small-right" type="button">Cancel</button>
-      <button *ngIf="selectedService" class="uk-button uk-button-danger uk-modal-close" type="button" (click)="deleteService(selectedService)">Delete</button>
+  }
+  @if (loadingMessage) {
+    <div>
+      <div class="loader-small" style="text-align: center; padding-top: 170px; color: rgb(47, 64, 80); font-weight: bold;">
+        {{ loadingMessage }}
+      </div>
+      <!--    <div class="whiteFilm"></div>-->
     </div>
-  </div>
-  <div *ngIf="loadingMessage">
-    <div class="loader-small" style="text-align: center; padding-top: 170px; color: rgb(47, 64, 80); font-weight: bold;">
-      {{ loadingMessage }}
-    </div>
-    <!--    <div class="whiteFilm"></div>-->
-  </div>
+  }
 </div>

@@ -1,80 +1,57 @@
-<ng-container *ngIf="resourcePayload && resourcePayload['extras']">
-
+@if (resourcePayload && resourcePayload['extras']) {
   <div class="uk-section uk-section-primary uk-preserve-color uk-padding-remove" uk-height-viewport="offset-bottom: 30">
-
     <div class="uk-width-1-1">
       <div class="tm-grid-expand uk-grid-small uk-margin-remove-vertical uk-grid" uk-grid="" uk-height-match="target: .uk-card">
         <div class="uk-width-1-2@m uk-padding-large uk-first-column">
-
           <div class="uk-first-column">
             <div class="uk-padding-large uk-margin-large-left@m uk-margin-large-left@l uk-margin-large-top">
-              <p *ngIf="resourcePayload.extras['name']" class="big-text uk-text-primary">{{resourcePayload.extras['name']}}</p>
-              <h1 *ngIf="resourcePayload.tagline">{{resourcePayload.tagline}} </h1>
-              <p *ngIf="resourcePayload.extras['pitch']" class="regular-text uk-margin-medium-top" [innerHTML]="resourcePayload.extras['pitch']"></p>
+              @if (resourcePayload.extras['name']) {
+                <p class="big-text uk-text-primary">{{resourcePayload.extras['name']}}</p>
+              }
+              @if (resourcePayload.tagline) {
+                <h1>{{resourcePayload.tagline}} </h1>
+              }
+              @if (resourcePayload.extras['pitch']) {
+                <p class="regular-text uk-margin-medium-top" [innerHTML]="resourcePayload.extras['pitch']"></p>
+              }
               <!--          <div class="d-flex justify-content-center align-content-center">-->
-              <button *ngIf="resourcePayload.extras['ebook']" class="uk-button uk-button-primary" (click)="goto(resourcePayload.extras['ebook'])">
-                eBook <i class="fa fa-external-link"></i>
-              </button>
-              <!--          </div>-->
-            </div>
+              @if (resourcePayload.extras['ebook']) {
+                <button class="uk-button uk-button-primary" (click)="goto(resourcePayload.extras['ebook'])">
+                  eBook <i class="fa fa-external-link"></i>
+                </button>
+              }
+            <!--          </div>-->
           </div>
-<!--          <div uk-height-viewport="offset-top: true; offset-bottom: 20;" style="min-height: calc(-288px + 80vh);">-->
-
-<!--            <div class="uk-panel uk-margin-remove-first-child uk-margin-medium-top uk-margin-xlarge uk-width-large uk-scrollspy-inview " id="page#0" uk-scrollspy-class="uk-animation-slide-bottom-medium" style="">-->
-
-
-
-
-<!--              <div class="el-meta uk-h5 uk-text-secondary uk-margin-top uk-margin-remove-bottom">Zenodo</div>-->
-<!--              <h3 class="el-title uk-heading-medium uk-font-primary uk-margin-top uk-margin-remove-bottom">                        Research Shared.                    </h3>-->
-
-
-
-
-<!--              <div class="el-content uk-panel uk-text-lead uk-margin-top"><p>Zenodo is a catch-all repository that archives and shares research objects for researchers by providing an open, user-friendly, and trusted web interface globally accessible.</p></div>-->
-
-
-
-
-
-<!--            </div>-->
-
-
-
-<!--          </div>-->
-
         </div>
-
-        <div class="uk-width-1-2@m">
-          <div class="uk-tile-muted uk-tile uk-padding-remove js-sticky" uk-height-viewport="offset-top: true; offset-bottom: 20;" style="min-height: calc(-178px + 80vh);">
-
-<!--            <div class="uk-panel uk-position-z-index uk-sticky" uk-sticky="end: !.js-sticky; media: @m;" style="">-->
-            <div class="uk-panel uk-position-z-index" style="">
-              <div class="uk-margin uk-scrollspy-inview " uk-scrollspy-class="uk-animation-slide-right-medium" style="">
-                <picture>
-<!--                  <source type="image/webp" srcset="/index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzc2OCw3MTEsNzY4LDcxMV1dLFsiZG9Dcm9wIixbNzY4LDcxMSwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=91%2F_0007_zenodo-914127b2.webp&amp;hash=0607f5eb 768w, /index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzEwMjQsOTQ4LDEwMjQsOTQ4XV0sWyJkb0Nyb3AiLFsxMDI0LDk0OCwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=41%2F_0007_zenodo-41ccf40a.webp&amp;hash=e1d29ead 1024w, /index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzEzNjYsMTI2NCwxMzY2LDEyNjRdXSxbImRvQ3JvcCIsWzEzNjYsMTI2NCwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=d4%2F_0007_zenodo-d4c83dc0.webp&amp;hash=424f2bdb 1366w, /index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzE2MDAsMTQ4MSwxNjAwLDE0ODFdXSxbImRvQ3JvcCIsWzE2MDAsMTQ4MSwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=69%2F_0007_zenodo-6948e856.webp&amp;hash=20ea2d71 1600w, /templates/yootheme/cache/37/_0007_zenodo-37b28ced.webp 1800w" sizes="(min-width: 1800px) 1800px">-->
-                  <img src="{{resourcePayload.extras['longImage']}}" class="el-image" alt="" loading="lazy" width="1800" height="1666">
-                </picture>
-
-              </div>
-            </div>
-            <div class="uk-sticky-placeholder" style="height: 792.733px; width: 856.5px; margin: 0px;" hidden=""></div>
-
-
-
-          </div>
-
+        <!--          <div uk-height-viewport="offset-top: true; offset-bottom: 20;" style="min-height: calc(-288px + 80vh);">-->
+        <!--            <div class="uk-panel uk-margin-remove-first-child uk-margin-medium-top uk-margin-xlarge uk-width-large uk-scrollspy-inview " id="page#0" uk-scrollspy-class="uk-animation-slide-bottom-medium" style="">-->
+        <!--              <div class="el-meta uk-h5 uk-text-secondary uk-margin-top uk-margin-remove-bottom">Zenodo</div>-->
+        <!--              <h3 class="el-title uk-heading-medium uk-font-primary uk-margin-top uk-margin-remove-bottom">                        Research Shared.                    </h3>-->
+        <!--              <div class="el-content uk-panel uk-text-lead uk-margin-top"><p>Zenodo is a catch-all repository that archives and shares research objects for researchers by providing an open, user-friendly, and trusted web interface globally accessible.</p></div>-->
+      <!--            </div>-->
+    <!--          </div>-->
+  </div>
+  <div class="uk-width-1-2@m">
+    <div class="uk-tile-muted uk-tile uk-padding-remove js-sticky" uk-height-viewport="offset-top: true; offset-bottom: 20;" style="min-height: calc(-178px + 80vh);">
+      <!--            <div class="uk-panel uk-position-z-index uk-sticky" uk-sticky="end: !.js-sticky; media: @m;" style="">-->
+      <div class="uk-panel uk-position-z-index" style="">
+        <div class="uk-margin uk-scrollspy-inview " uk-scrollspy-class="uk-animation-slide-right-medium" style="">
+          <picture>
+            <!--                  <source type="image/webp" srcset="/index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzc2OCw3MTEsNzY4LDcxMV1dLFsiZG9Dcm9wIixbNzY4LDcxMSwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=91%2F_0007_zenodo-914127b2.webp&amp;hash=0607f5eb 768w, /index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzEwMjQsOTQ4LDEwMjQsOTQ4XV0sWyJkb0Nyb3AiLFsxMDI0LDk0OCwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=41%2F_0007_zenodo-41ccf40a.webp&amp;hash=e1d29ead 1024w, /index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzEzNjYsMTI2NCwxMzY2LDEyNjRdXSxbImRvQ3JvcCIsWzEzNjYsMTI2NCwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=d4%2F_0007_zenodo-d4c83dc0.webp&amp;hash=424f2bdb 1366w, /index.php?option=com_ajax&amp;p=image&amp;src=WyJpbWFnZXMvX3Rlc3QvXzAwMDdfemVub2RvLmpwZyIsW1sidHlwZSIsWyJ3ZWJwIiwiODUiXV0sWyJkb1Jlc2l6ZSIsWzE2MDAsMTQ4MSwxNjAwLDE0ODFdXSxbImRvQ3JvcCIsWzE2MDAsMTQ4MSwwLDBdXV0sMTY0NzI4MjExNl0%3D&amp;file=69%2F_0007_zenodo-6948e856.webp&amp;hash=20ea2d71 1600w, /templates/yootheme/cache/37/_0007_zenodo-37b28ced.webp 1800w" sizes="(min-width: 1800px) 1800px">-->
+            <img src="{{resourcePayload.extras['longImage']}}" class="el-image" alt="" loading="lazy" width="1800" height="1666">
+          </picture>
         </div>
       </div>
+      <div class="uk-sticky-placeholder" style="height: 792.733px; width: 856.5px; margin: 0px;" hidden=""></div>
     </div>
-
+  </div>
+</div>
+</div>
 <!--    <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">-->
-
 <!--      <div class="uk-flex-last@m uk-flex-last@l uk-text-right"-->
 <!--           style="background-image: url({{resourcePayload.extras['longImage']}}); background-repeat: no-repeat; background-position: bottom right; background-size: contain">-->
 <!--        &lt;!&ndash;<img src="{{getExtrasField('longImage').value}}">&ndash;&gt;-->
 <!--      </div>-->
-
 <!--      <div class="uk-first-column">-->
 <!--        <div class="uk-padding-large uk-margin-large-left@m uk-margin-large-left@l uk-margin-large-top">-->
 <!--          <p *ngIf="resourcePayload.extras['name']" class="big-text uk-text-primary">{{resourcePayload.extras['name']}}</p>-->
@@ -87,11 +64,9 @@
 <!--&lt;!&ndash;          </div>&ndash;&gt;-->
 <!--        </div>-->
 <!--      </div>-->
-
 <!--    </div>-->
-  </div>
-
-</ng-container>
+</div>
+}
 
 
 <!--INFO-->
@@ -102,358 +77,365 @@
     </div>
   </div>
 
-  <div *ngIf="resourcePayload && vocabularies" class="uk-grid-item-match uk-width-3-5@m">
-    <div class="uk-tile-muted uk-tile uk-tile-small uk-flex uk-flex-middle">
-      <div class="uk-panel uk-width-1-1">
-        <ul class="uk-list uk-list-collapse uk-column-1-2@s uk-column-divider uk-text-small uk-scrollspy-inview "
+  @if (resourcePayload && vocabularies) {
+    <div class="uk-grid-item-match uk-width-3-5@m">
+      <div class="uk-tile-muted uk-tile uk-tile-small uk-flex uk-flex-middle">
+        <div class="uk-panel uk-width-1-1">
+          <ul class="uk-list uk-list-collapse uk-column-1-2@s uk-column-divider uk-text-small uk-scrollspy-inview "
             id="page#1-1-1-0" uk-scrollspy-class="uk-animation-slide-bottom-medium" style="">
-          <li *ngIf="resourcePayload.targetUsers" class="el-item">
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">For</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">
-                  <span class="" *ngFor="let targetUser of resourcePayload.targetUsers; let i = index">
-                    <span *ngIf="i > 0">| </span>{{ getVocabularyName('Target user', targetUser) }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li *ngIf="resourcePayload.trl" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">TRL</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">{{getVocabularyName('Technology readiness level', resourcePayload.trl)}}</div>
-              </div>
-            </div>
-
-          </li>
-          <li *ngIf="resourcePayload.accessTypes" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">Access Type</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">
-                  <span *ngFor="let accessType of resourcePayload.accessTypes; let i = index">
-                    <span *ngIf="i > 0">| </span>{{getVocabularyName('Access type', accessType)}}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </li>
-          <li *ngIf="resourcePayload.accessModes" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">Access Mode</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">
-                  <span *ngFor="let accessMode of resourcePayload.accessModes; let i = index">
-                    <span *ngIf="i > 0">| </span>{{getVocabularyName('Access mode', accessMode)}}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </li>
-          <li *ngIf="resourcePayload.resourceOrganisation" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">Owned by</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">{{getVocabularyName('Provider', resourcePayload.resourceOrganisation)}}</div>
-              </div>
-            </div>
-
-          </li>
-          <li *ngIf="resourcePayload.resourceProviders" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">Provided by</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">
-                  <span class="" *ngFor="let provider of resourcePayload.resourceProviders; let i = index">
-                    <span *ngIf="i > 0">| </span>{{getVocabularyName('resourceProviders', provider)}}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </li>
-          <li *ngIf="resourcePayload.fundingPrograms" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">Funded by</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">
-                  <span *ngFor="let funder of resourcePayload.fundingPrograms; let i = index">
-                    <span *ngIf="i > 0">| </span>{{getVocabularyName('Funding program', funder)}}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </li>
-          <li *ngIf="resourcePayload.termsOfUse" class="el-item">
-
-            <div class="uk-child-width-expand uk-grid-row-small uk-grid">
-              <div class="uk-width-small uk-text-break uk-first-column">
-                <div class="el-title uk-margin-remove uk-text-bold">Terms of use</div>
-              </div>
-              <div>
-                <div class="el-content uk-panel">
-                  <a class="uk-margin-remove-last-child" href="{{resourcePayload.termsOfUse}}" target="_blank">
-                    <p>View</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="uk-grid-item-match uk-width-1-5@m uk-visible@m">
-    <div class="uk-tile-muted uk-tile uk-tile-small uk-flex uk-flex-middle">
-      <div class="uk-panel uk-width-1-1"></div>
-    </div>
-  </div>
-</div>
-
-<!--ABOUT-->
-<div *ngIf="resourcePayload" class="uk-section-primary uk-section uk-padding-remove-bottom uk-preserve-color">
-  <div class="uk-container">
-    <div class="tm-grid-expand uk-grid-column-large uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack">
-      <div class="uk-first-column">
-        <div class="uk-panel uk-dropcap uk-margin">
-          <p [innerHTML]="resourcePayload.description"></p>
-        </div>
-      </div>
-    </div>
-    <div class="tm-grid-expand uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack">
-      <div class="uk-first-column">
-        <hr>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--BENEFITS-->
-<div *ngIf="resourcePayload?.['extras']?.['benefits'][0]?.['benefitsTitle']" style="background-image: url('../../../../../assets/images/benefits_bg.png'); background-repeat: no-repeat; background-position: left"
-     class="uk-section uk-section-primary uk-preserve-color">
-  <div class="uk-container">
-
-    <div class="tm-grid-expand uk-grid-large uk-margin-remove-vertical uk-grid">
-      <div class="uk-width-1-3@m uk-width-1-3@l uk-width-1-1@s uk-first-column">
-
-        <h2 class="uk-position-relative uk-text-left" style="z-index: 1;">Benefits</h2>
-
-      </div>
-
-      <div class="uk-width-2-3@m uk-width-2-3@l uk-width-1-1@s">
-
-        <div
-          class="uk-position-relative uk-margin uk-margin-auto-left@m uk-margin-remove-right@m uk-margin-auto uk-text-left"
-          style="z-index: 1;">
-          <div class="uk-child-width-1-1 uk-child-width-1-2@s uk-grid-large uk-grid-match uk-grid">
-
-            <div *ngFor="let benefit of resourcePayload.extras['benefits']">
-              <div class="el-item uk-panel">
-                <h6 class="uk-margin-top uk-margin-remove-bottom">{{benefit.benefitsTitle}}</h6>
-                <div class="el-content uk-panel uk-margin-small-top">{{benefit.benefitsText}}</div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!--FEATURES-->
-<div *ngIf="resourcePayload?.extras?.features[0]?.featuresTitle" class="uk-section uk-section-muted uk-section-large">
-  <div class="uk-container">
-
-    <h2 class="uk-text-left">Features</h2>
-
-    <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-margin-large-top uk-flex-center">
-
-      <div *ngFor="let feature of resourcePayload.extras['features']" class="uk-grid-margin">
-        <div class="uk-card uk-card-default">
-          <div class="uk-card-body uk-text-center">
-
-            <img src="{{feature.featuresImage !== '' ? feature.featuresImage : '../../../../../assets/images/mocks/image_2021_09_30T11_52_55_688Z.png'}}" width="80">
-            <h6 class="uk-margin-top">{{feature.featuresTitle}}</h6>
-            <p class="regular-text uk-margin-medium-top">{{feature.featuresText}}</p>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-<!--USE CASES-->
-<div *ngIf="resourcePayload?.extras?.['useCasesExtras'][0]?.useCaseTitle" class="uk-section uk-section-primary uk-section-large uk-preserve-color uk-visible@m">
-
-  <div class="uk-container">
-
-    <div class="uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">
-      <h4>Used in</h4>
-    </div>
-
-    <div id="slideShow" class="uk-position-relative" (beforeitemshow)="dragSlide('slideShow')"
-         uk-slideshow="ratio: 16:9; autoplay: true; autoplay-interval: 4000; pause-on-hover: true;">
-
-      <ul class="uk-slideshow-items">
-        <li *ngFor="let useCase of resourcePayload.extras['useCasesExtras']" class="uk-flex-middle">
-          <div class="uk-width-1-1 uk-grid uk-child-width-1-2">
-
-            <div class="slider-image uk-flex uk-flex-right">
-              <div class="uk-card uk-card-default uk-flex uk-flex-middle">
-                <img src="{{useCase.useCaseImage !== '' ? useCase.useCaseImage : '../../../../../assets/images/mocks/image_2021_09_30T11_53_37_207Z.png'}}" width="294">
-              </div>
-            </div>
-
-            <div class="slider-text uk-flex uk-flex-middle">
-              <div class="slider-bold-background-header">{{useCase.useCaseTitle}}</div>
-
-              <div class="">
-                <div class="slider-header">{{useCase.useCaseTitle}}</div>
-                <div class="slider-description uk-margin-top">{{useCase.useCaseText}}</div>
-                <div *ngIf="useCase.useCaseLink !== ''" class="uk-margin-medium-top">
-                  <a href="{{useCase.useCaseLink}}" target="_blank" class="uk-button uk-button-text">Learn more<i class="fa fa-external-link uk-margin-small-left uk-margin-small-right"></i></a>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </li>
-      </ul>
-
-      <div class="uk-position-bottom-center uk-position-small">
-        <ul class="uk-dotnav">
-          <li *ngFor="let useCase of  resourcePayload.extras['useCasesExtras']; let i=index" [ngClass]="{'uk-active': slide === i}">
-            <a (click)="showSlide('slideShow', i)">Item {{i}}</a>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!--Related services-->
-<div *ngIf="relatedServices?.length > 0" class="uk-section-muted uk-section uk-flex uk-flex-middle" uk-height-viewport="offset-top: true; offset-bottom: 20;" style="min-height: calc(80vh);">
-
-  <div class="uk-width-1-1">
-    <div class="uk-container">
-      <div class="tm-grid-expand uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack" uk-grid="">
-        <div class="uk-first-column">
-
-          <h2 class="uk-margin-large">Related services</h2>
-          <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-margin-large-top" uk-height-match="target: > div > .uk-card > .uk-card-body">
-
-            <div *ngFor="let service of relatedServices" class="uk-grid-margin">
-              <div class="uk-card uk-card-default service-list-card">
-                <div class="uk-card-media-top">
-                  <img src="{{service.extras['image']}}" alt="">
-                </div>
-                <div class="uk-card-body uk-flex uk-flex-column uk-flex-between">
+            @if (resourcePayload.targetUsers) {
+              <li class="el-item">
+                <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                  <div class="uk-width-small uk-text-break uk-first-column">
+                    <div class="el-title uk-margin-remove uk-text-bold">For</div>
+                  </div>
                   <div>
-                    <div class="h5-subheader">{{service.name}}</div>
-                    <h5 class="">{{service.tagline}}</h5>
-                    <p [innerHTML]="service.extras['pitch']"></p>
+                    <div class="el-content uk-panel">
+                      @for (targetUser of resourcePayload.targetUsers; track targetUser; let i = $index) {
+                        <span class="">
+                          @if (i > 0) {
+                            <span>| </span>
+                            }{{ getVocabularyName('Target user', targetUser) }}
+                          </span>
+                        }
+                      </div>
+                    </div>
                   </div>
-                  <div class="">
-                    <a (click)="reloadOnSamePage('/service/'+service.id)" [routerLink]="[]" class="uk-button uk-button-text">Learn more</a>
+                </li>
+              }
+              @if (resourcePayload.trl) {
+                <li class="el-item">
+                  <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                    <div class="uk-width-small uk-text-break uk-first-column">
+                      <div class="el-title uk-margin-remove uk-text-bold">TRL</div>
+                    </div>
+                    <div>
+                      <div class="el-content uk-panel">{{getVocabularyName('Technology readiness level', resourcePayload.trl)}}</div>
+                    </div>
+                  </div>
+                </li>
+              }
+              @if (resourcePayload.accessTypes) {
+                <li class="el-item">
+                  <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                    <div class="uk-width-small uk-text-break uk-first-column">
+                      <div class="el-title uk-margin-remove uk-text-bold">Access Type</div>
+                    </div>
+                    <div>
+                      <div class="el-content uk-panel">
+                        @for (accessType of resourcePayload.accessTypes; track accessType; let i = $index) {
+                          <span>
+                            @if (i > 0) {
+                              <span>| </span>
+                              }{{getVocabularyName('Access type', accessType)}}
+                            </span>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                }
+                @if (resourcePayload.accessModes) {
+                  <li class="el-item">
+                    <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                      <div class="uk-width-small uk-text-break uk-first-column">
+                        <div class="el-title uk-margin-remove uk-text-bold">Access Mode</div>
+                      </div>
+                      <div>
+                        <div class="el-content uk-panel">
+                          @for (accessMode of resourcePayload.accessModes; track accessMode; let i = $index) {
+                            <span>
+                              @if (i > 0) {
+                                <span>| </span>
+                                }{{getVocabularyName('Access mode', accessMode)}}
+                              </span>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  }
+                  @if (resourcePayload.resourceOrganisation) {
+                    <li class="el-item">
+                      <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                        <div class="uk-width-small uk-text-break uk-first-column">
+                          <div class="el-title uk-margin-remove uk-text-bold">Owned by</div>
+                        </div>
+                        <div>
+                          <div class="el-content uk-panel">{{getVocabularyName('Provider', resourcePayload.resourceOrganisation)}}</div>
+                        </div>
+                      </div>
+                    </li>
+                  }
+                  @if (resourcePayload.resourceProviders) {
+                    <li class="el-item">
+                      <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                        <div class="uk-width-small uk-text-break uk-first-column">
+                          <div class="el-title uk-margin-remove uk-text-bold">Provided by</div>
+                        </div>
+                        <div>
+                          <div class="el-content uk-panel">
+                            @for (provider of resourcePayload.resourceProviders; track provider; let i = $index) {
+                              <span class="">
+                                @if (i > 0) {
+                                  <span>| </span>
+                                  }{{getVocabularyName('resourceProviders', provider)}}
+                                </span>
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    }
+                    @if (resourcePayload.fundingPrograms) {
+                      <li class="el-item">
+                        <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                          <div class="uk-width-small uk-text-break uk-first-column">
+                            <div class="el-title uk-margin-remove uk-text-bold">Funded by</div>
+                          </div>
+                          <div>
+                            <div class="el-content uk-panel">
+                              @for (funder of resourcePayload.fundingPrograms; track funder; let i = $index) {
+                                <span>
+                                  @if (i > 0) {
+                                    <span>| </span>
+                                    }{{getVocabularyName('Funding program', funder)}}
+                                  </span>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      }
+                      @if (resourcePayload.termsOfUse) {
+                        <li class="el-item">
+                          <div class="uk-child-width-expand uk-grid-row-small uk-grid">
+                            <div class="uk-width-small uk-text-break uk-first-column">
+                              <div class="el-title uk-margin-remove uk-text-bold">Terms of use</div>
+                            </div>
+                            <div>
+                              <div class="el-content uk-panel">
+                                <a class="uk-margin-remove-last-child" href="{{resourcePayload.termsOfUse}}" target="_blank">
+                                  <p>View</p>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      }
+                    </ul>
                   </div>
                 </div>
               </div>
-            </div>
+            }
 
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!--USE CASES MOBILE-->
-<div *ngIf="resourcePayload?.extras?.['useCasesExtras'][0]?.['useCaseTitle']" class="uk-section uk-section-primary uk-section-large uk-preserve-color uk-hidden@m">
-
-  <div class="uk-container">
-
-    <h1 class="uk-margin-medium-bottom">Use Cases</h1>
-
-    <div id="slideShowMobile" class="uk-position-relative" (beforeitemshow)="dragSlideMobile('slideShowMobile')"
-         uk-slideshow="ratio: 12:4; min-height: 750; autoplay: true; autoplay-interval: 4000; pause-on-hover: true;">
-
-      <ul class="uk-slideshow-items">
-        <li *ngFor="let useCase of resourcePayload.extras['useCasesExtras']" class="">
-          <div class="">
-
-            <div class="slider-image uk-flex uk-flex-center">
-              <div class="uk-card uk-card-default">
-                <img src="{{useCase.useCaseImage !== '' ? useCase.useCaseImage : '../../../../../assets/images/mocks/image_2021_09_30T11_53_37_207Z.png'}}" width="294">
+            <div class="uk-grid-item-match uk-width-1-5@m uk-visible@m">
+              <div class="uk-tile-muted uk-tile uk-tile-small uk-flex uk-flex-middle">
+                <div class="uk-panel uk-width-1-1"></div>
               </div>
             </div>
+          </div>
 
-            <div class="slider-text uk-text-center uk-margin-medium-top">
-              <div class="slider-bold-background-header uk-visible@m">{{useCase.useCaseTitle}}</div>
-
-              <div class="">
-                <div class="slider-header">{{useCase.useCaseTitle}}</div>
-                <div class="slider-description uk-margin-top">{{useCase.useCaseText}}</div>
-                <div *ngIf="useCase.useCaseLink !== ''" class="uk-margin-medium-top">
-                  <a href="{{useCase.useCaseLink}}" target="_blank" class="uk-button uk-button-text">
-                    Learn more<i class="fa fa-external-link uk-margin-small-left uk-margin-small-right"></i>
-                  </a>
+          <!--ABOUT-->
+          @if (resourcePayload) {
+            <div class="uk-section-primary uk-section uk-padding-remove-bottom uk-preserve-color">
+              <div class="uk-container">
+                <div class="tm-grid-expand uk-grid-column-large uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack">
+                  <div class="uk-first-column">
+                    <div class="uk-panel uk-dropcap uk-margin">
+                      <p [innerHTML]="resourcePayload.description"></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="tm-grid-expand uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack">
+                  <div class="uk-first-column">
+                    <hr>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            }
 
-          </div>
-        </li>
-      </ul>
+            <!--BENEFITS-->
+            @if (resourcePayload?.['extras']?.['benefits'][0]?.['benefitsTitle']) {
+              <div style="background-image: url('../../../../../assets/images/benefits_bg.png'); background-repeat: no-repeat; background-position: left"
+                class="uk-section uk-section-primary uk-preserve-color">
+                <div class="uk-container">
+                  <div class="tm-grid-expand uk-grid-large uk-margin-remove-vertical uk-grid">
+                    <div class="uk-width-1-3@m uk-width-1-3@l uk-width-1-1@s uk-first-column">
+                      <h2 class="uk-position-relative uk-text-left" style="z-index: 1;">Benefits</h2>
+                    </div>
+                    <div class="uk-width-2-3@m uk-width-2-3@l uk-width-1-1@s">
+                      <div
+                        class="uk-position-relative uk-margin uk-margin-auto-left@m uk-margin-remove-right@m uk-margin-auto uk-text-left"
+                        style="z-index: 1;">
+                        <div class="uk-child-width-1-1 uk-child-width-1-2@s uk-grid-large uk-grid-match uk-grid">
+                          @for (benefit of resourcePayload.extras['benefits']; track benefit) {
+                            <div>
+                              <div class="el-item uk-panel">
+                                <h6 class="uk-margin-top uk-margin-remove-bottom">{{benefit.benefitsTitle}}</h6>
+                                <div class="el-content uk-panel uk-margin-small-top">{{benefit.benefitsText}}</div>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
 
-      <div class="uk-position-bottom-center uk-position-small">
-        <ul class="uk-dotnav">
-          <li *ngFor="let useCase of resourcePayload.extras['useCasesExtras']; let i=index" [ngClass]="{'uk-active': slideMobile === i}">
-            <a (click)="showSlideMobile('slideShowMobile', i)">Item {{i}}</a>
-          </li>
-        </ul>
-      </div>
+            <!--FEATURES-->
+            @if (resourcePayload?.extras?.features[0]?.featuresTitle) {
+              <div class="uk-section uk-section-muted uk-section-large">
+                <div class="uk-container">
+                  <h2 class="uk-text-left">Features</h2>
+                  <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-margin-large-top uk-flex-center">
+                    @for (feature of resourcePayload.extras['features']; track feature) {
+                      <div class="uk-grid-margin">
+                        <div class="uk-card uk-card-default">
+                          <div class="uk-card-body uk-text-center">
+                            <img src="{{feature.featuresImage !== '' ? feature.featuresImage : '../../../../../assets/images/mocks/image_2021_09_30T11_52_55_688Z.png'}}" width="80">
+                            <h6 class="uk-margin-top">{{feature.featuresTitle}}</h6>
+                            <p class="regular-text uk-margin-medium-top">{{feature.featuresText}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
 
-    </div>
+            <!--USE CASES-->
+            @if (resourcePayload?.extras?.['useCasesExtras'][0]?.useCaseTitle) {
+              <div class="uk-section uk-section-primary uk-section-large uk-preserve-color uk-visible@m">
+                <div class="uk-container">
+                  <div class="uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">
+                    <h4>Used in</h4>
+                  </div>
+                  <div id="slideShow" class="uk-position-relative" (beforeitemshow)="dragSlide('slideShow')"
+                    uk-slideshow="ratio: 16:9; autoplay: true; autoplay-interval: 4000; pause-on-hover: true;">
+                    <ul class="uk-slideshow-items">
+                      @for (useCase of resourcePayload.extras['useCasesExtras']; track useCase) {
+                        <li class="uk-flex-middle">
+                          <div class="uk-width-1-1 uk-grid uk-child-width-1-2">
+                            <div class="slider-image uk-flex uk-flex-right">
+                              <div class="uk-card uk-card-default uk-flex uk-flex-middle">
+                                <img src="{{useCase.useCaseImage !== '' ? useCase.useCaseImage : '../../../../../assets/images/mocks/image_2021_09_30T11_53_37_207Z.png'}}" width="294">
+                              </div>
+                            </div>
+                            <div class="slider-text uk-flex uk-flex-middle">
+                              <div class="slider-bold-background-header">{{useCase.useCaseTitle}}</div>
+                              <div class="">
+                                <div class="slider-header">{{useCase.useCaseTitle}}</div>
+                                <div class="slider-description uk-margin-top">{{useCase.useCaseText}}</div>
+                                @if (useCase.useCaseLink !== '') {
+                                  <div class="uk-margin-medium-top">
+                                    <a href="{{useCase.useCaseLink}}" target="_blank" class="uk-button uk-button-text">Learn more<i class="fa fa-external-link uk-margin-small-left uk-margin-small-right"></i></a>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                    <div class="uk-position-bottom-center uk-position-small">
+                      <ul class="uk-dotnav">
+                        @for (useCase of  resourcePayload.extras['useCasesExtras']; track useCase; let i = $index) {
+                          <li [ngClass]="{'uk-active': slide === i}">
+                            <a (click)="showSlide('slideShow', i)">Item {{i}}</a>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
 
-  </div>
+            <!--Related services-->
+            @if (relatedServices?.length > 0) {
+              <div class="uk-section-muted uk-section uk-flex uk-flex-middle" uk-height-viewport="offset-top: true; offset-bottom: 20;" style="min-height: calc(80vh);">
+                <div class="uk-width-1-1">
+                  <div class="uk-container">
+                    <div class="tm-grid-expand uk-child-width-1-1 uk-grid-margin uk-grid uk-grid-stack" uk-grid="">
+                      <div class="uk-first-column">
+                        <h2 class="uk-margin-large">Related services</h2>
+                        <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-margin-large-top" uk-height-match="target: > div > .uk-card > .uk-card-body">
+                          @for (service of relatedServices; track service) {
+                            <div class="uk-grid-margin">
+                              <div class="uk-card uk-card-default service-list-card">
+                                <div class="uk-card-media-top">
+                                  <img src="{{service.extras['image']}}" alt="">
+                                </div>
+                                <div class="uk-card-body uk-flex uk-flex-column uk-flex-between">
+                                  <div>
+                                    <div class="h5-subheader">{{service.name}}</div>
+                                    <h5 class="">{{service.tagline}}</h5>
+                                    <p [innerHTML]="service.extras['pitch']"></p>
+                                  </div>
+                                  <div class="">
+                                    <a (click)="reloadOnSamePage('/service/'+service.id)" [routerLink]="[]" class="uk-button uk-button-text">Learn more</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
 
-</div>
+            <!--USE CASES MOBILE-->
+            @if (resourcePayload?.extras?.['useCasesExtras'][0]?.['useCaseTitle']) {
+              <div class="uk-section uk-section-primary uk-section-large uk-preserve-color uk-hidden@m">
+                <div class="uk-container">
+                  <h1 class="uk-margin-medium-bottom">Use Cases</h1>
+                  <div id="slideShowMobile" class="uk-position-relative" (beforeitemshow)="dragSlideMobile('slideShowMobile')"
+                    uk-slideshow="ratio: 12:4; min-height: 750; autoplay: true; autoplay-interval: 4000; pause-on-hover: true;">
+                    <ul class="uk-slideshow-items">
+                      @for (useCase of resourcePayload.extras['useCasesExtras']; track useCase) {
+                        <li class="">
+                          <div class="">
+                            <div class="slider-image uk-flex uk-flex-center">
+                              <div class="uk-card uk-card-default">
+                                <img src="{{useCase.useCaseImage !== '' ? useCase.useCaseImage : '../../../../../assets/images/mocks/image_2021_09_30T11_53_37_207Z.png'}}" width="294">
+                              </div>
+                            </div>
+                            <div class="slider-text uk-text-center uk-margin-medium-top">
+                              <div class="slider-bold-background-header uk-visible@m">{{useCase.useCaseTitle}}</div>
+                              <div class="">
+                                <div class="slider-header">{{useCase.useCaseTitle}}</div>
+                                <div class="slider-description uk-margin-top">{{useCase.useCaseText}}</div>
+                                @if (useCase.useCaseLink !== '') {
+                                  <div class="uk-margin-medium-top">
+                                    <a href="{{useCase.useCaseLink}}" target="_blank" class="uk-button uk-button-text">
+                                      Learn more<i class="fa fa-external-link uk-margin-small-left uk-margin-small-right"></i>
+                                    </a>
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      }
+                    </ul>
+                    <div class="uk-position-bottom-center uk-position-small">
+                      <ul class="uk-dotnav">
+                        @for (useCase of resourcePayload.extras['useCasesExtras']; track useCase; let i = $index) {
+                          <li [ngClass]="{'uk-active': slideMobile === i}">
+                            <a (click)="showSlideMobile('slideShowMobile', i)">Item {{i}}</a>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }

@@ -1,78 +1,100 @@
 <!--SERVICE MENU-->
-<div *ngIf="!ready" class="uk-margin-large-top" style="height: 400px">
-  <div class="loader-big"></div>
-</div>
-<div *ngIf="ready && !cleanView" class="uk-visible@m">
-  <div class="tm-header uk-visible@m tm-header-transparent service-menu">
-    <div id="myNavBar" class="uk-navbar-container uk-sticky uk-navbar-transparent" uk-sticky="top:0" media="768"
-    cls-active="uk-active uk-navbar-sticky" style="" animation="uk-animation-slide-top"
-    top=".tm-header + [class*=&quot;uk-section&quot;]" cls-inactive="uk-navbar-transparent">
-    <!--<div class="uk-navbar-container uk-navbar-transparent">-->
-      <div class="uk-container uk-container-large uk-padding-remove-left">
-        <nav class="uk-navbar" uk-navbar="">
-
-          <div *ngIf="showLogo" class="" style="padding-top: 20px; padding-bottom: 20px;">
-            <img src="{{resourcePayload['logo']}}" alt="logo" style="max-width: 210px; height: 70px;">
-          </div>
-
-          <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav">
-              <li [ngClass]="{'uk-active': path === 'overview'}"><a [routerLink]="'./overview'" class="service-menu-item">Overview</a></li>
-              <li *ngIf="resourcePayload.extras['paymentCategories'][0]?.paymentTitle" [ngClass]="{'uk-active': path === 'subscriptions'}">
-                <a [routerLink]="'./subscriptions'" class="service-menu-item">Subscriptions</a>
-              </li>
-              <li [ngClass]="{'uk-active': path === 'resourcesAndSupport'}">
-                <a [routerLink]="'./resourcesAndSupport'" class="service-menu-item">Resources & Support</a>
-              </li>
-              <li *ngIf="resourcePayload.extras?.['documentation']">
-                <a href="{{resourcePayload.extras?.['documentation']}}" target="_blank" class="service-menu-item">Documentation <i class="fa fa-external-link uk-margin-small-left"></i></a>
-              </li>
-              <li *ngIf="resourcePayload.extras?.['roadmap']">
-                <a href="{{resourcePayload.extras?.['roadmap']}}" target="_blank" class="service-menu-item">Roadmap <i class="fa fa-external-link uk-margin-small-left"></i></a>
-              </li>
-              <li [ngClass]="{'uk-active': path === 'miscellaneous'}"><a [routerLink]="'./miscellaneous'" class="service-menu-item">Operational Terms</a></li>
-              <li class="uk-flex uk-flex-middle"><button (click)="goto(resourcePayload.webpage)" class="uk-button uk-button-small uk-button-blue">Go to service</button></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </div>
-    <div class="uk-sticky-placeholder" style="height: 80px; margin: 0px;" hidden="hidden"></div>
+@if (!ready) {
+  <div class="uk-margin-large-top" style="height: 400px">
+    <div class="loader-big"></div>
   </div>
-</div>
+}
+@if (ready && !cleanView) {
+  <div class="uk-visible@m">
+    <div class="tm-header uk-visible@m tm-header-transparent service-menu">
+      <div id="myNavBar" class="uk-navbar-container uk-sticky uk-navbar-transparent" uk-sticky="top:0" media="768"
+        cls-active="uk-active uk-navbar-sticky" style="" animation="uk-animation-slide-top"
+        top=".tm-header + [class*=&quot;uk-section&quot;]" cls-inactive="uk-navbar-transparent">
+        <!--<div class="uk-navbar-container uk-navbar-transparent">-->
+        <div class="uk-container uk-container-large uk-padding-remove-left">
+          <nav class="uk-navbar" uk-navbar="">
+            @if (showLogo) {
+              <div class="" style="padding-top: 20px; padding-bottom: 20px;">
+                <img src="{{resourcePayload['logo']}}" alt="logo" style="max-width: 210px; height: 70px;">
+              </div>
+            }
+            <div class="uk-navbar-right">
+              <ul class="uk-navbar-nav">
+                <li [ngClass]="{'uk-active': path === 'overview'}"><a [routerLink]="'./overview'" class="service-menu-item">Overview</a></li>
+                @if (resourcePayload.extras['paymentCategories'][0]?.paymentTitle) {
+                  <li [ngClass]="{'uk-active': path === 'subscriptions'}">
+                    <a [routerLink]="'./subscriptions'" class="service-menu-item">Subscriptions</a>
+                  </li>
+                }
+                <li [ngClass]="{'uk-active': path === 'resourcesAndSupport'}">
+                  <a [routerLink]="'./resourcesAndSupport'" class="service-menu-item">Resources & Support</a>
+                </li>
+                @if (resourcePayload.extras?.['documentation']) {
+                  <li>
+                    <a href="{{resourcePayload.extras?.['documentation']}}" target="_blank" class="service-menu-item">Documentation <i class="fa fa-external-link uk-margin-small-left"></i></a>
+                  </li>
+                }
+                @if (resourcePayload.extras?.['roadmap']) {
+                  <li>
+                    <a href="{{resourcePayload.extras?.['roadmap']}}" target="_blank" class="service-menu-item">Roadmap <i class="fa fa-external-link uk-margin-small-left"></i></a>
+                  </li>
+                }
+                <li [ngClass]="{'uk-active': path === 'miscellaneous'}"><a [routerLink]="'./miscellaneous'" class="service-menu-item">Operational Terms</a></li>
+                <li class="uk-flex uk-flex-middle"><button (click)="goto(resourcePayload.webpage)" class="uk-button uk-button-small uk-button-blue">Go to service</button></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="uk-sticky-placeholder" style="height: 80px; margin: 0px;" hidden="hidden"></div>
+    </div>
+  </div>
+}
 
-<div *ngIf="ready && !cleanView" class="uk-hidden@m" uk-sticky="offset: 90">
-  <!--MOBILE & PAD PORTRAIT-->
-  <ul class="uk-tab service-tabs" data-uk-tab="{connect:'#team_tabbed',animation: 'slide-bottom'}">
-    <li [ngClass]="{'uk-active': path === 'overview'}"><a [routerLink]="'./overview'" class="service-menu-item">Overview</a></li>
-    <li *ngIf="resourcePayload.extras?.['paymentCategories'][0]?.paymentTitle !== ''" [ngClass]="{'uk-active': path === 'subscriptions'}">
-      <a [routerLink]="'./subscriptions'" class="service-menu-item">Subscriptions</a>
-    </li>
-    <li [ngClass]="{'uk-active': path === 'resourcesAndSupport'}">
-      <a [routerLink]="'./resourcesAndSupport'" class="service-menu-item">Resources & Support</a>
-    </li>
-    <li *ngIf="resourcePayload.extras?.['documentation'] !== ''">
-      <a href="{{resourcePayload.extras?.['documentation']}}" target="_blank" class="service-menu-item">Documentation <i class="fa fa-external-link uk-margin-small-left"></i></a>
-    </li>
-    <li *ngIf="resourcePayload.extras?.['roadmap'] !== ''">
-      <a href="{{resourcePayload.extras?.['roadmap']}}" target="_blank" class="service-menu-item">Roadmap <i class="fa fa-external-link uk-margin-small-left"></i></a>
-    </li>
-    <li [ngClass]="{'uk-active': path === 'miscellaneous'}"><a [routerLink]="'./miscellaneous'" class="service-menu-item">Operational Terms</a></li>
-  </ul>
-</div>
+@if (ready && !cleanView) {
+  <div class="uk-hidden@m" uk-sticky="offset: 90">
+    <!--MOBILE & PAD PORTRAIT-->
+    <ul class="uk-tab service-tabs" data-uk-tab="{connect:'#team_tabbed',animation: 'slide-bottom'}">
+      <li [ngClass]="{'uk-active': path === 'overview'}"><a [routerLink]="'./overview'" class="service-menu-item">Overview</a></li>
+      @if (resourcePayload.extras?.['paymentCategories'][0]?.paymentTitle !== '') {
+        <li [ngClass]="{'uk-active': path === 'subscriptions'}">
+          <a [routerLink]="'./subscriptions'" class="service-menu-item">Subscriptions</a>
+        </li>
+      }
+      <li [ngClass]="{'uk-active': path === 'resourcesAndSupport'}">
+        <a [routerLink]="'./resourcesAndSupport'" class="service-menu-item">Resources & Support</a>
+      </li>
+      @if (resourcePayload.extras?.['documentation'] !== '') {
+        <li>
+          <a href="{{resourcePayload.extras?.['documentation']}}" target="_blank" class="service-menu-item">Documentation <i class="fa fa-external-link uk-margin-small-left"></i></a>
+        </li>
+      }
+      @if (resourcePayload.extras?.['roadmap'] !== '') {
+        <li>
+          <a href="{{resourcePayload.extras?.['roadmap']}}" target="_blank" class="service-menu-item">Roadmap <i class="fa fa-external-link uk-margin-small-left"></i></a>
+        </li>
+      }
+      <li [ngClass]="{'uk-active': path === 'miscellaneous'}"><a [routerLink]="'./miscellaneous'" class="service-menu-item">Operational Terms</a></li>
+    </ul>
+  </div>
+}
 
-<div *ngIf="!cleanView" class="uk-hidden@m uk-float-right" style="z-index: 100; bottom: 30px; position: fixed; right: 30px;">
-  <button (click)="goto(resourcePayload.webpage)" class="uk-button uk-button-blue">Go to service</button>
-</div>
+@if (!cleanView) {
+  <div class="uk-hidden@m uk-float-right" style="z-index: 100; bottom: 30px; position: fixed; right: 30px;">
+    <button (click)="goto(resourcePayload.webpage)" class="uk-button uk-button-blue">Go to service</button>
+  </div>
+}
 
-<div *ngIf="(projectName=='OpenAIRE Catalogue') && canAddOrEditService && !cleanView"
-     class="uk-float-right" style="z-index: 100; top: 300px; position: fixed; right: 5px;">
-  <a [routerLink]="['/service/edit/', id]" style="padding: 10px;" class="uk-icon-button uk-button-primary">
-    <i class="fa fa-pencil-square-o"></i>
-    <!--<span class="uk-icon" uk-icon="icon: plus; ratio: 1.5">-->
+@if ((projectName=='OpenAIRE Catalogue') && canAddOrEditService && !cleanView) {
+  <div
+    class="uk-float-right" style="z-index: 100; top: 300px; position: fixed; right: 5px;">
+    <a [routerLink]="['/service/edit/', id]" style="padding: 10px;" class="uk-icon-button uk-button-primary">
+      <i class="fa fa-pencil-square-o"></i>
+      <!--<span class="uk-icon" uk-icon="icon: plus; ratio: 1.5">-->
     <!--</span>-->
   </a>
 </div>
+}
 
 
 <router-outlet (activate)="onOutletLoaded($event)"></router-outlet>

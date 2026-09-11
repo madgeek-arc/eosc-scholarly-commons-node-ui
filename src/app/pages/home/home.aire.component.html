@@ -19,202 +19,172 @@
 </div>
 
 <!--USER GROUPS SECTION-->
-<div *ngIf="users && users.length>0" class="uk-section uk-section-primary uk-preserve-color uk-visible@m">
-
-  <div class="uk-container uk-container-large">
-
-    <h1 class="">Ideal for</h1>
-    <!--autoplay: true; autoplay-interval: 4000;-->
-  </div>
-
-  <div class="uk-container uk-container-medium">
-    <div id="slideShow" class="uk-position-relative" uk-slideshow="ratio: 16:9;  pause-on-hover: true;" (beforeitemshow)="dragSlide()">
-
-      <ul class="uk-slideshow-items">
-        <li *ngFor="let user of users" class="uk-flex-middle">
-          <div class="uk-width-1-1 uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">
-
-            <div class="slider-image uk-flex uk-flex-right">
-              <div class="uk-margin" uk-grid>
-                <div class="uk-card-media uk-cover-container">
-                  <img class="uk-border-circle" src="{{user.extras.image}}" alt="">
-                  <!--                  <canvas width="294" height="325"></canvas>-->
+@if (users && users.length>0) {
+  <div class="uk-section uk-section-primary uk-preserve-color uk-visible@m">
+    <div class="uk-container uk-container-large">
+      <h1 class="">Ideal for</h1>
+      <!--autoplay: true; autoplay-interval: 4000;-->
+    </div>
+    <div class="uk-container uk-container-medium">
+      <div id="slideShow" class="uk-position-relative" uk-slideshow="ratio: 16:9;  pause-on-hover: true;" (beforeitemshow)="dragSlide()">
+        <ul class="uk-slideshow-items">
+          @for (user of users; track user) {
+            <li class="uk-flex-middle">
+              <div class="uk-width-1-1 uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">
+                <div class="slider-image uk-flex uk-flex-right">
+                  <div class="uk-margin" uk-grid>
+                    <div class="uk-card-media uk-cover-container">
+                      <img class="uk-border-circle" src="{{user.extras.image}}" alt="">
+                      <!--                  <canvas width="294" height="325"></canvas>-->
+                    </div>
+                  </div>
+                </div>
+                <div class="slider-text uk-flex uk-flex-middle">
+                  <div class="slider-bold-background-header uk-visible@m">{{user.name}}</div>
+                  <div class="">
+                    <div class="slider-header">{{user.name}}</div>
+                    <div class="slider-description uk-margin-top">{{user.description}}</div>
+                    <div class="uk-margin-medium-top"><a class="uk-button uk-button-text" [routerLink]="['/users', user.id]">Learn more</a></div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="slider-text uk-flex uk-flex-middle">
-              <div class="slider-bold-background-header uk-visible@m">{{user.name}}</div>
-
-              <div class="">
-                <div class="slider-header">{{user.name}}</div>
-                <div class="slider-description uk-margin-top">{{user.description}}</div>
-                <div class="uk-margin-medium-top"><a class="uk-button uk-button-text" [routerLink]="['/users', user.id]">Learn more</a></div>
-              </div>
-            </div>
-
-          </div>
-        </li>
-      </ul>
-
-      <div class="uk-position-bottom-center uk-position-small">
-        <ul class="uk-dotnav">
-          <li *ngFor="let user of users; let i=index" [ngClass]="{'uk-active': slide === i}">
-            <a (click)="showSlide(i)">Item {{i}}</a>
-          </li>
+            </li>
+          }
         </ul>
+        <div class="uk-position-bottom-center uk-position-small">
+          <ul class="uk-dotnav">
+            @for (user of users; track user; let i = $index) {
+              <li [ngClass]="{'uk-active': slide === i}">
+                <a (click)="showSlide(i)">Item {{i}}</a>
+              </li>
+            }
+          </ul>
+        </div>
       </div>
-
     </div>
   </div>
-
-</div>
+}
 
 <!--USER GROUPS SECTION MOBILE-->
-<div *ngIf="users && users.length>0" class="uk-section uk-section-primary uk-preserve-color uk-hidden@m">
-
-  <div class="uk-container uk-container-large">
-
-    <h1 class="uk-margin-medium-bottom">Ideal for</h1>
-
-  </div>
-
-  <div class="uk-container uk-container-medium">
-    <div id="slideShowMobile" class="uk-position-relative" uk-slideshow="ratio: 16:9; min-height: 750; autoplay: true; autoplay-interval: 4000; pause-on-hover: true;" (beforeitemshow)="dragSlideMobile()">
-
-      <ul class="uk-slideshow-items">
-        <li *ngFor="let user of users" class="">
-          <div class="">
-
-            <div class="slider-image uk-flex uk-flex-center">
-              <div class="uk-card uk-card-default uk-margin" uk-grid>
-                <div class="uk-card-media uk-cover-container">
-                  <img class="uk-border-circle" src="{{user.extras.image}}" alt="" uk-cover>
+@if (users && users.length>0) {
+  <div class="uk-section uk-section-primary uk-preserve-color uk-hidden@m">
+    <div class="uk-container uk-container-large">
+      <h1 class="uk-margin-medium-bottom">Ideal for</h1>
+    </div>
+    <div class="uk-container uk-container-medium">
+      <div id="slideShowMobile" class="uk-position-relative" uk-slideshow="ratio: 16:9; min-height: 750; autoplay: true; autoplay-interval: 4000; pause-on-hover: true;" (beforeitemshow)="dragSlideMobile()">
+        <ul class="uk-slideshow-items">
+          @for (user of users; track user) {
+            <li class="">
+              <div class="">
+                <div class="slider-image uk-flex uk-flex-center">
+                  <div class="uk-card uk-card-default uk-margin" uk-grid>
+                    <div class="uk-card-media uk-cover-container">
+                      <img class="uk-border-circle" src="{{user.extras.image}}" alt="" uk-cover>
+                    </div>
+                  </div>
+                </div>
+                <div class="slider-text uk-text-center uk-margin-medium-top">
+                  <div class="slider-bold-background-header uk-visible@m">{{user.name}}</div>
+                  <div class="">
+                    <div class="slider-header">{{user.name}}</div>
+                    <div class="slider-description uk-margin-top">{{user.description}}</div>
+                    <div class="uk-margin-medium-top"><a class="uk-button uk-button-text" [routerLink]="['/users', user.id]">Learn more</a></div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="slider-text uk-text-center uk-margin-medium-top">
-              <div class="slider-bold-background-header uk-visible@m">{{user.name}}</div>
-
-              <div class="">
-                <div class="slider-header">{{user.name}}</div>
-                <div class="slider-description uk-margin-top">{{user.description}}</div>
-                <div class="uk-margin-medium-top"><a class="uk-button uk-button-text" [routerLink]="['/users', user.id]">Learn more</a></div>
-              </div>
-            </div>
-
-          </div>
-        </li>
-      </ul>
-
-      <div class="uk-position-bottom-center uk-position-small">
-        <ul class="uk-dotnav">
-          <li *ngFor="let user of users; let i=index" [ngClass]="{'uk-active': slideMobile === i}">
-            <a (click)="showSlideMobile(i)">Item {{i}}</a>
-          </li>
+            </li>
+          }
         </ul>
+        <div class="uk-position-bottom-center uk-position-small">
+          <ul class="uk-dotnav">
+            @for (user of users; track user; let i = $index) {
+              <li [ngClass]="{'uk-active': slideMobile === i}">
+                <a (click)="showSlideMobile(i)">Item {{i}}</a>
+              </li>
+            }
+          </ul>
+        </div>
       </div>
-
     </div>
   </div>
-
-</div>
+}
 
 <!--PORTFOLIO SECTIONS-->
 
-<div class="uk-section-default uk-preserve-color uk-section uk-section-large" *ngIf="portfolios && resources">
-
-  <div class="uk-container uk-container-large">
-
-    <div class="h1-subHeader">Find a service that fits your needs</div>
-    <h1>Explore our service portfolios</h1>
-
-  </div>
-
-  <div class="uk-container uk-container-large uk-margin-large-top">
-
-    <div class="tm-grid-expand uk-child-width-1-1 uk-margin-large uk-grid uk-grid-stack" uk-grid="">
-      <div class="uk-first-column">
-
-        <div class="uk-margin-large">
-
-          <!--change uk-flex-center with uk-child-width-expand / uk-flex-center-->
-          <ul uk-tab="connect: #portfolios-tabs; animation: uk-animation-fade" class="uk-tab uk-child-width-expand">
-            <li *ngFor="let portfolio of portfolios; let i = index">
-              <a class="el-link">{{portfolio.name}}</a>
-            </li>
-          </ul>
-
-          <ul id="portfolios-tabs" class="uk-switcher">
-            <li *ngFor="let portfolio of portfolios; let i = index">
-
-              <div class="uk-grid uk-margin-large-top uk-grid-large">
-
-                <div class="uk-width-1-3">
-                  <div>
-                    <div *ngIf="portfolio.extras.tagline" class="h5-subheader">{{portfolio.extras.tagline}}</div>
-                    <h5>{{portfolio.name}} portfolio</h5>
-                    <p class="regular-text uk-margin-medium-top">{{portfolio.description}}</p>
-                    <a class="uk-button uk-button-primary uk-margin-medium-top uk-margin-large-bottom" [routerLink]="['/portfolios', portfolio.id]">Learn more</a>
-                  </div>
-                </div>
-
-                <div class="uk-width-expand">
-
-                  <div class="uk-grid uk-child-width-1-2 uk-grid-match uk-grid-large">
-
-                    <div class="uk-margin-large-bottom" *ngFor="let service of resources[portfolio.name] | slice:0:3;">
-                      <div class="el-container uk-box-shadow-large uk-box-shadow-hover-xlarge tm-mask-default uk-inline uk-transition-toggle">
-                        <div class="uk-inline-clip">
-                          <img alt="" class="el-image uk-transition-scale-down uk-transition-opaque" src="{{service['extras']['image']}}">
-                          <div class="uk-position-bottom uk-overlay-default">
-                            <div class="uk-overlay uk-padding-small uk-margin-remove-first-child">
-
-                              <div class="el-title uk-h3 uk-font-primary uk-margin-top uk-margin-remove-bottom">{{service['name']}}</div>
-                              <div class="el-meta uk-margin-top">{{service['tagline']}}</div>
-<!--                              <div class="el-content uk-panel uk-margin-top"><p>hello</p></div>-->
-
-                              <div class="uk-margin-top">
-                                <a [routerLink]="['/service', service['id'], 'overview']" class="el-link uk-button uk-button-text uk-button-large">View</a>
+@if (portfolios && resources) {
+  <div class="uk-section-default uk-preserve-color uk-section uk-section-large">
+    <div class="uk-container uk-container-large">
+      <div class="h1-subHeader">Find a service that fits your needs</div>
+      <h1>Explore our service portfolios</h1>
+    </div>
+    <div class="uk-container uk-container-large uk-margin-large-top">
+      <div class="tm-grid-expand uk-child-width-1-1 uk-margin-large uk-grid uk-grid-stack" uk-grid="">
+        <div class="uk-first-column">
+          <div class="uk-margin-large">
+            <!--change uk-flex-center with uk-child-width-expand / uk-flex-center-->
+            <ul uk-tab="connect: #portfolios-tabs; animation: uk-animation-fade" class="uk-tab uk-child-width-expand">
+              @for (portfolio of portfolios; track portfolio; let i = $index) {
+                <li>
+                  <a class="el-link">{{portfolio.name}}</a>
+                </li>
+              }
+            </ul>
+            <ul id="portfolios-tabs" class="uk-switcher">
+              @for (portfolio of portfolios; track portfolio; let i = $index) {
+                <li>
+                  <div class="uk-grid uk-margin-large-top uk-grid-large">
+                    <div class="uk-width-1-3">
+                      <div>
+                        @if (portfolio.extras.tagline) {
+                          <div class="h5-subheader">{{portfolio.extras.tagline}}</div>
+                        }
+                        <h5>{{portfolio.name}} portfolio</h5>
+                        <p class="regular-text uk-margin-medium-top">{{portfolio.description}}</p>
+                        <a class="uk-button uk-button-primary uk-margin-medium-top uk-margin-large-bottom" [routerLink]="['/portfolios', portfolio.id]">Learn more</a>
+                      </div>
+                    </div>
+                    <div class="uk-width-expand">
+                      <div class="uk-grid uk-child-width-1-2 uk-grid-match uk-grid-large">
+                        @for (service of resources[portfolio.name] | slice:0:3; track service) {
+                          <div class="uk-margin-large-bottom">
+                            <div class="el-container uk-box-shadow-large uk-box-shadow-hover-xlarge tm-mask-default uk-inline uk-transition-toggle">
+                              <div class="uk-inline-clip">
+                                <img alt="" class="el-image uk-transition-scale-down uk-transition-opaque" src="{{service['extras']['image']}}">
+                                <div class="uk-position-bottom uk-overlay-default">
+                                  <div class="uk-overlay uk-padding-small uk-margin-remove-first-child">
+                                    <div class="el-title uk-h3 uk-font-primary uk-margin-top uk-margin-remove-bottom">{{service['name']}}</div>
+                                    <div class="el-meta uk-margin-top">{{service['tagline']}}</div>
+                                    <!--                              <div class="el-content uk-panel uk-margin-top"><p>hello</p></div>-->
+                                    <div class="uk-margin-top">
+                                      <a [routerLink]="['/service', service['id'], 'overview']" class="el-link uk-button uk-button-text uk-button-large">View</a>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
+                          </div>
+                        }
+                        <div class="uk-panel uk-margin-remove-first-child uk-margin-xlarge" id="page#2-2-2-1">
+                          <div class="el-content uk-panel uk-h5 uk-margin-medium-top uk-margin-remove-bottom">
+                            <p style="font-weight:bold; color:#19116D;">Interested to see other available services?</p>
+                          </div>
+                          <div class="uk-margin-small-top">
+                            <a [routerLink]="['/portfolios', portfolio.id]" class="el-link uk-button uk-button-text">View all</a>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                    <div class="uk-panel uk-margin-remove-first-child uk-margin-xlarge" id="page#2-2-2-1">
-
-                      <div class="el-content uk-panel uk-h5 uk-margin-medium-top uk-margin-remove-bottom">
-                        <p style="font-weight:bold; color:#19116D;">Interested to see other available services?</p>
-                      </div>
-
-                      <div class="uk-margin-small-top">
-                        <a [routerLink]="['/portfolios', portfolio.id]" class="el-link uk-button uk-button-text">View all</a>
-                      </div>
-
-                    </div>
-
                   </div>
-
-                </div>
-
-              </div>
-
-            </li>
-          </ul>
-
+                </li>
+              }
+            </ul>
+          </div>
         </div>
-
-
       </div>
     </div>
-
   </div>
-
-
-</div>
+}
 
 
 <!--EOSC SECTION-->
@@ -226,12 +196,12 @@
         <img src="../../../assets/images/EOSC%20catalogue%20banner%20with%20text.svg" alt="EOSC">
       </div>
       <div class="uk-margin-medium-top">
-<!--        <div class="h2-subHeader-blue">A path to the European Open Science Cloud</div>-->
+        <!--        <div class="h2-subHeader-blue">A path to the European Open Science Cloud</div>-->
         <h2 class="uk-margin-top">OpenAIRE services guarantee your compliance and use of EOSC.</h2>
         <div class="uk-margin-medium-top"><a href="https://open-science-cloud.ec.europa.eu/resources/services?q=openaire" target="_blank" class="uk-button uk-button-text eosc-link" style="color: #eb5d81;">
           View in the EOSC Catalogue<i class="fa fa-external-link uk-margin-small-left uk-margin-small-right"></i></a></div>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>

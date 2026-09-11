@@ -1,114 +1,101 @@
-<div *ngIf="resourcePayload" class="uk-section uk-section-primary uk-preserve-color">
-  <div class="uk-container uk-container-large uk-margin-large-top uk-margin-large-bottom">
-
-    <div class="uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">
-      <h2>Important operational and legal service details</h2>
-    </div>
-
-    <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-flex-center uk-text-center">
-
-      <div *ngIf="resourcePayload.privacyPolicy && resourcePayload.privacyPolicy !== ''" class="uk-margin-large-top">
-        <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
-
-          <div>
-            <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%207@2x.png" width="51">
-            <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Service Privacy-Policy</h5>
-            <div class="el-content uk-panel uk-margin-top"> OpenAIRE puts particular emphasis on the security of personal
-              data and the protection of the data subject. For this reason, OpenAIRE has introduced a
-              dedicated/unique/special Personal Data Policy.
+@if (resourcePayload) {
+  <div class="uk-section uk-section-primary uk-preserve-color">
+    <div class="uk-container uk-container-large uk-margin-large-top uk-margin-large-bottom">
+      <div class="uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l">
+        <h2>Important operational and legal service details</h2>
+      </div>
+      <div class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-flex-center uk-text-center">
+        @if (resourcePayload.privacyPolicy && resourcePayload.privacyPolicy !== '') {
+          <div class="uk-margin-large-top">
+            <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
+              <div>
+                <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%207@2x.png" width="51">
+                <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Service Privacy-Policy</h5>
+                <div class="el-content uk-panel uk-margin-top"> OpenAIRE puts particular emphasis on the security of personal
+                  data and the protection of the data subject. For this reason, OpenAIRE has introduced a
+                  dedicated/unique/special Personal Data Policy.
+                </div>
+              </div>
+              <div class="uk-margin-medium-top">
+                <button (click)="navigateTo(resourcePayload.privacyPolicy)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+              </div>
             </div>
           </div>
-
-          <div class="uk-margin-medium-top">
-            <button (click)="navigateTo(resourcePayload.privacyPolicy)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
-          </div>
-
-        </div>
-      </div>
-
-      <div *ngIf="resourcePayload.resourceLevel && resourcePayload.resourceLevel !== ''" class="uk-margin-large-top">
-        <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
-
-          <div>
-            <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%206@2x.png" width="50">
-            <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Service Level Agreement</h5>
-            <div class="el-content uk-panel uk-margin-top">OpenAIRE Service Level Agreement (SLA) refers to the levels of
-              availability, serviceability, performance, operation, or other attributes of the service.
+        }
+        @if (resourcePayload.resourceLevel && resourcePayload.resourceLevel !== '') {
+          <div class="uk-margin-large-top">
+            <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
+              <div>
+                <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%206@2x.png" width="50">
+                <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Service Level Agreement</h5>
+                <div class="el-content uk-panel uk-margin-top">OpenAIRE Service Level Agreement (SLA) refers to the levels of
+                  availability, serviceability, performance, operation, or other attributes of the service.
+                </div>
+              </div>
+              <div class="uk-margin-medium-top">
+                <button (click)="navigateTo(resourcePayload.resourceLevel)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+              </div>
             </div>
           </div>
-
-          <div class="uk-margin-medium-top">
-            <button (click)="navigateTo(resourcePayload.resourceLevel)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+        }
+        <!--TODO: Confirm that the correct url is shown here-->
+        @if (resourcePayload.accessPolicy && resourcePayload.accessPolicy !== '') {
+          <div class="uk-margin-large-top">
+            <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
+              <div>
+                <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%207@2x.png" width="51">
+                <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Service Policies</h5>
+                <div class="el-content uk-panel uk-margin-top">How to provide content, how to use our services and data.</div>
+              </div>
+              <div class="uk-margin-medium-top">
+                <button (click)="navigateTo(resourcePayload.accessPolicy)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+              </div>
+            </div>
           </div>
-
-        </div>
+        }
+        @if (resourcePayload.statusMonitoring && resourcePayload.statusMonitoring !== '') {
+          <div class="uk-margin-large-top">
+            <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
+              <div>
+                <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%2010@2x.png" width="68">
+                <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Status Monitoring</h5>
+                <div class="el-content uk-panel uk-margin-top">Public webpage with monitoring information about the service.</div>
+              </div>
+              <div class="uk-margin-medium-top">
+                <button (click)="navigateTo(resourcePayload.statusMonitoring)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+              </div>
+            </div>
+          </div>
+        }
+        @if (resourcePayload.maintenance && resourcePayload.maintenance !== '') {
+          <div class="uk-margin-large-top">
+            <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
+              <div>
+                <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%2011@2x.png" width="55">
+                <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Maintenance</h5>
+                <div class="el-content uk-panel uk-margin-top">Public web page with information about planned maintenance activities for this service.</div>
+              </div>
+              <div class="uk-margin-medium-top">
+                <button (click)="navigateTo(resourcePayload.maintenance)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+              </div>
+            </div>
+          </div>
+        }
+        @if (resourcePayload.termsOfUse && resourcePayload.termsOfUse !== '') {
+          <div class="uk-margin-large-top">
+            <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
+              <div>
+                <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%207@2x.png" width="51">
+                <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Terms Of Use</h5>
+                <div class="el-content uk-panel uk-margin-top">A document accessible via a weblink describing the rules, resource conditions and usage policy which one must agree to abide by in order to use the Resource.</div>
+              </div>
+              <div class="uk-margin-medium-top">
+                <button (click)="navigateTo(resourcePayload.termsOfUse)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
+              </div>
+            </div>
+          </div>
+        }
       </div>
-      <!--TODO: Confirm that the correct url is shown here-->
-      <div *ngIf="resourcePayload.accessPolicy && resourcePayload.accessPolicy !== ''" class="uk-margin-large-top">
-        <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
-
-          <div>
-            <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%207@2x.png" width="51">
-            <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Service Policies</h5>
-            <div class="el-content uk-panel uk-margin-top">How to provide content, how to use our services and data.</div>
-          </div>
-
-          <div class="uk-margin-medium-top">
-            <button (click)="navigateTo(resourcePayload.accessPolicy)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
-          </div>
-
-        </div>
-      </div>
-
-      <div *ngIf="resourcePayload.statusMonitoring && resourcePayload.statusMonitoring !== ''" class="uk-margin-large-top">
-        <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
-
-          <div>
-            <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%2010@2x.png" width="68">
-            <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Status Monitoring</h5>
-            <div class="el-content uk-panel uk-margin-top">Public webpage with monitoring information about the service.</div>
-          </div>
-
-          <div class="uk-margin-medium-top">
-            <button (click)="navigateTo(resourcePayload.statusMonitoring)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
-          </div>
-
-        </div>
-      </div>
-
-      <div *ngIf="resourcePayload.maintenance && resourcePayload.maintenance !== ''" class="uk-margin-large-top">
-        <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
-
-          <div>
-            <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%2011@2x.png" width="55">
-            <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Maintenance</h5>
-            <div class="el-content uk-panel uk-margin-top">Public web page with information about planned maintenance activities for this service.</div>
-          </div>
-
-          <div class="uk-margin-medium-top">
-            <button (click)="navigateTo(resourcePayload.maintenance)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
-          </div>
-
-        </div>
-      </div>
-
-      <div *ngIf="resourcePayload.termsOfUse && resourcePayload.termsOfUse !== ''" class="uk-margin-large-top">
-        <div class="el-item uk-card uk-card-default uk-card-large uk-card-body uk-margin-remove-first-child uk-scrollspy-inview uk-flex uk-flex-column uk-flex-between" uk-scrollspy-class="uk-animation-fade" style="">
-
-          <div>
-            <img class="el-image uk-text-emphasis" alt="" src="../../../../../assets/images/icons/Asset%207@2x.png" width="51">
-            <h5 class="el-title uk-card-title uk-margin-top uk-margin-remove-bottom">Terms Of Use</h5>
-            <div class="el-content uk-panel uk-margin-top">A document accessible via a weblink describing the rules, resource conditions and usage policy which one must agree to abide by in order to use the Resource.</div>
-          </div>
-
-          <div class="uk-margin-medium-top">
-            <button (click)="navigateTo(resourcePayload.termsOfUse)" uk-scroll="" class="el-link uk-button uk-button-primary">Read More<i class="fa fa-external-link uk-margin-small-left"></i></button>
-          </div>
-
-        </div>
-      </div>
-
     </div>
-
   </div>
-</div>
+}

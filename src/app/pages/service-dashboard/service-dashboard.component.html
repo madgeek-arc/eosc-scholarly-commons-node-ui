@@ -1,62 +1,64 @@
-<div *ngIf="serviceBundle" id="page_content">
-
-  <div class="services-provider-header">
-    <div class="uk-section uk-section-xsmall">
-      <div class="uk-container uk-container-expand">
-        <div class="">
-          <div class="uk-margin-bottom">
-            <a class="uk-link uk-flex uk-flex-middle" [routerLink]="['/provider', providerId, 'dashboard', 'services']">
-              <span class="material-icons uk-margin-small-right">keyboard_backspace</span>
-              <span>Provider Dashboard</span>
-            </a>
-          </div>
-          <div class="uk-flex uk-flex-middle uk-flex-between">
-            <div class="uk-flex uk-flex-middle">
-              <div class="titleLogo">
-                <img src="{{serviceBundle.service.logo}}" style="max-width: 210px; height: 70px;">
-              </div>
-              <div class="uk-margin-left">
-                <div class="uk-text-meta uk-margin-remove">Admin - {{serviceBundle.service.name}} Dashboard</div>
-                <h5>History of updates</h5>
-              </div>
+@if (serviceBundle) {
+  <div id="page_content">
+    <div class="services-provider-header">
+      <div class="uk-section uk-section-xsmall">
+        <div class="uk-container uk-container-expand">
+          <div class="">
+            <div class="uk-margin-bottom">
+              <a class="uk-link uk-flex uk-flex-middle" [routerLink]="['/provider', providerId, 'dashboard', 'services']">
+                <span class="material-icons uk-margin-small-right">keyboard_backspace</span>
+                <span>Provider Dashboard</span>
+              </a>
             </div>
-
-            <div class="uk-flex">
-              <div>
-                <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
-                        [routerLink]="['/service/edit/' + serviceBundle.service.id]">
-                  <span class="material-icons uk-margin-small-right">edit</span>Update Service
-                </button>
+            <div class="uk-flex uk-flex-middle uk-flex-between">
+              <div class="uk-flex uk-flex-middle">
+                <div class="titleLogo">
+                  <img src="{{serviceBundle.service.logo}}" style="max-width: 210px; height: 70px;">
+                </div>
+                <div class="uk-margin-left">
+                  <div class="uk-text-meta uk-margin-remove">Admin - {{serviceBundle.service.name}} Dashboard</div>
+                  <h5>History of updates</h5>
+                </div>
               </div>
-              <ng-container *ngIf="!datasource">
-              <div *ngIf="serviceBundle.status==='approved resource'">
-                <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle" [ngClass]="serviceBundle.status!=='approved resource' ? 'uk-disabled' : ''"
-                        [routerLink]="['/datasource/subprofile/add', serviceId]">
-                  <span class="material-icons uk-margin-small-right">add</span>Add Datasource Subprofile
-                </button>
-              </div>
-              </ng-container>
-              <ng-container *ngIf="datasource">
-                <div *ngIf="serviceBundle.status==='approved resource'">
-                  <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle" [ngClass]="serviceBundle.status!=='approved resource' ? 'uk-disabled' : ''"
-                          [routerLink]="['/datasource/subprofile/edit', serviceId]">
-                    <span class="material-icons uk-margin-small-right">edit</span>Update Datasource Subprofile
+              <div class="uk-flex">
+                <div>
+                  <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
+                    [routerLink]="['/service/edit/' + serviceBundle.service.id]">
+                    <span class="material-icons uk-margin-small-right">edit</span>Update Service
                   </button>
                 </div>
-              </ng-container>
-              <div>
-                <button class="uk-button uk-button-blue uk-margin-left uk-flex uk-flex-middle"
-                        [routerLink]="['/service/' + serviceBundle.service.id]">
-                  <span class="material-icons uk-margin-small-right">update</span>View in catalogue
-                </button>
+                @if (!datasource) {
+                  @if (serviceBundle.status==='approved resource') {
+                    <div>
+                      <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle" [ngClass]="serviceBundle.status!=='approved resource' ? 'uk-disabled' : ''"
+                        [routerLink]="['/datasource/subprofile/add', serviceId]">
+                        <span class="material-icons uk-margin-small-right">add</span>Add Datasource Subprofile
+                      </button>
+                    </div>
+                  }
+                }
+                @if (datasource) {
+                  @if (serviceBundle.status==='approved resource') {
+                    <div>
+                      <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle" [ngClass]="serviceBundle.status!=='approved resource' ? 'uk-disabled' : ''"
+                        [routerLink]="['/datasource/subprofile/edit', serviceId]">
+                        <span class="material-icons uk-margin-small-right">edit</span>Update Datasource Subprofile
+                      </button>
+                    </div>
+                  }
+                }
+                <div>
+                  <button class="uk-button uk-button-blue uk-margin-left uk-flex uk-flex-middle"
+                    [routerLink]="['/service/' + serviceBundle.service.id]">
+                    <span class="material-icons uk-margin-small-right">update</span>View in catalogue
+                  </button>
+                </div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </div>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
   </div>
-
-  <router-outlet (activate)="onActivate($event)"></router-outlet>
-</div>
+}

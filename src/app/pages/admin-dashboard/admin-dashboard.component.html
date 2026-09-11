@@ -43,12 +43,14 @@
                   </div>
                 </div>
                 <div class="uk-flex">
-                  <div *ngIf="canInvite()">
-                    <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
-                            uk-toggle="target: #invite-modal">
-                      <span class="material-icons uk-margin-small-right">person</span>Invite provider
-                    </button>
-                  </div>
+                  @if (canInvite()) {
+                    <div>
+                      <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
+                        uk-toggle="target: #invite-modal">
+                        <span class="material-icons uk-margin-small-right">person</span>Invite provider
+                      </button>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -67,31 +69,38 @@
     <div class="uk-modal-body">
       <h4 class="uk-modal-title">Invite provider</h4>
       <form class="uk-form-stacked uk-margin-top">
-        <div *ngIf="!invitationUrl" class="uk-margin">
-          <label class="uk-form-label" for="email">Email: </label>
-          <div class="uk-form-controls">
-            <input  class="uk-input" id="email" type="text" placeholder="Invitee email" [formControl]="inviteeEmail">
-
+        @if (!invitationUrl) {
+          <div class="uk-margin">
+            <label class="uk-form-label" for="email">Email: </label>
+            <div class="uk-form-controls">
+              <input  class="uk-input" id="email" type="text" placeholder="Invitee email" [formControl]="inviteeEmail">
+            </div>
           </div>
-        </div>
-        <div *ngIf="invitationUrl" class="uk-margin">
-          <label class="uk-form-label" for="email">Invitation url: </label>
-          <div class="uk-form-controls">
-            <pre style="word-break: break-word;">{{invitationUrl}}</pre>
+        }
+        @if (invitationUrl) {
+          <div class="uk-margin">
+            <label class="uk-form-label" for="email">Invitation url: </label>
+            <div class="uk-form-controls">
+              <pre style="word-break: break-word;">{{invitationUrl}}</pre>
+            </div>
           </div>
-        </div>
+        }
       </form>
 
       <!--      {{token.value | json}}-->
       <div class="uk-text-right">
-        <button *ngIf="!invitationUrl" class="uk-button uk-button-primary" type="button"
-                [disabled]="inviteeEmail.invalid" (click)="getInvitationToken()">
-          Create invitation token
-        </button>
-        <button *ngIf="invitationUrl" class="uk-button uk-button-primary" type="button" title="copy to clipboard"
-                (click)="copyToClipboard()">
-          <span class="material-icons uk-text-middle">content_copy</span>
-        </button>
+        @if (!invitationUrl) {
+          <button class="uk-button uk-button-primary" type="button"
+            [disabled]="inviteeEmail.invalid" (click)="getInvitationToken()">
+            Create invitation token
+          </button>
+        }
+        @if (invitationUrl) {
+          <button class="uk-button uk-button-primary" type="button" title="copy to clipboard"
+            (click)="copyToClipboard()">
+            <span class="material-icons uk-text-middle">content_copy</span>
+          </button>
+        }
       </div>
     </div>
   </div>

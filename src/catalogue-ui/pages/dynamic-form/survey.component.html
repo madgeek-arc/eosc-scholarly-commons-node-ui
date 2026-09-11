@@ -1,15 +1,16 @@
-<div *ngIf="model" class="uk-grid">
-<!--  <div class="uk-width-1-1 uk-flex uk-flex-middle uk-flex-right">-->
-<!--    <div *ngIf="activeUsers === null; else users" class="uk-margin-large-right">-->
-<!--      <div uk-spinner></div>-->
-<!--    </div>-->
-<!--    <ng-template #users id="concurrentEdit">-->
-<!--      <div class="uk-margin-medium-right">-->
-<!--        <a *ngFor="let user of activeUsers" class="uk-icon" title="{{user.fullname + ' currently ' + actionTooltip(user.action)}}"-->
-<!--           aria-expanded="false">-->
-<!--          <svg height="42" width="42">-->
-<!--            <circle cx="21" cy="21" r="18" stroke-width="1" [attr.fill]="getRandomDarkColor(user.sessionId)"></circle>-->
-<!--            <text dy=".4em" font-size="16" text-anchor="middle" x="50%" y="50%" fill="white" class="uk-text-bold">-->
+@if (model) {
+  <div class="uk-grid">
+    <!--  <div class="uk-width-1-1 uk-flex uk-flex-middle uk-flex-right">-->
+    <!--    <div *ngIf="activeUsers === null; else users" class="uk-margin-large-right">-->
+    <!--      <div uk-spinner></div>-->
+  <!--    </div>-->
+  <!--    <ng-template #users id="concurrentEdit">-->
+  <!--      <div class="uk-margin-medium-right">-->
+  <!--        <a *ngFor="let user of activeUsers" class="uk-icon" title="{{user.fullname + ' currently ' + actionTooltip(user.action)}}"-->
+  <!--           aria-expanded="false">-->
+  <!--          <svg height="42" width="42">-->
+  <!--            <circle cx="21" cy="21" r="18" stroke-width="1" [attr.fill]="getRandomDarkColor(user.sessionId)"></circle>-->
+  <!--            <text dy=".4em" font-size="16" text-anchor="middle" x="50%" y="50%" fill="white" class="uk-text-bold">-->
 <!--              {{getInitials(user.fullname)}} </text>-->
 <!--            <circle cx="34" cy="34" r="7" stroke-width="1" fill="white"></circle>-->
 <!--            <text x="28" y="40" fill="black" alignment-baseline="middle">-->
@@ -21,54 +22,72 @@
 <!--    </ng-template>-->
 <!--    <button *ngIf="validate" class="uk-float-right uk-button uk-button-primary" (click)="validateForm()">Validate</button>-->
 <!--  </div>-->
-  <h5 class="uk-width-1-1 uk-margin-bottom">{{model.name}}</h5>
-  <p class="" [innerHTML]="model.notice"></p>
+<h5 class="uk-width-1-1 uk-margin-bottom">{{model.name}}</h5>
+<p class="" [innerHTML]="model.notice"></p>
 </div>
+}
 
-<div *ngIf="downloadPDF" class="uk-flex uk-flex-right">
-  <button class="uk-button uk-button-secondary" (click)="generatePDF()">Download as pdf</button>
-</div>
+@if (downloadPDF) {
+  <div class="uk-flex uk-flex-right">
+    <button class="uk-button uk-button-secondary" (click)="generatePDF()">Download as pdf</button>
+  </div>
+}
 
 <!--Chapter Selection-->
-<div *ngIf="model && ready" [ngClass]="{'uk-display-none': (model.sections.length === 1 || !model.sections[0].subSections)}">
-  <ul class="chapter-tabs uk-tab" uk-tab="connect: #top-navigation-tabs; animation: uk-animation-fade">
-    <li class="" *ngFor="let section of model.sections">
-      <a *ngIf="(!section.subType || section.subType===subType)" (click)="showUnsavedChangesPrompt(section)">{{section.name}}
-        <span *ngIf="chapterChangeMap.get(section.id)" class="material-icons md-10 uk-margin-small-left">circle</span>
-      </a>
-    </li>
-  </ul>
-</div>
+@if (model && ready) {
+  <div [ngClass]="{'uk-display-none': (model.sections.length === 1 || !model.sections[0].subSections)}">
+    <ul class="chapter-tabs uk-tab" uk-tab="connect: #top-navigation-tabs; animation: uk-animation-fade">
+      @for (section of model.sections; track section) {
+        <li class="">
+          @if ((!section.subType || section.subType===subType)) {
+            <a (click)="showUnsavedChangesPrompt(section)">{{section.name}}
+              @if (chapterChangeMap.get(section.id)) {
+                <span class="material-icons md-10 uk-margin-small-left">circle</span>
+              }
+            </a>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+}
 
-<pre *ngIf="errorMessage" id="errorAlert" class="uk-alert uk-alert-danger" uk-alert="duration: 500" style="border-width: 0">
-  <a (click)="closeError()" class="uk-alert-close" uk-close></a>
-  {{errorMessage}}
-</pre>
+@if (errorMessage) {
+  <pre id="errorAlert" class="uk-alert uk-alert-danger" uk-alert="duration: 500" style="border-width: 0">
+    <a (click)="closeError()" class="uk-alert-close" uk-close></a>
+    {{errorMessage}}
+  </pre>
+}
 
-<div *ngIf="successMessage" id="successAlert" class="uk-alert uk-alert-success" uk-alert="duration: 500">
-  <p>{{successMessage}}</p>
-</div>
+@if (successMessage) {
+  <div id="successAlert" class="uk-alert uk-alert-success" uk-alert="duration: 500">
+    <p>{{successMessage}}</p>
+  </div>
+}
 
-<div *ngIf="ready; else showLoader">
-  <ul id="top-navigation-tabs" class="uk-switcher">
-    <li *ngFor="let section of model.sections let i = index">
-      <app-chapter-edit [form]="getFormGroup(i)" [readonly]="readonly || freeView" [validate]="validate"
-                        [chapter]="model.sections[i]" [vocabularies]="vocabulariesMap" [tabsHeader]="tabsHeader"
-                        [fields]="model.sections[i].subSections ? model.sections[i].subSections : model.sections"
-                        [subVocabularies]="subVocabularies" [mandatoryFieldsText]="mandatoryFieldsText"
-                        (submit)="parentSubmit()" (chapterHasChanges)="setChapterChangesMap($event)">
-      </app-chapter-edit>
-    </li>
-  </ul>
-</div>
-
-<ng-template #showLoader class="whiteFilm">
+@if (ready) {
+  <div>
+    <ul id="top-navigation-tabs" class="uk-switcher">
+      @for (section of model.sections; let i = $index; track section) {
+        <li>
+          <app-chapter-edit [form]="getFormGroup(i)" [readonly]="readonly || freeView" [validate]="validate"
+            [chapter]="model.sections[i]" [vocabularies]="vocabulariesMap" [tabsHeader]="tabsHeader"
+            [fields]="model.sections[i].subSections ? model.sections[i].subSections : model.sections"
+            [subVocabularies]="subVocabularies" [mandatoryFieldsText]="mandatoryFieldsText"
+            (submit)="parentSubmit()" (chapterHasChanges)="setChapterChangesMap($event)">
+          </app-chapter-edit>
+        </li>
+      }
+    </ul>
+  </div>
+} @else {
   <i class="loader-big" aria-hidden="true"></i>
-</ng-template>
+}
+
 
 <div class="uk-position-fixed" style="z-index: 100; top: 90vh; right: 0.5vw">
   <a href="#" uk-totop uk-scroll style="padding: 25px;">
-<!--    <i class="fa fa-2x fa-plus"></i>-->
+    <!--    <i class="fa fa-2x fa-plus"></i>-->
   </a>
 </div>
 
@@ -90,7 +109,7 @@
 <!-- Unsaved changes modal -->
 <div id="unsaved-changes-modal" uk-modal="esc-close: false; bg-close: false">
   <div class="uk-modal-dialog uk-modal-body">
-<!--    <h2 class="uk-modal-title"></h2>-->
+    <!--    <h2 class="uk-modal-title"></h2>-->
     <p>There are unsaved changes, do you want to submit them before moving on;</p>
     <p class="uk-text-right">
       <button class="uk-button uk-button-secondary uk-modal-close" type="button">I will do it later</button>

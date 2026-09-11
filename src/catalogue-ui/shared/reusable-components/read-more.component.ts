@@ -18,8 +18,10 @@ import {
     <div [class.collapsed]="isCollapsed" [style.height]="isCollapsed ? maxHeight+'px' : 'auto'" #readMoreDiv>
       <ng-content></ng-content>
     </div>
-    <a *ngIf="isCollapsable" (click)="isCollapsed =! isCollapsed">View {{isCollapsed ? 'more' : 'less'}}...</a>
-  `,
+    @if (isCollapsable) {
+      <a (click)="isCollapsed =! isCollapsed">View {{isCollapsed ? 'more' : 'less'}}...</a>
+    }
+    `,
   styles: [`
     div.collapsed {
       overflow: hidden;
@@ -57,11 +59,13 @@ export class ReadMoreComponent implements AfterContentInit {
   selector: 'read-more-text',
   template: `
     <div [innerHTML]="text" [class.collapsed]="isCollapsed" [style.height]="isCollapsed ? maxHeight+'px' : 'auto'"
-         #readMoreDiv>
+      #readMoreDiv>
       <!--{{text}}-->
     </div>
-    <a *ngIf="isCollapsable" (click)="isCollapsed =! isCollapsed">View {{isCollapsed ? 'more' : 'less'}}...</a>
-  `,
+    @if (isCollapsable) {
+      <a (click)="isCollapsed =! isCollapsed">View {{isCollapsed ? 'more' : 'less'}}...</a>
+    }
+    `,
   styles: [`
     div.collapsed {
       overflow: hidden;

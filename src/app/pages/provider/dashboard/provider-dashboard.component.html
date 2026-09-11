@@ -33,7 +33,7 @@
 
     </aside>
     <div id="page_content">
-      <ng-container *ngIf="providerBundle !== null">
+      @if (providerBundle !== null) {
         <div class="services-provider-header">
           <div class="uk-section uk-section-xsmall">
             <div class="uk-container uk-container-expand">
@@ -43,42 +43,44 @@
                     <div class="titleLogo">
                       <img src="{{providerBundle.provider.logo}}" style="max-width: 210px; height: 70px;">
                     </div>
-<!--                    <div class="titleIcon">-->
-<!--                      <span class="material-icons uk-margin-small-right">{{titleIcon}}</span>-->
-<!--                    </div>-->
-                    <div class="uk-margin-left">
-                      <div class="uk-text-meta uk-margin-remove">Admin - {{providerBundle.provider.name}}</div>
-                      <h5>{{title}}</h5>
-                    </div>
+                    <!--                    <div class="titleIcon">-->
+                    <!--                      <span class="material-icons uk-margin-small-right">{{titleIcon}}</span>-->
+                  <!--                    </div>-->
+                  <div class="uk-margin-left">
+                    <div class="uk-text-meta uk-margin-remove">Admin - {{providerBundle.provider.name}}</div>
+                    <h5>{{title}}</h5>
                   </div>
-
-                  <div class="uk-flex">
-                    <div *ngIf="providerBundle.status==='approved provider'">
+                </div>
+                <div class="uk-flex">
+                  @if (providerBundle.status==='approved provider') {
+                    <div>
                       <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
-                              [routerLink]="['/provider', providerId, 'service', 'add']">
+                        [routerLink]="['/provider', providerId, 'service', 'add']">
                         <span class="material-icons uk-margin-small-right">add</span>New Service
                       </button>
                     </div>
-                    <div *ngIf="providerBundle.status!=='approved provider'" uk-tooltip="Disabled until provider gets approved.">
+                  }
+                  @if (providerBundle.status!=='approved provider') {
+                    <div uk-tooltip="Disabled until provider gets approved.">
                       <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle uk-disabled">
                         <span class="material-icons uk-margin-small-right">add</span>New Service
                       </button>
                     </div>
-
-                    <div>
-                      <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
-                              [routerLink]="['../update']">
-                        <span class="material-icons uk-margin-small-right">update</span>Update provider
-                      </button>
-                    </div>
+                  }
+                  <div>
+                    <button class="uk-button uk-button-small uk-button-secondary uk-margin-left uk-flex uk-flex-middle"
+                      [routerLink]="['../update']">
+                      <span class="material-icons uk-margin-small-right">update</span>Update provider
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <router-outlet (activate)="onActivate($event)"></router-outlet>
-      </ng-container>
-    </div>
+      </div>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
+    }
   </div>
+</div>
 </div>

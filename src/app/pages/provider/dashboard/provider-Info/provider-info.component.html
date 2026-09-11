@@ -1,127 +1,144 @@
 <div class="uk-section uk-section-xsmall">
   <div class="uk-container uk-container-expand">
-    <div *ngIf="vocabularies">
-      <div class="">
-        <ul uk-tab="connect: #top-navigation-tabs; animation: uk-animation-fade"
+    @if (vocabularies) {
+      <div>
+        <div class="">
+          <ul uk-tab="connect: #top-navigation-tabs; animation: uk-animation-fade"
             class="uk-width-1-1 uk-margin-remove uk-tab form-tabs">
-          <li class=""><a href="#" aria-expanded="true"><span>Basic</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Marketing</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Classification</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Location</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Contact</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Maturity</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Dependencies</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Other</span></a></li>
-          <li class=""><a href="#" aria-expanded="false"><span>Admins</span></a></li>
-        </ul>
-      </div>
-      <div class="uk-padding">
-        <ul id="top-navigation-tabs" class="uk-switcher" style="touch-action: pan-y pinch-zoom;">
-          <!--Basic-->
-          <li>
-            <ul class="uk-list uk-width-1-1">
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Name</div>
-                  <div class="uk-width-3-4">{{provider.name}}</div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Abbreviation</div>
-                  <div class="uk-width-3-4">{{provider.abbreviation}}</div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Website</div>
-                  <div class="uk-width-3-4"><a [href]="provider.website" target="_blank">{{provider.website}}</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Legal Entity</div>
-                  <div class="uk-width-3-4">{{provider.legalEntity}}</div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Legal Status</div>
-                  <div class="uk-width-3-4">
-                    <span>{{getVocabularyName('Provider legal status' ,provider.legalStatus)}}</span>
+            <li class=""><a href="#" aria-expanded="true"><span>Basic</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Marketing</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Classification</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Location</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Contact</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Maturity</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Dependencies</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Other</span></a></li>
+            <li class=""><a href="#" aria-expanded="false"><span>Admins</span></a></li>
+          </ul>
+        </div>
+        <div class="uk-padding">
+          <ul id="top-navigation-tabs" class="uk-switcher" style="touch-action: pan-y pinch-zoom;">
+            <!--Basic-->
+            <li>
+              <ul class="uk-list uk-width-1-1">
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Name</div>
+                    <div class="uk-width-3-4">{{provider.name}}</div>
                   </div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Hosting Legal Entity</div>
-                  <div class="uk-width-3-4">{{provider.hostingLegalEntity ? provider.hostingLegalEntity : '-'}}</div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <!--Marketing-->
-          <li>
-            <ul class="uk-list uk-width-1-1">
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Description</div>
-                  <div class="uk-width-3-4">
-                    <p [innerHTML]="provider.description"></p>
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Abbreviation</div>
+                    <div class="uk-width-3-4">{{provider.abbreviation}}</div>
                   </div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Logo</div>
-                  <div class="uk-width-3-4">
-                    <a [href]="provider.logo" target="_blank">{{provider.logo}}</a>
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Website</div>
+                    <div class="uk-width-3-4"><a [href]="provider.website" target="_blank">{{provider.website}}</a></div>
                   </div>
-                </div>
-              </li>
-              <h6 *ngIf="provider.multimedia.length > 0" class="uk-margin-medium-top">Multimedia</h6>
-              <li *ngFor="let multimedia of provider.multimedia">
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Multimedia URL</div>
-                  <div class="uk-width-3-4"><span><a [href]="multimedia.multimediaURL" target="_blank">{{multimedia.multimediaURL}}</a></span></div>
-                </div>
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4">Multimedia Name</div>
-                  <div class="uk-width-3-4"><span>{{multimedia.multimediaName}}</span></div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <!--Classification-->
-          <li>
-            <ul class="uk-list uk-width-1-1">
-              <h6 *ngIf="provider.scientificDomains.length > 0">Scientific Categorisation</h6>
-              <li *ngFor="let domain of provider.scientificDomains" class="uk-margin-small-bottom">
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Scientific Domain</div>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Scientific domain', domain.scientificDomain)}}</span></div>
-                </div>
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4">Scientific Subdomain</div>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Scientific subdomain', domain.scientificSubdomain)}}</span></div>
-                </div>
-              </li>
-              <li class="uk-margin-medium-top">
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span>Tags</span></div>
-                  <div class="uk-width-3-4">
-                    <span *ngFor="let tag of provider.tags; let i=index">{{i>0 ? ', ' + tag : tag}}</span>
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Legal Entity</div>
+                    <div class="uk-width-3-4">{{provider.legalEntity}}</div>
                   </div>
-                </div>
-              </li>
-              <li>
-                <div *ngFor="let structureType of provider.structureTypes; let i=index;"
-                     class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span *ngIf="i==0">Structure Type</span></div>
-                  <ng-container *ngIf="i > 0">{{ '\n' }}</ng-container>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Provider structure type', structureType)}}</span>
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Legal Status</div>
+                    <div class="uk-width-3-4">
+                      <span>{{getVocabularyName('Provider legal status' ,provider.legalStatus)}}</span>
+                    </div>
                   </div>
-                </div>
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Hosting Legal Entity</div>
+                    <div class="uk-width-3-4">{{provider.hostingLegalEntity ? provider.hostingLegalEntity : '-'}}</div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <!--Marketing-->
+            <li>
+              <ul class="uk-list uk-width-1-1">
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Description</div>
+                    <div class="uk-width-3-4">
+                      <p [innerHTML]="provider.description"></p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">Logo</div>
+                    <div class="uk-width-3-4">
+                      <a [href]="provider.logo" target="_blank">{{provider.logo}}</a>
+                    </div>
+                  </div>
+                </li>
+                @if (provider.multimedia.length > 0) {
+                  <h6 class="uk-margin-medium-top">Multimedia</h6>
+                }
+                @for (multimedia of provider.multimedia; track multimedia) {
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Multimedia URL</div>
+                      <div class="uk-width-3-4"><span><a [href]="multimedia.multimediaURL" target="_blank">{{multimedia.multimediaURL}}</a></span></div>
+                    </div>
+                    <div class="uk-grid uk-margin-remove-top">
+                      <div class="uk-width-1-4">Multimedia Name</div>
+                      <div class="uk-width-3-4"><span>{{multimedia.multimediaName}}</span></div>
+                    </div>
+                  </li>
+                }
+              </ul>
+            </li>
+            <!--Classification-->
+            <li>
+              <ul class="uk-list uk-width-1-1">
+                @if (provider.scientificDomains.length > 0) {
+                  <h6>Scientific Categorisation</h6>
+                }
+                @for (domain of provider.scientificDomains; track domain) {
+                  <li class="uk-margin-small-bottom">
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Scientific Domain</div>
+                      <div class="uk-width-3-4"><span>{{getVocabularyName('Scientific domain', domain.scientificDomain)}}</span></div>
+                    </div>
+                    <div class="uk-grid uk-margin-remove-top">
+                      <div class="uk-width-1-4">Scientific Subdomain</div>
+                      <div class="uk-width-3-4"><span>{{getVocabularyName('Scientific subdomain', domain.scientificSubdomain)}}</span></div>
+                    </div>
+                  </li>
+                }
+                <li class="uk-margin-medium-top">
+                  <div class="uk-grid uk-margin-remove-top">
+                    <div class="uk-width-1-4"><span>Tags</span></div>
+                    <div class="uk-width-3-4">
+                      @for (tag of provider.tags; track tag; let i = $index) {
+                        <span>{{i>0 ? ', ' + tag : tag}}</span>
+                      }
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  @for (structureType of provider.structureTypes; track structureType; let i = $index) {
+                    <div
+                      class="uk-grid uk-margin-remove-top">
+                      <div class="uk-width-1-4">@if (i==0) {
+                        <span>Structure Type</span>
+                      }</div>
+                      @if (i > 0) {
+                        {{ '\n' }}
+                      }
+                      <div class="uk-width-3-4"><span>{{getVocabularyName('Provider structure type', structureType)}}</span>
+                    </div>
+                  </div>
+                }
               </li>
             </ul>
           </li>
@@ -195,38 +212,40 @@
                 </div>
               </li>
               <h6 class="uk-margin-medium-top">Public Contacts</h6>
-              <div *ngFor="let publicContact of provider.publicContacts">
-                <li>
-                  <div class="uk-grid">
-                    <div class="uk-width-1-4">First Name</div>
-                    <div class="uk-width-3-4">{{publicContact.firstName}}</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="uk-grid">
-                    <div class="uk-width-1-4">Last Name</div>
-                    <div class="uk-width-3-4">{{publicContact.lastName}}</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="uk-grid">
-                    <div class="uk-width-1-4">Email</div>
-                    <div class="uk-width-3-4">{{publicContact.email}}</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="uk-grid">
-                    <div class="uk-width-1-4">Phone</div>
-                    <div class="uk-width-3-4">{{publicContact.phone}}</div>
-                  </div>
-                </li>
-                <li>
-                  <div class="uk-grid">
-                    <div class="uk-width-1-4">Position</div>
-                    <div class="uk-width-3-4">{{publicContact.position}}</div>
-                  </div>
-                </li>
-              </div>
+              @for (publicContact of provider.publicContacts; track publicContact) {
+                <div>
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">First Name</div>
+                      <div class="uk-width-3-4">{{publicContact.firstName}}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Last Name</div>
+                      <div class="uk-width-3-4">{{publicContact.lastName}}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Email</div>
+                      <div class="uk-width-3-4">{{publicContact.email}}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Phone</div>
+                      <div class="uk-width-3-4">{{publicContact.phone}}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Position</div>
+                      <div class="uk-width-3-4">{{publicContact.position}}</div>
+                    </div>
+                  </li>
+                </div>
+              }
             </ul>
           </li>
           <!--Maturity-->
@@ -244,8 +263,12 @@
                 <div class="uk-grid uk-margin-remove-top">
                   <div class="uk-width-1-4"><span>Certifications</span></div>
                   <div class="uk-width-3-4">
-                    <span *ngFor="let certification of provider.certifications; let i=index">{{i>0 ? ', ' + certification : certification}}</span>
-                    <span *ngIf="provider.certifications.length === 0 ">-</span>
+                    @for (certification of provider.certifications; track certification; let i = $index) {
+                      <span>{{i>0 ? ', ' + certification : certification}}</span>
+                    }
+                    @if (provider.certifications.length === 0 ) {
+                      <span>-</span>
+                    }
                   </div>
                 </div>
               </li>
@@ -258,108 +281,149 @@
                 <div class="uk-grid uk-margin-remove-top">
                   <div class="uk-width-1-4"><span>Participating Countries</span></div>
                   <div class="uk-width-3-4">
-                <span *ngFor="let country of provider.participatingCountries; let i=index">
-                  <ng-container *ngIf="i > 0"><br></ng-container>
-                  {{getVocabularyName('Country', country)}}
-                </span>
-                    <span *ngIf="provider.participatingCountries.length === 0 ">-</span>
+                    @for (country of provider.participatingCountries; track country; let i = $index) {
+                      <span>
+                        @if (i > 0) {
+                          <br>
+                          }
+                          {{getVocabularyName('Country', country)}}
+                        </span>
+                      }
+                      @if (provider.participatingCountries.length === 0 ) {
+                        <span>-</span>
+                      }
+                    </div>
                   </div>
-                </div>
+                </li>
+                <li>
+                  <div class="uk-grid uk-margin-remove-top">
+                    <div class="uk-width-1-4"><span>Affiliations</span></div>
+                    <div class="uk-width-3-4">
+                      @for (affiliation of provider.affiliations; track affiliation; let i = $index) {
+                        <span>{{i>0 ? ', ' + affiliation : affiliation}}</span>
+                      }
+                      @if (provider.affiliations.length === 0 ) {
+                        <span>-</span>
+                      }
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="uk-grid uk-margin-remove-top">
+                    <div class="uk-width-1-4"><span>Networks</span></div>
+                    <div class="uk-width-3-4">
+                      @for (network of provider.networks; track network; let i = $index) {
+                        <span>
+                          @if (i > 0) {
+                            <br>
+                            }
+                            {{getVocabularyName('Provider network', network)}}
+                          </span>
+                        }
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">Catalogue</div>
+                      <div class="uk-width-3-4">{{provider.catalogueId}}</div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!--Other-->
+              <li>
+                <ul class="uk-list uk-width-1-1">
+                  <li>
+                    @for (esfriDomain of provider.esfriDomains; track esfriDomain; let i = $index) {
+                      <div
+                        class="uk-grid uk-margin-remove-top">
+                        <div class="uk-width-1-4">@if (i==0) {
+                          <span>ESFRI Domain</span>
+                        }</div>
+                        <div class="uk-width-3-4"><span>
+                          @if (i > 0) {
+                            {{ '\n' }}
+                          }
+                        {{getVocabularyName('Provider esfri domain', esfriDomain)}}</span>
+                      </div>
+                    </div>
+                  }
+                </li>
+                <li>
+                  <div class="uk-grid">
+                    <div class="uk-width-1-4">ESFRI Type</div>
+                    <div class="uk-width-3-4">
+                      {{getVocabularyName('Provider esfri type', provider.esfriType)}}
+                    </div>
+                  </div>
+                </li>
+                @if (provider.merilScientificDomains.length > 0) {
+                  <h6 class="uk-margin-medium-top">MERIL Scientific Categorisation</h6>
+                }
+                @for (domain of provider.merilScientificDomains; track domain) {
+                  <li>
+                    <div class="uk-grid">
+                      <div class="uk-width-1-4">MERIL Scientific Domain</div>
+                      <div class="uk-width-3-4"><span>{{getVocabularyName('Provider meril scientific domain', domain.merilScientificDomain)}}</span></div>
+                    </div>
+                    <div class="uk-grid uk-margin-remove-top">
+                      <div class="uk-width-1-4">MERIL Scientific Subdomain</div>
+                      <div class="uk-width-3-4"><span>{{getVocabularyName('Provider meril scientific subdomain', domain.merilScientificSubdomain)}}</span></div>
+                    </div>
+                  </li>
+                }
+                <li>
+                  @for (areaOfActivity of provider.areasOfActivity; track areaOfActivity; let i = $index) {
+                    <div
+                      class="uk-grid uk-margin-remove-top">
+                      <div class="uk-width-1-4">@if (i==0) {
+                        <span>Area of Activity</span>
+                      }</div>
+                      @if (i > 0) {
+                        {{ '\n' }}
+                      }
+                      <div class="uk-width-3-4"><span>{{getVocabularyName('Provider area of activity', areaOfActivity)}}</span>
+                    </div>
+                  </div>
+                }
               </li>
               <li>
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span>Affiliations</span></div>
-                  <div class="uk-width-3-4">
-                    <span *ngFor="let affiliation of provider.affiliations; let i=index">{{i>0 ? ', ' + affiliation : affiliation}}</span>
-                    <span *ngIf="provider.affiliations.length === 0 ">-</span>
+                @for (societalGrandChallenge of provider.societalGrandChallenges; track societalGrandChallenge; let i = $index) {
+                  <div
+                    class="uk-grid uk-margin-remove-top">
+                    <div class="uk-width-1-4">@if (i==0) {
+                      <span>Provider Societal Grand Challenge</span>
+                    }</div>
+                    @if (i > 0) {
+                      {{ '\n' }}
+                    }
+                    <div class="uk-width-3-4"><span>{{getVocabularyName('Provider societal grand challenge', societalGrandChallenge)}}</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span>Networks</span></div>
-                  <div class="uk-width-3-4">
-                <span *ngFor="let network of provider.networks; let i=index">
-                  <ng-container *ngIf="i > 0"><br></ng-container>
-                  {{getVocabularyName('Provider network', network)}}
-                </span>
-                  </div>
+              }
+            </li>
+            <li>
+              <div class="uk-grid uk-margin-remove-top">
+                <div class="uk-width-1-4"><span>National Roadmaps</span></div>
+                <div class="uk-width-3-4">
+                  @for (nationalRoadmap of provider.nationalRoadmaps; track nationalRoadmap; let i = $index) {
+                    <span>
+                      {{i>0 ? ', ' + nationalRoadmap : nationalRoadmap}}
+                    </span>
+                  }
+                  @if (provider.nationalRoadmaps.length === 0) {
+                    <span>-</span>
+                  }
                 </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">Catalogue</div>
-                  <div class="uk-width-3-4">{{provider.catalogueId}}</div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <!--Other-->
-          <li>
-            <ul class="uk-list uk-width-1-1">
-              <li>
-                <div *ngFor="let esfriDomain of provider.esfriDomains; let i=index;"
-                     class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span *ngIf="i==0">ESFRI Domain</span></div>
-                  <div class="uk-width-3-4"><span>
-                    <ng-container *ngIf="i > 0">{{ '\n' }}</ng-container>
-                    {{getVocabularyName('Provider esfri domain', esfriDomain)}}</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">ESFRI Type</div>
-                  <div class="uk-width-3-4">
-                    {{getVocabularyName('Provider esfri type', provider.esfriType)}}
-                  </div>
-                </div>
-              </li>
-              <h6 *ngIf="provider.merilScientificDomains.length > 0" class="uk-margin-medium-top">MERIL Scientific Categorisation</h6>
-              <li *ngFor="let domain of provider.merilScientificDomains">
-                <div class="uk-grid">
-                  <div class="uk-width-1-4">MERIL Scientific Domain</div>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Provider meril scientific domain', domain.merilScientificDomain)}}</span></div>
-                </div>
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4">MERIL Scientific Subdomain</div>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Provider meril scientific subdomain', domain.merilScientificSubdomain)}}</span></div>
-                </div>
-              </li>
-              <li>
-                <div *ngFor="let areaOfActivity of provider.areasOfActivity; let i=index;"
-                     class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span *ngIf="i==0">Area of Activity</span></div>
-                  <ng-container *ngIf="i > 0">{{ '\n' }}</ng-container>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Provider area of activity', areaOfActivity)}}</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div *ngFor="let societalGrandChallenge of provider.societalGrandChallenges; let i=index;"
-                     class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span *ngIf="i==0">Provider Societal Grand Challenge</span></div>
-                  <ng-container *ngIf="i > 0">{{ '\n' }}</ng-container>
-                  <div class="uk-width-3-4"><span>{{getVocabularyName('Provider societal grand challenge', societalGrandChallenge)}}</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="uk-grid uk-margin-remove-top">
-                  <div class="uk-width-1-4"><span>National Roadmaps</span></div>
-                  <div class="uk-width-3-4">
-                <span *ngFor="let nationalRoadmap of provider.nationalRoadmaps; let i=index">
-                  {{i>0 ? ', ' + nationalRoadmap : nationalRoadmap}}
-                </span>
-                    <span *ngIf="provider.nationalRoadmaps.length === 0">-</span>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <!--Admins-->
-          <li>
-            <ul *ngFor="let user of provider.users" class="uk-list uk-width-1-1 uk-margin-medium-bottom">
+              </div>
+            </li>
+          </ul>
+        </li>
+        <!--Admins-->
+        <li>
+          @for (user of provider.users; track user) {
+            <ul class="uk-list uk-width-1-1 uk-margin-medium-bottom">
               <li>
                 <div class="uk-grid">
                   <div class="uk-width-1-4">First Name</div>
@@ -379,11 +443,13 @@
                 </div>
               </li>
             </ul>
-          </li>
-        </ul>
-      </div>
+          }
+        </li>
+      </ul>
     </div>
   </div>
+}
+</div>
 </div>
 
 <!--<pre>{{provider | json}}</pre>-->

@@ -1,16 +1,20 @@
-<div *ngIf="!ready" class="whiteFilm">
-  <i class="fa fa-spinner fa-spin fa-5x uk-position-center loader" aria-hidden="true"></i>
-</div>
-<div *ngIf="model" class="uk-section-default uk-section uk-section-small uk-padding-remove-bottom" style="min-height: 90vh;">
-  <div class="uk-container uk-container-expand uk-margin-left uk-margin-right">
-
-    <div *ngIf="errorMessage" id="errorAlert" class="uk-alert-danger" uk-alert>
-      <a class="uk-alert-close" uk-close></a>
-      <pre class="uk-alert-danger">{{errorMessage}}</pre>
-    </div>
-
-    <app-survey [payload]="payloadAnswer" [model]="model" [vocabulariesMap]="vocabulariesMap" [tabsHeader]=""
-                [subVocabularies]="subVocabulariesMap" (submit)="submitForm($event)">
-    </app-survey>
+@if (!ready) {
+  <div class="whiteFilm">
+    <i class="fa fa-spinner fa-spin fa-5x uk-position-center loader" aria-hidden="true"></i>
   </div>
-</div>
+}
+@if (model) {
+  <div class="uk-section-default uk-section uk-section-small uk-padding-remove-bottom" style="min-height: 90vh;">
+    <div class="uk-container uk-container-expand uk-margin-left uk-margin-right">
+      @if (errorMessage) {
+        <div id="errorAlert" class="uk-alert-danger" uk-alert>
+          <a class="uk-alert-close" uk-close></a>
+          <pre class="uk-alert-danger">{{errorMessage}}</pre>
+        </div>
+      }
+      <app-survey [payload]="payloadAnswer" [model]="model" [vocabulariesMap]="vocabulariesMap" [tabsHeader]=""
+        [subVocabularies]="subVocabulariesMap" (submit)="submitForm($event)">
+      </app-survey>
+    </div>
+  </div>
+}

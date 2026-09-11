@@ -3,63 +3,75 @@
 
     <h2>Select a plan</h2>
 
-    <div *ngIf="resourcePayload?.extras?.['paymentCategories'][0]?.['paymentTitle']"
-         class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-margin-large-top uk-flex-center">
-
-      <div *ngFor="let paymentCategory of resourcePayload?.extras?.['paymentCategories']" class="uk-margin-medium-bottom">
-        <div class="el-item uk-margin-auto uk-width-large uk-card uk-card-large uk-card-body uk-margin-remove-first-child uk-flex uk-flex-column uk-flex-between"
-        [ngClass]="{'uk-card-default': paymentCategory.paymentHighlight != 'true', 'uk-card-primary': paymentCategory.paymentHighlight === 'true'}">
-
-          <div>
-            <h5 class="el-meta uk-margin-top uk-margin-remove-bottom uk-text-center">{{paymentCategory['paymentTitle']}}</h5>
-            <li *ngIf="paymentCategory['paymentSubtitle']" class="uk-margin-top text-center">
-              <div class="text-info">{{ paymentCategory['paymentSubtitle'] }}</div>
-            </li>
-            <h3 class="el-title uk-margin-top uk-margin-remove-bottom uk-text-center">
-              <p *ngIf="paymentCategory['paymentPrice']" class="uk-margin-remove" style="font-size: 24px">{{paymentCategory['paymentPrice']}} <span>&euro;</span>
-                <span *ngIf="paymentCategory['paymentBilling']" style="font-size: 20px"> / {{paymentCategory['paymentBilling']}} &#42;
-                </span>
-              </p>
-              <p *ngIf="!paymentCategory['paymentPrice']" class="uk-margin-remove">-</p>
-              <p class="uk-text-meta uk-margin-remove">{{paymentCategory['paymentPeriod']}}</p>
-            </h3>
-
-            <div class="el-content uk-panel uk-text-left uk-margin-medium-top">
-              <ul class="uk-list uk-list-large">
-                <li *ngFor="let include of paymentCategory['paymentIncludes']">
-                  <div *ngIf="include !== ''" class="uk-grid-small uk-grid" uk-grid="">
-                    <div class="uk-width-auto uk-first-column">
-                      <img class="uk-text-success" src="/demo/devstack/images/check.svg" uk-svg="" hidden="">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" class="uk-text-success uk-svg">
-                        <path d="M4.35,9a.74.74,0,0,1-.52-.22L.45,5.43a.79.79,0,0,1,0-1.09.74.74,0,0,1,1.05,0h0L4.32,7.13,10.42.25a.73.73,0,0,1,1,0l0,0a.77.77,0,0,1,0,1.08L4.91,8.75A.78.78,0,0,1,4.38,9Z"></path>
-                      </svg>
-                    </div>
-                    <div class="uk-width-expand">{{include}}</div>
-                  </div>
-                </li>
-              </ul>
+    @if (resourcePayload?.extras?.['paymentCategories'][0]?.['paymentTitle']) {
+      <div
+        class="uk-grid uk-grid-match uk-child-width-1-1@s uk-child-width-1-3@m uk-child-width-1-3@l uk-margin-large-top uk-flex-center">
+        @for (paymentCategory of resourcePayload?.extras?.['paymentCategories']; track paymentCategory) {
+          <div class="uk-margin-medium-bottom">
+            <div class="el-item uk-margin-auto uk-width-large uk-card uk-card-large uk-card-body uk-margin-remove-first-child uk-flex uk-flex-column uk-flex-between"
+              [ngClass]="{'uk-card-default': paymentCategory.paymentHighlight != 'true', 'uk-card-primary': paymentCategory.paymentHighlight === 'true'}">
+              <div>
+                <h5 class="el-meta uk-margin-top uk-margin-remove-bottom uk-text-center">{{paymentCategory['paymentTitle']}}</h5>
+                @if (paymentCategory['paymentSubtitle']) {
+                  <li class="uk-margin-top text-center">
+                    <div class="text-info">{{ paymentCategory['paymentSubtitle'] }}</div>
+                  </li>
+                }
+                <h3 class="el-title uk-margin-top uk-margin-remove-bottom uk-text-center">
+                  @if (paymentCategory['paymentPrice']) {
+                    <p class="uk-margin-remove" style="font-size: 24px">{{paymentCategory['paymentPrice']}} <span>&euro;</span>
+                    @if (paymentCategory['paymentBilling']) {
+                      <span style="font-size: 20px"> / {{paymentCategory['paymentBilling']}} &#42;
+                      </span>
+                    }
+                  </p>
+                }
+                @if (!paymentCategory['paymentPrice']) {
+                  <p class="uk-margin-remove">-</p>
+                }
+                <p class="uk-text-meta uk-margin-remove">{{paymentCategory['paymentPeriod']}}</p>
+              </h3>
+              <div class="el-content uk-panel uk-text-left uk-margin-medium-top">
+                <ul class="uk-list uk-list-large">
+                  @for (include of paymentCategory['paymentIncludes']; track include) {
+                    <li>
+                      @if (include !== '') {
+                        <div class="uk-grid-small uk-grid" uk-grid="">
+                          <div class="uk-width-auto uk-first-column">
+                            <img class="uk-text-success" src="/demo/devstack/images/check.svg" uk-svg="" hidden="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" class="uk-text-success uk-svg">
+                              <path d="M4.35,9a.74.74,0,0,1-.52-.22L.45,5.43a.79.79,0,0,1,0-1.09.74.74,0,0,1,1.05,0h0L4.32,7.13,10.42.25a.73.73,0,0,1,1,0l0,0a.77.77,0,0,1,0,1.08L4.91,8.75A.78.78,0,0,1,4.38,9Z"></path>
+                            </svg>
+                          </div>
+                          <div class="uk-width-expand">{{include}}</div>
+                        </div>
+                      }
+                    </li>
+                  }
+                </ul>
+              </div>
             </div>
-          </div>
-
-          <div class="uk-margin-large-top uk-text-center">
-            <button (click)="goto(paymentCategory['paymentURL'])" uk-scroll="" class="el-link uk-button uk-button-primary uk-button-large">
-              {{paymentCategory['paymentButtonText']}}<i class="fa fa-external-link uk-margin-small-left"></i>
-            </button>
-          </div>
-
-<!--          <pre>-->
-<!--            {{paymentCategory | json}}-->
-<!--          </pre>-->
+            <div class="uk-margin-large-top uk-text-center">
+              <button (click)="goto(paymentCategory['paymentURL'])" uk-scroll="" class="el-link uk-button uk-button-primary uk-button-large">
+                {{paymentCategory['paymentButtonText']}}<i class="fa fa-external-link uk-margin-small-left"></i>
+              </button>
+            </div>
+            <!--          <pre>-->
+            <!--            {{paymentCategory | json}}-->
+          <!--          </pre>-->
         </div>
       </div>
-
-    </div>
-
-    <div *ngIf="resourcePayload?.extras?.paymentInformation">
-      <span [innerHTML]="resourcePayload.extras.paymentInformation"></span>
-    </div>
-
+    }
   </div>
+}
+
+@if (resourcePayload?.extras?.paymentInformation) {
+  <div>
+    <span [innerHTML]="resourcePayload.extras.paymentInformation"></span>
+  </div>
+}
+
+</div>
 </div>
 
 <!--<pre *ngIf="form">{{form.getRawValue() | json}}</pre>-->

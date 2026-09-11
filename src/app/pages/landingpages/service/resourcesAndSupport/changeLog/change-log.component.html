@@ -1,33 +1,38 @@
-<div *ngIf="resourcePayload" class="uk-section uk-section-primary uk-preserve-color">
-  <div class="uk-container uk-container-small">
-
-    <div class="uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l uk-padding-remove-top">
-      <h2>Change Log</h2>
-    </div>
-
-    <div *ngFor="let changeLog of resourcePayload.extras['openAireChangeLog']" class="">
-      <div class="uk-child-width-1-1" uk-grid>
-        <div class="uk-margin-medium-top">
-          <span class="fs-4">{{changeLog.changeLogVersion}}</span>
-          <span class="fs-5 text-black-50"> ({{changeLog.changeDate | date}})</span>
-        </div>
-        <div *ngFor="let changes of changeLog.logs" class="uk-child-width-1-1 uk-margin-remove-top" uk-grid>
-          <div class="uk-margin-small-top uk-width-1-1" uk-grid>
-            <div class="uk-width-auto uk-margin-small-right">
-              <div class="badge-success uk-text-center" style="width: 100px" [ngStyle]="{'background-color': badgeColor(changes.type)}">
-                {{changes.type}}
-              </div>
+@if (resourcePayload) {
+  <div class="uk-section uk-section-primary uk-preserve-color">
+    <div class="uk-container uk-container-small">
+      <div class="uk-grid uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-2@l uk-padding-remove-top">
+        <h2>Change Log</h2>
+      </div>
+      @for (changeLog of resourcePayload.extras['openAireChangeLog']; track changeLog) {
+        <div class="">
+          <div class="uk-child-width-1-1" uk-grid>
+            <div class="uk-margin-medium-top">
+              <span class="fs-4">{{changeLog.changeLogVersion}}</span>
+              <span class="fs-5 text-black-50"> ({{changeLog.changeDate | date}})</span>
             </div>
-            <div class="uk-width-expand text-black-50 uk-padding-remove-left">{{changes.value}}</div>
+            @for (changes of changeLog.logs; track changes) {
+              <div class="uk-child-width-1-1 uk-margin-remove-top" uk-grid>
+                <div class="uk-margin-small-top uk-width-1-1" uk-grid>
+                  <div class="uk-width-auto uk-margin-small-right">
+                    <div class="badge-success uk-text-center" style="width: 100px" [ngStyle]="{'background-color': badgeColor(changes.type)}">
+                      {{changes.type}}
+                    </div>
+                  </div>
+                  <div class="uk-width-expand text-black-50 uk-padding-remove-left">{{changes.value}}</div>
+                </div>
+              </div>
+            }
           </div>
         </div>
-      </div>
+      }
+      @if (!cleanView) {
+        <div class="uk-margin-top">
+          <a class="uk-button uk-button-text" [routerLink]="['../resourcesAndSupport']">back</a>
+        </div>
+      }
     </div>
-    <div *ngIf="!cleanView" class="uk-margin-top">
-      <a class="uk-button uk-button-text" [routerLink]="['../resourcesAndSupport']">back</a>
-    </div>
-
   </div>
-</div>
+}
 
 <!--      <pre>{{resourcePayload.extras['openAireChangeLog'] | json}}</pre>-->

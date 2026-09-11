@@ -36,58 +36,60 @@
                   <div [ngClass]="portfolioItemActive==null?'uk-display-block':'uk-display-none'">
                     <h5 class="uk-text-center">Browse Services</h5>
 
-                    <div class="uk-margin-medium-top uk-flex uk-flex-middle uk-flex-between" *ngFor="let portfolio of resources | keyvalue">
-                      <h6 class="uk-text-normal uk-margin-remove">{{portfolio.key}}</h6>
-                      <a (click)="portfolioActive(portfolio.key)"><i class="fa fa-2x fa-angle-right"></i></a>
-                    </div>
+                    @for (portfolio of resources | keyvalue; track portfolio) {
+                      <div class="uk-margin-medium-top uk-flex uk-flex-middle uk-flex-between">
+                        <h6 class="uk-text-normal uk-margin-remove">{{portfolio.key}}</h6>
+                        <a (click)="portfolioActive(portfolio.key)"><i class="fa fa-2x fa-angle-right"></i></a>
+                      </div>
+                    }
                   </div>
 
-<!--                  <ng-container *ngFor="let portfolio of services | keyvalue">-->
-<!--                    <div style="display: none" [ngClass]="portfolioItemActive===portfolio.key?'uk-display-block':'uk-display-none'">-->
+                  <!--                  <ng-container *ngFor="let portfolio of services | keyvalue">-->
+                  <!--                    <div style="display: none" [ngClass]="portfolioItemActive===portfolio.key?'uk-display-block':'uk-display-none'">-->
 
-<!--                      <div class="uk-flex uk-flex-middle">-->
-<!--                        <a (click)="portfolioActive(null)"><i class="fa fa-2x fa-angle-left"></i></a>-->
-<!--                        <h5 class="uk-text-center uk-margin-remove" style="width: 100%">{{portfolio.key}}</h5>-->
-<!--                      </div>-->
+                  <!--                      <div class="uk-flex uk-flex-middle">-->
+                  <!--                        <a (click)="portfolioActive(null)"><i class="fa fa-2x fa-angle-left"></i></a>-->
+                  <!--                        <h5 class="uk-text-center uk-margin-remove" style="width: 100%">{{portfolio.key}}</h5>-->
+                <!--                      </div>-->
 
-<!--                      <div *ngFor="let service of portfolio.value | slice:0:3;" class="uk-margin-medium-top">-->
-<!--                        <a (click)="redirectTo('/service/' + service.id)">-->
-<!--                          <h6 class="uk-text-normal">{{service.name}}</h6>-->
-<!--                        </a>-->
-<!--                      </div>-->
+                <!--                      <div *ngFor="let service of portfolio.value | slice:0:3;" class="uk-margin-medium-top">-->
+                <!--                        <a (click)="redirectTo('/service/' + service.id)">-->
+                <!--                          <h6 class="uk-text-normal">{{service.name}}</h6>-->
+              <!--                        </a>-->
+            <!--                      </div>-->
 
-<!--                    </div>-->
-<!--                  </ng-container>-->
+          <!--                    </div>-->
+        <!--                  </ng-container>-->
 
-                  <div class="uk-flex uk-flex-center">
-                    <button class="uk-margin-medium-top uk-margin-bottom uk-button uk-button-secondary" [routerLink]="['/search']">Explore all</button>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="help-section">
-            <div class="uk-padding" style="background: #F9F9F9 0% 0% no-repeat padding-box;">
-              <div class="uk-margin-top">
-                <p>Didn't find what you are looking for? <a href="mailto:info@openaire.eu">Contact us</a></p>
-                <p>Need service advices? <a href="https://www.openaire.eu/contact-noads" target="_blank">Contact NOADs</a></p>
-                <p><a href="https://www.openaire.eu/support/helpdesk" target="_blank">Help Desk</a></p>
-              </div>
-
-            </div>
-          </div>
+        <div class="uk-flex uk-flex-center">
+          <button class="uk-margin-medium-top uk-margin-bottom uk-button uk-button-secondary" [routerLink]="['/search']">Explore all</button>
         </div>
 
       </div>
+    </div>
+  </div>
 
+</div>
+
+<div class="help-section">
+  <div class="uk-padding" style="background: #F9F9F9 0% 0% no-repeat padding-box;">
+    <div class="uk-margin-top">
+      <p>Didn't find what you are looking for? <a href="mailto:info@openaire.eu">Contact us</a></p>
+      <p>Need service advices? <a href="https://www.openaire.eu/contact-noads" target="_blank">Contact NOADs</a></p>
+      <p><a href="https://www.openaire.eu/support/helpdesk" target="_blank">Help Desk</a></p>
     </div>
 
-
   </div>
-  <div class="uk-sticky-placeholder" style="height: 91px; margin: 0px;"></div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+<div class="uk-sticky-placeholder" style="height: 91px; margin: 0px;"></div>
 
 
 </div>
@@ -97,7 +99,7 @@
   <div class="main-menu tm-header uk-visible@m tm-header-transparent" [ngClass]="{'fixed-navbar':dashboardMode}">
     <div class="uk-navbar-container uk-navbar-transparent" style="background-color: rgb(255, 255, 255);">
       <div class="uk-container uk-container-xlarge">
-<!--        <nav id="topNavBar" class="uk-navbar" uk-navbar="dropbar: false; mode: click; delay-hide: 0;">-->
+        <!--        <nav id="topNavBar" class="uk-navbar" uk-navbar="dropbar: false; mode: click; delay-hide: 0;">-->
         <nav id="topNavBar" class="uk-navbar" >
           <div class="uk-navbar-left">
             <a routerLink="/home" class="uk-navbar-item uk-logo">
@@ -123,90 +125,103 @@
                         </div>
                       </div>
                       <hr>
-                      <div class="uk-child-width-1-4 uk-margin-top" uk-grid="masonry: true">
-                        <div class="" *ngFor="let portfolio of resources | keyvalue">
-                          <ng-container *ngIf="portfolio.value.length > 0">
-                            <h6>{{portfolio.key}}</h6>
-<!--                            <div *ngFor="let service of portfolio.value | slice:0:3;" class=" uk-navbar-dropdown-close">-->
-                            <div *ngFor="let service of portfolio.value" class=" uk-navbar-dropdown-close">
-                              <a class="" (click)="redirectTo('/service/' + service.id)">{{service.name}}</a>
+                        <div class="uk-child-width-1-4 uk-margin-top" uk-grid="masonry: true">
+                          @for (portfolio of resources | keyvalue; track portfolio) {
+                            <div class="">
+                              @if (portfolio.value.length > 0) {
+                                <h6>{{portfolio.key}}</h6>
+                                <!--                            <div *ngFor="let service of portfolio.value | slice:0:3;" class=" uk-navbar-dropdown-close">-->
+                                @for (service of portfolio.value; track service) {
+                                  <div class=" uk-navbar-dropdown-close">
+                                    <a class="" (click)="redirectTo('/service/' + service.id)">{{service.name}}</a>
+                                  </div>
+                                }
+                              }
                             </div>
-                          </ng-container>
+                          }
+                        </div>
+                      </div>
+                      <div class="uk-width-1-4 help-section">
+                        <div class="uk-padding" style="background: #F9F9F9 0% 0% no-repeat padding-box;">
+                          <div>
+                            <p>Didn't find what you are looking for? <br><a href="mailto:info@openaire.eu">Contact us</a></p>
+                            <p>Need service advices? <br><a href="https://www.openaire.eu/contact-noads" target="_blank">Contact National Open Access Desks</a></p>
+                            <p><a href="https://www.openaire.eu/support/helpdesk" target="_blank">Help Desk</a></p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="uk-width-1-4 help-section">
-                      <div class="uk-padding" style="background: #F9F9F9 0% 0% no-repeat padding-box;">
-                        <div>
-                          <p>Didn't find what you are looking for? <br><a href="mailto:info@openaire.eu">Contact us</a></p>
-                          <p>Need service advices? <br><a href="https://www.openaire.eu/contact-noads" target="_blank">Contact National Open Access Desks</a></p>
-                          <p><a href="https://www.openaire.eu/support/helpdesk" target="_blank">Help Desk</a></p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-                </div>
-              </li>
-              <li>
-                <a [routerLink]="['/about']" class="default-menu-item">About</a>
-              </li>
-              <li>
-                <a [routerLink]="['/join']" class="default-menu-item">Join</a>
-              </li>
-<!--                <li>-->
-<!--                  <a [routerLink]="['/datasources/search']" class="default-menu-item">Datasources</a>-->
-<!--                </li>-->
+                  </div>
+                </li>
+                <li>
+                  <a [routerLink]="['/about']" class="default-menu-item">About</a>
+                </li>
+                <li>
+                  <a [routerLink]="['/join']" class="default-menu-item">Join</a>
+                </li>
+                <!--                <li>-->
+                <!--                  <a [routerLink]="['/datasources/search']" class="default-menu-item">Datasources</a>-->
+              <!--                </li>-->
             </ul>
           </div>
-          <div *ngIf="isLoggedIn; else loginButton" class="uk-navbar-right user_actions">
-            <a *ngIf="user" class="uk-icon text-decoration-none" aria-expanded="false">
-<!--              <span class="uk-text-small uk-margin-small-right ">{{user.name}}</span>-->
-              <svg height="60" width="60">
-                <circle cx="30" cy="30" r="20" stroke-width="1"></circle>
-                <text dy=".4em" font-size="16" text-anchor="middle" x="50%" y="50%" class="">
-                  {{getInitials(user.fullname)}}
-                </text>
-              </svg>
-            </a>
-            <div *ngIf="user" id="userActions" class="browse-dropdown-menu uk-navbar-dropdown"
-                 uk-drop="mode: click; delay-hide: 0; pos: bottom; offset: 15">
-              <ul class="uk-nav uk-padding-small">
-                <li class="">
-                  <div>
-                    <div class="uk-text-bold">{{user.fullname}}</div>
-                    <div class="uk-text-meta">{{user.email}}</div>
+          @if (isLoggedIn) {
+            <div class="uk-navbar-right user_actions">
+              @if (user) {
+                <a class="uk-icon text-decoration-none" aria-expanded="false">
+                  <!--              <span class="uk-text-small uk-margin-small-right ">{{user.name}}</span>-->
+                  <svg height="60" width="60">
+                    <circle cx="30" cy="30" r="20" stroke-width="1"></circle>
+                    <text dy=".4em" font-size="16" text-anchor="middle" x="50%" y="50%" class="">
+                      {{getInitials(user.fullname)}}
+                    </text>
+                  </svg>
+                </a>
+              }
+              @if (user) {
+                <div id="userActions" class="browse-dropdown-menu uk-navbar-dropdown"
+                  uk-drop="mode: click; delay-hide: 0; pos: bottom; offset: 15">
+                  <ul class="uk-nav uk-padding-small">
+                    <li class="">
+                      <div>
+                        <div class="uk-text-bold">{{user.fullname}}</div>
+                        <div class="uk-text-meta">{{user.email}}</div>
+                      </div>
+                    </li>
+                    @if (myProviders.length > 0) {
+                      <hr>
+                      }
+                      @for (provider of myProviders; track provider) {
+                        <li class="groups" (click)="hideDrop('#userActions')">
+                          <a [routerLink]="['/provider', provider.id, 'dashboard', 'home']" class="text-black">
+                            <span class="material-icons uk-margin-right">group</span>{{provider.name}}
+                          </a>
+                        </li>
+                      }
+                      @if (user.roles.includes('ADMIN') || user.roles.includes('ONBOARDING_TEAM')) {
+                        <hr>
+                          <li class="groups" (click)="hideDrop('#userActions')">
+                            <a [routerLink]="['/admin/providers']" class="text-black">
+                              <span class="material-icons uk-margin-right">admin_panel_settings</span>Admin pages
+                            </a>
+                          </li>
+                        }
+                        <hr>
+                          <li>
+                            <a id="logout" (click)="logout()"><span class="material-icons uk-margin-right">logout</span>Log out</a>
+                          </li>
+                        </ul>
+                      </div>
+                    }
                   </div>
-                </li>
-                <hr *ngIf="myProviders.length > 0">
-                <li class="groups" *ngFor="let provider of myProviders" (click)="hideDrop('#userActions')">
-                  <a [routerLink]="['/provider', provider.id, 'dashboard', 'home']" class="text-black">
-                    <span class="material-icons uk-margin-right">group</span>{{provider.name}}
-                  </a>
-                </li>
-                <ng-container *ngIf="user.roles.includes('ADMIN') || user.roles.includes('ONBOARDING_TEAM')">
-                  <hr>
-                  <li class="groups" (click)="hideDrop('#userActions')">
-                    <a [routerLink]="['/admin/providers']" class="text-black">
-                      <span class="material-icons uk-margin-right">admin_panel_settings</span>Admin pages
-                    </a>
-                  </li>
-                </ng-container>
-                <hr>
-                <li>
-                  <a id="logout" (click)="logout()"><span class="material-icons uk-margin-right">logout</span>Log out</a>
-                </li>
-              </ul>
+                } @else {
+                  <div class="uk-navbar-right">
+                    <a class="uk-navbar-item" (click)="this.login()"><span class="material-icons uk-margin-right">login</span>Login</a>
+                  </div>
+                }
+              </nav>
             </div>
           </div>
-          <ng-template #loginButton>
-            <div class="uk-navbar-right">
-              <a class="uk-navbar-item" (click)="this.login()"><span class="material-icons uk-margin-right">login</span>Login</a>
-            </div>
-          </ng-template>
-        </nav>
+          <div class="uk-sticky-placeholder" style="height: 80px; margin: 0px;" hidden="hidden"></div>
+        </div>
       </div>
-    </div>
-    <div class="uk-sticky-placeholder" style="height: 80px; margin: 0px;" hidden="hidden"></div>
-  </div>
-</div>

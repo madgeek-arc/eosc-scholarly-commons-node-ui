@@ -1,19 +1,21 @@
-<div *ngIf="datasource; else elseBLock" class="uk-container uk-margin-top">
-  <h1 class="uk-flex uk-flex-center uk-margin">{{datasource.officialname}}</h1>
-
-  <div *ngIf="datasource.description" class="uk-margin-bottom">
-    <p>{{datasource.description}}</p>
+@if (datasource) {
+  <div class="uk-container uk-margin-top">
+    <h1 class="uk-flex uk-flex-center uk-margin">{{datasource.officialname}}</h1>
+    @if (datasource.description) {
+      <div class="uk-margin-bottom">
+        <p>{{datasource.description}}</p>
+      </div>
+    }
+    @if (datasource.websiteurl) {
+      <div class="uk-margin-bottom">
+        <a href="{{datasource.websiteurl}}">{{datasource.websiteurl}}</a>
+      </div>
+    }
   </div>
-
-  <div *ngIf="datasource.websiteurl" class="uk-margin-bottom">
-    <a href="{{datasource.websiteurl}}">{{datasource.websiteurl}}</a>
-  </div>
-
-</div>
-<ng-template #elseBLock class="uk-container uk-margin-top uk-flex uk-flex-center">
+} @else {
   <div class="uk-card uk-text-warning">
     We can't find the datasource you are looking for.
   </div>
-</ng-template>
+}
 
 <pre>{{datasource | json}}</pre>
