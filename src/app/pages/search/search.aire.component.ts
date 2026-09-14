@@ -10,8 +10,7 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {ComparisonService} from '../../services/comparison.service';
 import {environment} from '../../../environments/environment';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {zip} from 'rxjs/internal/observable/zip';
-import {fromEvent} from 'rxjs';
+import {fromEvent, zip} from 'rxjs';
 
 
 @Component({

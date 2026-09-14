@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from '../../../services/resource.service';
 import {Service, Vocabulary} from '../../../entities/eic-model';
 import {Paging} from '../../../entities/paging';
-import {zip} from 'rxjs/internal/observable/zip';
+import {zip} from 'rxjs';
 
 @Component({
   selector: 'app-user-item',

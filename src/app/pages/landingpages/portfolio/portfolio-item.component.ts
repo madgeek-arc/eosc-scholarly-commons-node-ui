@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ResourceService} from '../../../services/resource.service';
 import {ActivatedRoute} from '@angular/router';
 import {Service, Vocabulary} from '../../../entities/eic-model';
-import {zip} from 'rxjs/internal/observable/zip';
+import {zip} from 'rxjs';
 import {Paging} from '../../../entities/paging';
 
 

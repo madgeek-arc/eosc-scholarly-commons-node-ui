@@ -3,7 +3,7 @@ import {Bundle, Datasource, ProviderBundle, Service, Vocabulary} from '../../../
 import {ProviderService} from '../../../../services/provider.service';
 import {Paging} from '../../../../entities/paging';
 import {URLParameter} from '../../../../entities/url-parameter';
-import {zip} from 'rxjs/internal/observable/zip';
+import {zip} from 'rxjs';
 import {ResourceService} from '../../../../services/resource.service';
 import {ActivatedRoute, Router} from '@angular/router';
 

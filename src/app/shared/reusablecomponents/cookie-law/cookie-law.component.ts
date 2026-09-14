@@ -17,10 +17,6 @@ import {
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 
-// import {
-//   closeIcon,
-// } from './icons';
-
 export type CookieLawPosition = 'top' | 'bottom';
 export type CookieLawAnimation = 'topIn' | 'bottomIn' | 'topOut' | 'bottomOut';
 export type CookieLawTarget = '_blank' | '_self';

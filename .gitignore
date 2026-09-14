@@ -3,7 +3,6 @@ dist/
 app/**/*.js
 app/**/*.js.map
 nohup.out
-package-lock.json
 stats.json
 **/.DS_Store
 **/Thumbs.db

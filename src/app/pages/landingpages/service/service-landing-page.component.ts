@@ -1,11 +1,10 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, zip } from 'rxjs';
 import { Provider, Service, URL } from '../../../entities/eic-model';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ResourceService } from '../../../services/resource.service';
 import { environment } from 'src/environments/environment';
-import { zip } from 'rxjs/internal/observable/zip';
 
 @Component({
   selector: 'app-service-landing-page',
