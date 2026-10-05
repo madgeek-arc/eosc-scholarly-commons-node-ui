@@ -1,15 +1,15 @@
 <div class="uk-offcanvas-content">
   @if (!isLoginOrRegister && !cleanView) {
-    <app-top-menu-aire></app-top-menu-aire>
+    <app-sc-top-menu />
   }
   <router-outlet></router-outlet>
   <!--  <app-feedback></app-feedback>-->
   @if (!cleanView) {
     @if (!dashboardView) {
-      <app-footer-aire></app-footer-aire>
+      <app-sc-footer />
     } @else {
       <div style="margin-left: 320px">
-        <app-footer-aire></app-footer-aire>
+        <app-sc-footer />
       </div>
     }
     <cookie-law position="bottom">

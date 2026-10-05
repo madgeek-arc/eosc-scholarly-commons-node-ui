@@ -12,8 +12,8 @@ import {CanActivateViaAuthGuard} from './services/can-activate-auth-guard.servic
 import {NavigationService} from './services/navigation.service';
 import {ResourceService} from './services/resource.service';
 import {CanActivateViaPubGuard} from './services/can-activate-pub-guard.service';
-import {AireTopMenuComponent} from './shared/topmenu/topmenu.component';
-import {AireFooterComponent} from './shared/footer/footer.component';
+import {ScTopMenuComponent} from './shared/scholarly-commons/top-menu/top-menu.component';
+import {ScFooterComponent} from './shared/scholarly-commons/footer/footer.component';
 import {ReusableComponentsModule} from './shared/reusablecomponents/reusable-components.module';
 import {ProviderService} from './services/provider.service';
 import {ComparisonService} from './services/comparison.service';
@@ -48,12 +48,12 @@ declare let require: any;
     PortfolioItemComponent,
     UserItemComponent,
     // ServiceLandingPageComponent,
-    AireTopMenuComponent,
-    AireFooterComponent,
     FormsComponent
   ],
   imports: [
     CommonModule,
+    ScTopMenuComponent,
+    ScFooterComponent,
     FormsModule,
     ReactiveFormsModule,
     ReusableComponentsModule,
@@ -115,8 +115,6 @@ declare let require: any;
     provideHttpClient(withInterceptorsFromDi()),
   ],
   exports: [
-    AireFooterComponent,
-    AireTopMenuComponent,
     LowerCasePipe
   ],
   bootstrap: [AppComponent]

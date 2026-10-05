@@ -2,8 +2,6 @@ import {ChangeDetectionStrategy, Component, computed, signal} from '@angular/cor
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {RouterLink} from '@angular/router';
-import {ScTopMenuComponent} from '../../../shared/scholarly-commons/top-menu/top-menu.component';
-import {ScFooterComponent} from '../../../shared/scholarly-commons/footer/footer.component';
 import {
   FACET_GROUPS,
   FacetGroupId,
@@ -35,7 +33,7 @@ interface FacetGroupView {
 @Component({
   selector: 'app-sc-search',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, ScTopMenuComponent, ScFooterComponent],
+  imports: [ReactiveFormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './search.component.html',
   styleUrl: './search.component.less',

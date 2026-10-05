@@ -2,8 +2,6 @@ import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/cor
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {map} from 'rxjs/operators';
-import {ScTopMenuComponent} from '../../../shared/scholarly-commons/top-menu/top-menu.component';
-import {ScFooterComponent} from '../../../shared/scholarly-commons/footer/footer.component';
 import {SERVICES, ServiceDetail, ServiceSummary, toServiceDetail} from '../services-data';
 
 interface AtAGlanceFact {
@@ -22,7 +20,7 @@ interface RelatedService {
 @Component({
   selector: 'app-sc-service-detail',
   standalone: true,
-  imports: [RouterLink, ScTopMenuComponent, ScFooterComponent],
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './service-detail.component.html',
   styleUrl: './service-detail.component.less',

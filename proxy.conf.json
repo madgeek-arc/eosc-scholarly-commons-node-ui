@@ -1,8 +1,36 @@
 {
   "/openaire/**": {
-  "target": "http://localhost:8482/",
-  "secure": false,
-  "logLevel": "debug",
-  "changeOrigin": true
+    "target": "http://localhost:8482/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/pages/**": {
+    "target": "https://innovation.openaire.eu",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/pages": ""
+    }
+  },
+  "/templates/**": {
+    "target": "https://innovation.openaire.eu",
+    "secure": true,
+    "changeOrigin": true
+  },
+  "/media/**": {
+    "target": "https://innovation.openaire.eu",
+    "secure": true,
+    "changeOrigin": true
+  },
+  "/component/**": {
+    "target": "https://innovation.openaire.eu",
+    "secure": true,
+    "changeOrigin": true
+  },
+  "/images/**": {
+    "target": "https://innovation.openaire.eu",
+    "secure": true,
+    "changeOrigin": true
   }
 }

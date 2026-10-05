@@ -5,7 +5,7 @@ import {SearchAireComponent} from './pages/search/search.aire.component';
 import {CanActivateViaAuthGuard} from './services/can-activate-auth-guard.service';
 import {ForbiddenPageComponent} from './shared/forbidden-page/forbidden-page.component';
 import {NotFoundPageComponent} from './shared/not-found-page/not-found-page.component';
-import {HomeAireComponent} from './pages/home/home.aire.component';
+import {IFRAME_PAGE_ROUTES} from './pages/scholarly-commons/iframe-page/iframe-pages.routes';
 import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
 import {UserItemComponent} from './pages/landingpages/user/user-item.component';
 import {FormsComponent} from './pages/forms/forms.component';
@@ -21,13 +21,8 @@ const appRoutes: Routes = [
     redirectTo: '/home',
     pathMatch: 'full'
   },
-  {
-    path: 'home',
-    component: HomeAireComponent,
-    data: {
-      breadcrumb: 'Home'
-    }
-  },
+  // home, how-to-start, use-cases, news, training, terms-and-policies: Joomla pages in an iframe
+  ...IFRAME_PAGE_ROUTES,
   {
     path: 'search',
     component: SearchAireComponent,

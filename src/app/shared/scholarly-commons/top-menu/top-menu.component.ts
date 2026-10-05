@@ -21,18 +21,14 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
           />
         </a>
         <nav class="uk-flex uk-flex-middle uk-flex-wrap sc-top-menu__nav">
-          <a class="sc-top-menu__link"><span class="sc-top-menu__link sc-top-menu__link--static">Home</span></a>
-          <a><span class="sc-top-menu__link sc-top-menu__link--static">How to start</span></a>
-          <a
-            routerLink="/discover"
-            routerLinkActive="sc-top-menu__link--active"
-            [routerLinkActiveOptions]="{ exact: false }"
-            class="sc-top-menu__link"
-          >Services</a>
-          <a><span class="sc-top-menu__link sc-top-menu__link--static">Use Cases</span></a>
-          <a><span class="sc-top-menu__link sc-top-menu__link--static">News</span></a>
-          <a><span class="sc-top-menu__link sc-top-menu__link--static">Training</span></a>
-          <a><span class="sc-top-menu__link sc-top-menu__link--static">Terms &amp; Policies</span></a>
+          @for (link of links; track link.path) {
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="sc-top-menu__link--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="sc-top-menu__link"
+            >{{ link.label }}</a>
+          }
           <a routerLink="/join" class="sc-top-menu__join">Join</a>
         </nav>
       </div>
@@ -41,4 +37,14 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   styleUrl: './top-menu.component.less',
 })
 export class ScTopMenuComponent {
+  // Paths of the iframe pages live in pages/scholarly-commons/iframe-page/iframe-pages.routes.ts
+  protected readonly links = [
+    {label: 'Home', path: '/home'},
+    {label: 'How to start', path: '/how-to-start'},
+    {label: 'Services', path: '/discover'},
+    {label: 'Use Cases', path: '/use-cases'},
+    {label: 'News', path: '/news'},
+    {label: 'Training', path: '/training'},
+    {label: 'Terms & Policies', path: '/terms-and-policies'},
+  ] as const;
 }
