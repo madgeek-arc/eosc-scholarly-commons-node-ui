@@ -1,0 +1,181 @@
+@card-hover-background: @ciel-color;
+@card-box-shadow-m: @global-large-box-shadow;
+@card-hover-box-shadow: @global-small-box-shadow;
+
+
+@card-body-padding-horizontal: @global-small-gutter;
+@card-body-padding-vertical: @global-small-gutter;
+@card-border-radius: 14px;
+
+@card-default-background: @global-inverse-color;
+@card-default-box-shadow-m: @card-box-shadow-m;
+@card-default-border-width: 2px;
+@card-default-border: @global-border;
+@card-default-border-width-m: 2px;
+@card-default-hover-border: transparent;
+@card-default-hover-background: @card-default-background;
+@card-default-hover-box-shadow: @card-hover-box-shadow;
+@card-default-header-border-width: @global-border-width;
+@card-default-header-border: @global-border;
+@card-default-footer-border-width: @global-border-width;
+@card-default-footer-border: @card-default-border;
+
+@card-primary-background: @global-primary-background;
+@card-primary-background-gradient: @global-primary-gradient;
+@card-primary-box-shadow-m: @card-box-shadow-m;
+@card-primary-hover-background: @card-primary-background;
+@card-primary-hover-box-shadow: @card-hover-box-shadow;
+@card-primary-hover-background-gradient: @global-primary-gradient;
+
+@card-secondary-background: @global-secondary-background;
+@card-secondary-box-shadow-m: @card-box-shadow-m;
+@card-secondary-color: @global-color;
+@card-secondary-color-mode: light;
+@card-secondary-hover-background: @card-secondary-background;
+@card-secondary-hover-box-shadow: @card-hover-box-shadow;
+
+@card-disabled-box-shadow: none;
+@card-disabled-border: @global-border;
+@card-disabled-border-width: @global-border-width;
+@card-disabled-opacity: 0.4;
+@card-disabled-opacity-m: 1;
+
+.hook-card() {
+  transition: .1s ease-in-out;
+  transition-property: color,background-color,background-size,border-color,box-shadow,transform,top;
+  border-radius: @card-border-radius;
+
+  &.uk-disabled {
+    box-shadow: @card-disabled-box-shadow;
+    border: @card-disabled-border-width solid @card-disabled-border;
+
+    .uk-card-media-top, .uk-card-body, .uk-card-media-bottom {
+      opacity: @card-disabled-opacity;
+    }
+  }
+}
+
+.hook-card-header() {
+  border-radius: @card-border-radius @card-border-radius 0 0;
+}
+
+.hook-card-footer() {
+  border-radius: 0 0 @card-border-radius @card-border-radius;
+}
+
+.hook-card-default() {
+  border: @card-default-border-width solid @card-default-border;
+}
+
+.hook-card-default-hover() {
+  box-shadow: @card-default-hover-box-shadow;
+  border-color: @card-default-hover-border;
+}
+
+.hook-card-default-header() {
+  border-bottom: @card-default-header-border-width solid @card-default-header-border;
+}
+
+.hook-card-default-footer() {
+  border-top: @card-default-footer-border-width solid @card-default-footer-border;
+}
+
+.hook-card-primary() {
+  background-image: @card-primary-background-gradient;
+}
+
+.hook-card-primary-hover() {
+  box-shadow: @card-primary-hover-box-shadow;
+}
+
+.hook-card-secondary-hover() {
+  box-shadow: @card-secondary-hover-box-shadow;
+}
+
+.hook-card-misc() {
+  // From "EOSC Node Colors & UI Elements": light-tint and dark card treatments alongside the
+  // solid `.uk-card-primary` / `.uk-card-secondary` — no built-in UIkit modifier covers these.
+  // Headings carry their own color rule (from heading.less), which wins over inherited color
+  // regardless of the parent selector's specificity — so heading color has to be set explicitly
+  // here too, not just on the card itself.
+  .uk-card-primary-light {
+    background-color: @eosc-primary-light-background;
+    border: 2px solid @eosc-primary-light-border;
+    color: @eosc-primary-dark-color;
+
+    h1, h2, h3, h4, h5, h6, .uk-card-title {
+      color: @eosc-primary-dark-color;
+    }
+  }
+
+  .uk-card-secondary-light {
+    background-color: @eosc-secondary-light-background;
+    border: 2px solid @eosc-secondary-light-border;
+    color: @eosc-secondary-dark-color;
+
+    h1, h2, h3, h4, h5, h6, .uk-card-title {
+      color: @eosc-secondary-dark-color;
+    }
+  }
+
+  .uk-card-dark {
+    background-color: @eosc-background-dark;
+    color: #fff;
+
+    h1, h2, h3, h4, h5, h6, .uk-card-title {
+      color: #fff;
+    }
+  }
+
+  @media (min-width: @breakpoint-medium) {
+    .uk-card {
+      &.uk-disabled {
+        .uk-card-media-top, .uk-card-body, .uk-card-media-bottom {
+          opacity: @card-disabled-opacity-m;
+        }
+      }
+    }
+
+    .uk-card-default {
+      border-width: @card-default-border-width-m;
+      box-shadow: @card-default-box-shadow-m;
+    }
+
+    .uk-card-primary{
+      box-shadow: @card-primary-box-shadow-m;
+    }
+
+    .uk-card-secondary {
+      box-shadow: @card-secondary-box-shadow-m;
+    }
+  }
+}
+
+@inverse-card-box-shadow: @inverse-global-large-box-shadow;
+@inverse-card-hover-box-shadow: @inverse-global-medium-box-shadow;
+
+.hook-inverse-misc() {
+  .uk-card-default {
+    box-shadow: @inverse-card-box-shadow;
+
+    &.uk-card-hover:hover {
+      box-shadow: @inverse-card-hover-box-shadow;
+    }
+  }
+
+  .uk-card-primary {
+    box-shadow: @inverse-card-box-shadow;
+
+    &.uk-card-hover:hover {
+      box-shadow: @inverse-card-hover-box-shadow;
+    }
+  }
+
+  .uk-card-secondary {
+    box-shadow: @inverse-card-box-shadow;
+
+    &.uk-card-hover:hover {
+      box-shadow: @inverse-card-hover-box-shadow;
+    }
+  }
+}

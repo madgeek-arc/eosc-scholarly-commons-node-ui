@@ -1,0 +1,52 @@
+// Shared brand partial for the Scholarly Commons redesign (search, service detail, top menu, footer).
+// These are local LESS variables/mixins, not overrides of UIkit's own global theme —
+// see the "Styling" note in the branch design: this repo has no live UIkit LESS build today
+// (styles.less's UIkit theme import is commented out; UIkit ships as a precompiled theme.css),
+// so redefining UIkit's own variables would re-skin the whole existing app. Each component below
+// imports this partial and applies its mixins locally, kept inside Angular's view encapsulation.
+
+@sc-teal: #0E839E;
+@sc-pink: #D44E7C;
+@sc-ink: #1c2126;
+@sc-muted: #5b6570;
+@sc-faint: #8b93a0;
+@sc-bg: #f7f7f8;
+@sc-border: #E9EBEF;
+@sc-border-soft: #EDEFF2;
+@sc-border-strong: #DCE0E6;
+
+@sc-font-heading: Ubuntu, sans-serif;
+@sc-font-body: 'Nunito Sans', system-ui, sans-serif;
+
+@sc-radius-card: 20px;
+@sc-radius-pill: 999px;
+
+// UIkit override attempted: UIkit's .uk-button has no pill (fully rounded) variant and no
+// brand teal fill, so the shape/color has to be supplied here rather than via a UIkit class.
+.sc-pill-button(@bg: @sc-teal, @fg: #fff) {
+  border-radius: @sc-radius-pill;
+  background: @bg;
+  color: @fg;
+  font-weight: 700;
+  border: none;
+}
+
+// UIkit override attempted: UIkit card corner radius options stop at "border-rounded" (~5px);
+// the design calls for a much larger 20px radius plus a specific soft shadow.
+.sc-card() {
+  background: #fff;
+  border: 1px solid @sc-border;
+  border-radius: @sc-radius-card;
+  box-shadow: 0 2px 8px rgba(28, 33, 38, .05);
+}
+
+// UIkit override attempted: UIkit's .uk-label/.uk-badge don't offer a pill shape on the
+// muted grey background this design uses for facet/tag chips.
+.sc-chip(@bg: @sc-bg, @fg: @sc-muted, @border: @sc-border-soft) {
+  font-size: 12.5px;
+  color: @fg;
+  background: @bg;
+  border: 1px solid @border;
+  border-radius: @sc-radius-pill;
+  padding: 6px 14px;
+}

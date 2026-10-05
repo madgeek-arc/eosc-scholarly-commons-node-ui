@@ -1,0 +1,55 @@
+// Sections — from "EOSC Node Colors & UI Elements": rounded color bands. `.uk-section-default` /
+// `.uk-section-muted` / `.uk-section-primary` / `.uk-section-secondary` already pick up the right
+// backgrounds from variables.less; the light-tint and dark variants shown in the reference have no
+// UIkit modifier of their own, so they're added via `.hook-section-misc()`.
+.hook-section() {
+  border-radius: 16px;
+}
+
+.hook-section-primary() {
+  color: #fff;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+  }
+}
+
+.hook-section-secondary() {
+  color: #fff;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+  }
+}
+
+// Headings carry their own color rule (from heading.less), which wins over inherited color
+// regardless of the parent selector's specificity — so heading color has to be set explicitly
+// here too, not just on the section itself.
+.hook-section-misc() {
+  .uk-section-primary-light {
+    background-color: @eosc-primary-light-background;
+    color: @eosc-primary-dark-color;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: @eosc-primary-dark-color;
+    }
+  }
+
+  .uk-section-secondary-light {
+    background-color: @eosc-secondary-light-background;
+    color: @eosc-secondary-dark-color;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: @eosc-secondary-dark-color;
+    }
+  }
+
+  .uk-section-dark {
+    background-color: @eosc-background-dark;
+    color: #fff;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff;
+    }
+  }
+}

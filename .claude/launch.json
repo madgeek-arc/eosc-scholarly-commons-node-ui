@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "scholarly-commons-dev",
+      "runtimeExecutable": "/Users/stefania/.nvm/versions/node/v22.23.1/bin/node",
+      "runtimeArgs": ["/Users/stefania/projects/openaire/eosc-scholarly-commons-node-ui/node_modules/.bin/ng", "serve", "--port", "4300"],
+      "port": 4300
+    }
+  ]
+}

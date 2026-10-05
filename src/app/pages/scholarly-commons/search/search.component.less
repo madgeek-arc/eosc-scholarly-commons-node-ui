@@ -1,0 +1,465 @@
+@import '../../../shared/scholarly-commons/theme/scholarly-commons-theme.less';
+
+:host {
+  display: block;
+  font-family: @sc-font-body;
+  color: @sc-ink;
+  background: @sc-bg;
+}
+
+h1, h2, h3 {
+  font-family: @sc-font-heading;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+// UIkit override attempted: every clickable chip/card/link below is rendered as a <button> for
+// accessibility, but UIkit's uk-button-link reset still leaves default button padding/border/background —
+// this strips native chrome so the brand-specific rules further down are the only visual styling.
+button.sc-search__suggestion,
+button.sc-search__clear,
+button.sc-refine__clear,
+button.sc-refine__item,
+button.sc-empty-state__reset {
+  appearance: none;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+// Task cards keep their uk-card-default background/border (set via the EOSC theme's card.less),
+// so only the generic native-<button> chrome is reset here — not background/border like above.
+button.sc-task-card {
+  appearance: none;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sc-accent-teal { color: @sc-teal; }
+.sc-accent-pink { color: @sc-pink; }
+
+// UIkit override attempted: UIkit has no rounded pill "chip" utility for facet/category tags at
+// this exact grey-on-grey styling; centralised in the shared mixin so it isn't copy-pasted per card.
+.sc-chip {
+  .sc-chip();
+}
+
+// --- hero -------------------------------------------------------------
+// UIkit override attempted: uk-section-primary/uk-cover don't offer a two-column hero with a
+// pill search box; the layout and colors are bespoke to this design.
+.sc-search__hero {
+  background: #fff;
+}
+
+.sc-search__hero-inner {
+  padding: 52px 32px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.sc-search__intro {
+  flex: 1 1 440px;
+  min-width: 0;
+}
+
+// UIkit override attempted: this repo's legacy theme.css sets its own h1/h2/h3 font-size
+// at a @media (min-width:960px) breakpoint (e.g. ".uk-h1,h1{font-size:44px}") that keeps
+// winning over this component's scoped heading rules regardless of selector specificity —
+// !important is the reliable way to pin this design's own heading scale against that legacy cascade.
+.sc-search__title {
+  font-size: 48px !important;
+  line-height: 1.04;
+  text-wrap: balance;
+  margin-bottom: 14px;
+
+  @media (max-width: 640px) {
+    font-size: 32px !important;
+  }
+}
+
+.sc-search__subtitle {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: @sc-muted;
+  max-width: 54ch;
+}
+
+.sc-search__box {
+  flex: 0 1 420px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sc-search__input-row {
+  display: flex;
+  gap: 8px;
+  background: @sc-bg;
+  border: 1px solid @sc-border;
+  border-radius: @sc-radius-pill;
+  padding: 6px 6px 6px 8px;
+}
+
+.sc-search__input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 14px;
+  font-size: 16px;
+  font-family: inherit;
+  color: @sc-ink;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  &::placeholder {
+    color: @sc-faint;
+  }
+}
+
+.sc-search__submit {
+  .sc-pill-button();
+  padding: 11px 26px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.sc-search__suggestions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: @sc-muted;
+  padding-left: 8px;
+  align-items: center;
+}
+
+.sc-search__suggestions-label {
+  color: @sc-faint;
+}
+
+.sc-search__suggestion {
+  color: @sc-teal;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+// --- task shortcuts -----------------------------------------------------
+.sc-search__tasks {
+  padding: 30px 32px 0;
+}
+
+.sc-search__tasks-label {
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: @sc-faint;
+  margin-bottom: 14px;
+}
+
+// Card container styling (background/border/radius/shadow) comes from uk-card uk-card-default
+// (themed in the EOSC theme's card.less) — only the task-specific bar/title/note stay custom here.
+// UIkit override attempted: uk-card's accent options are borders, not a short top-aligned
+// color bar; this needs the bespoke bar + brand color swap between task cards.
+.sc-task-card {
+  display: block;
+  width: 100%;
+
+  &__bar {
+    display: block;
+    width: 30px;
+    height: 4px;
+    border-radius: @sc-radius-pill;
+    background: @sc-teal;
+    margin-bottom: 12px;
+  }
+
+  &--pink &__bar {
+    background: @sc-pink;
+  }
+
+  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
+  &__title {
+    font-size: 16.5px !important;
+    margin-bottom: 5px;
+  }
+
+  &__note {
+    font-size: 13px;
+    line-height: 1.45;
+    color: @sc-muted;
+  }
+}
+
+// --- results + refine -----------------------------------------------------
+.sc-search__body {
+  padding: 30px 32px 56px;
+}
+
+.sc-search__layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.sc-search__results-col {
+  flex: 1 1 560px;
+  min-width: 0;
+}
+
+.sc-search__results-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+// UIkit override attempted: same legacy theme.css h1/h2/h3 media-query rule described at
+// .sc-search__title above also wins over this h2's font-size without !important.
+.sc-search__results-heading {
+  font-size: 21px !important;
+}
+
+.sc-search__results-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sc-search__count {
+  font-size: 13px;
+  color: @sc-faint;
+}
+
+.sc-search__clear {
+  font-size: 13px;
+  color: @sc-teal;
+}
+
+.sc-search__results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 18px;
+}
+
+// UIkit override attempted: uk-card doesn't provide this rounded-pill order/status badge or the
+// initials-avatar fallback used when a service has no provided logo image.
+.sc-result-card {
+  .sc-card();
+  padding: 22px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 44px;
+  }
+
+  &__logo {
+    max-height: 40px;
+    max-width: 170px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__initials {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    background: @sc-teal;
+
+    &--pink {
+      background: @sc-pink;
+    }
+  }
+
+  &__order {
+    flex: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #B03A62;
+    background: @sc-bg;
+    border-radius: @sc-radius-pill;
+    padding: 5px 12px;
+
+    &--open {
+      color: @sc-teal;
+    }
+  }
+
+  &__name a {
+    font-size: 19px;
+    color: @sc-ink;
+    text-decoration: none;
+  }
+
+  &__tagline {
+    font-size: 13.5px;
+    line-height: 1.35;
+    color: @sc-teal;
+    margin-top: 3px;
+  }
+
+  &__desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: @sc-muted;
+    text-wrap: pretty;
+  }
+
+  &__tags {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid @sc-border-soft;
+    flex-wrap: wrap;
+  }
+
+  &__provider {
+    font-size: 12px;
+    color: @sc-faint;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__details {
+    font-size: 13px;
+    color: @sc-muted;
+    border: 1px solid @sc-border-strong;
+    border-radius: @sc-radius-pill;
+    padding: 7px 16px;
+    text-decoration: none;
+  }
+
+  &__go {
+    .sc-pill-button();
+    font-size: 13px;
+    padding: 8px 18px;
+    text-decoration: none;
+  }
+}
+
+// UIkit override attempted: uk-alert doesn't match this card's centered empty-state layout with a
+// pill reset action.
+.sc-empty-state {
+  .sc-card();
+  padding: 44px;
+  text-align: center;
+
+  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
+  &__title {
+    font-size: 18px !important;
+    margin-bottom: 6px;
+  }
+
+  &__note {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: @sc-muted;
+  }
+
+  &__reset {
+    display: inline-block;
+    .sc-pill-button();
+    font-size: 13px;
+    padding: 9px 20px;
+  }
+}
+
+.sc-refine {
+  flex: 1 1 288px;
+  max-width: 100%;
+  .sc-card();
+  padding: 22px 22px 26px;
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
+  &__title {
+    font-size: 15.5px !important;
+  }
+
+  &__clear {
+    font-size: 13px;
+    color: @sc-teal;
+  }
+
+  &__group {
+    margin-bottom: 20px;
+  }
+
+  &__group-label {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: @sc-faint;
+    margin-bottom: 9px;
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  // UIkit override attempted: uk-badge's toggle state can't reach this pill-outline
+  // active/inactive treatment with a border-color change.
+  &__item {
+    font-size: 12.5px;
+    padding: 6px 13px;
+    border-radius: @sc-radius-pill;
+    border: 1px solid @sc-border-strong;
+    background: #fff;
+    color: @sc-muted;
+
+    &--active {
+      background: @sc-teal;
+      color: #fff;
+      border-color: @sc-teal;
+    }
+  }
+}

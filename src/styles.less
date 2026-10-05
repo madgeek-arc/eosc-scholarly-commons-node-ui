@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* UIKit */
+//@import "../node_modules/uikit/src/scss/variables-theme.scss";
+//@import "../node_modules/uikit/src/scss/mixins-theme.scss";
+//@import "../node_modules/uikit/src/scss/uikit-theme.scss";
+
+/* Import OpenAIRE theme */
+/* Precompiled by `npm run build-eosc-theme` (runs automatically before `ng build`/`ng serve` via
+   the prebuild/prestart npm hooks) — see scripts/build-eosc-theme.js for why this isn't a raw
+   .less @import: Angular's browser builder can't compile UIkit's LESS source directly here. */
+@import "assets/eosc-scholarly-node-theme/less/eosc-scholarly-node-theme.css";
+
+/* lib scss */
+@import 'catalogue-ui/assets/scss/service-catalogue-theme.css';
+
+///* project specific scss */
+//@import 'assets/css/theme.css';
+//@import 'assets/css/theme.update.css';
+//@import 'assets/css/openaire-custom.css';
+//@import 'assets/css/sidebar.css';
+//@import 'assets/css/history-timeline.css';
+//@import 'assets/css/dashboard.css';
+
+/* ng-select theme */
+@import "~@ng-select/ng-select/themes/default.theme.css";

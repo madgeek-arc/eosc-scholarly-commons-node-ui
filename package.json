@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
+    "build-eosc-theme": "node scripts/build-eosc-theme.js",
+    "prestart": "npm run build-eosc-theme",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "prebuild": "npm run build-eosc-theme",
     "build": "ng build",
-    "build:prod": "ng build --configuration production --aot --output-hashing=all",
-    "build:beta": "ng build --configuration beta --aot --output-hashing=all",
+    "build:prod": "npm run build-eosc-theme && ng build --configuration production --aot --output-hashing=all",
+    "build:beta": "npm run build-eosc-theme && ng build --configuration beta --aot --output-hashing=all",
     "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^21.2.23",
+    "@angular/cdk": "^21.2.14",
     "@angular/common": "^21.2.23",
     "@angular/compiler": "^21.2.23",
     "@angular/core": "^21.2.23",
@@ -19,12 +23,11 @@
     "@angular/platform-browser": "^21.2.23",
     "@angular/router": "^21.2.23",
     "@angular/service-worker": "^21.2.23",
-    "@angular/cdk": "^21.2.14",
+    "@ckeditor/ckeditor5-angular": "^8.0.0",
     "@ng-select/ng-select": "^21.8.2",
     "@sentry/angular": "^10.74.0",
-    "@ckeditor/ckeditor5-angular": "^8.0.0",
-    "ckeditor5": "42.0.0",
     "bitset": "5.2.3",
+    "ckeditor5": "42.0.0",
     "dayjs": "^1.11.4",
     "font-awesome": "^4.7.0",
     "ng2-date-picker": "^21.0.1",
@@ -50,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.0",
+    "less": "^3.13.1",
     "typescript": "~5.9.3"
   }
 }

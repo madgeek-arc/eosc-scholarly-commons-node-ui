@@ -149,6 +149,20 @@ const appRoutes: Routes = [
   },
 
   {
+    path: 'discover',
+    loadComponent: () => import('./pages/scholarly-commons/search/search.component').then(m => m.ScSearchComponent),
+    data: {
+      breadcrumb: 'Discover'
+    }
+  },
+  {
+    path: 'discover/service/:id',
+    loadComponent: () => import('./pages/scholarly-commons/service-detail/service-detail.component').then(m => m.ScServiceDetailComponent),
+    data: {
+      breadcrumb: 'Service'
+    }
+  },
+  {
     path: 'forbidden',
     component: ForbiddenPageComponent,
     data: {

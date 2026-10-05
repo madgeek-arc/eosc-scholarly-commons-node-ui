@@ -1,0 +1,145 @@
+<app-sc-top-menu />
+
+<main class="sc-search">
+  <section class="sc-search__hero">
+    <div class="uk-container uk-container-expand sc-search__hero-inner">
+      <div class="sc-search__intro">
+        <h1 class="sc-search__title">
+          Services for the <span class="sc-accent-teal">scholarly </span><span class="sc-accent-pink">commons</span>.
+        </h1>
+        <p class="sc-search__subtitle">
+          {{ totalCount }} services from trusted providers, for individual researchers and research teams.
+          Start from a task, or filter your way in.
+        </p>
+      </div>
+      <div class="sc-search__box">
+        <div class="sc-search__input-row">
+          <input
+            class="sc-search__input"
+            type="search"
+            [formControl]="searchControl"
+            placeholder="Search services"
+            aria-label="Search services"
+          />
+          <button class="sc-search__submit" type="button">Search</button>
+        </div>
+        <div class="sc-search__suggestions">
+          <span class="sc-search__suggestions-label">Popular:</span>
+          @for (term of popularSearches; track term) {
+            <button type="button" class="sc-search__suggestion" (click)="pickSuggestion(term)">{{ term }}</button>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="uk-section uk-section-default uk-section-small">
+    <div class="uk-container uk-container-expand">
+      <div class="sc-search__tasks-label">I want to&hellip;</div>
+      <div class="uk-child-width-1-2@s uk-child-width-1-4@m uk-grid-match" uk-grid>
+        @for (task of taskShortcuts; track task.title) {
+          <div>
+            <button
+              type="button"
+              class="uk-card uk-card-default uk-card-hover uk-card-body sc-task-card"
+              [class.sc-task-card--pink]="task.accent === 'pink'"
+              (click)="selectTask(task)"
+            >
+              <span class="sc-task-card__bar"></span>
+              <h3 class="sc-task-card__title">{{ task.title }}</h3>
+              <div class="sc-task-card__note">{{ task.note }}</div>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+  </section>
+
+  <section class="uk-container uk-container-expand sc-search__body">
+    <div class="sc-search__layout">
+      <div class="sc-search__results-col">
+        <div class="sc-search__results-head">
+          <h2 class="sc-search__results-heading">{{ heading() }}</h2>
+          <div class="sc-search__results-meta">
+            <span class="sc-search__count">{{ results().length }} results</span>
+            @if (hasFilters()) {
+              <button type="button" class="sc-search__clear" (click)="clearAll()">Clear filters</button>
+            }
+          </div>
+        </div>
+
+        <div class="sc-search__results-grid">
+          @for (result of results(); track result.service.id) {
+            <article class="sc-result-card">
+              <div class="sc-result-card__head">
+                @if (result.service.logo) {
+                  <img [src]="result.service.logo" [alt]="result.service.name" class="sc-result-card__logo" />
+                } @else {
+                  <div
+                    class="sc-result-card__initials"
+                    [class.sc-result-card__initials--pink]="result.service.accent === 'pink'"
+                  >{{ result.service.initials }}</div>
+                }
+                <span
+                  class="sc-result-card__order"
+                  [class.sc-result-card__order--open]="result.service.order === 'Fully open'"
+                >{{ result.service.order }}</span>
+              </div>
+              <div>
+                <h3 class="sc-result-card__name">
+                  <a [routerLink]="['/discover/service', result.service.id]">{{ result.service.name }}</a>
+                </h3>
+                <div class="sc-result-card__tagline">{{ result.service.tagline }}</div>
+              </div>
+              <p class="sc-result-card__desc">{{ result.shortDescription }}</p>
+              <div class="sc-result-card__tags">
+                <span class="sc-chip">{{ result.service.category }}</span>
+                <span class="sc-chip">{{ result.service.targetUsers.join(', ') }}</span>
+              </div>
+              <div class="sc-result-card__footer">
+                <span class="sc-result-card__provider">{{ result.service.provider }}</span>
+                <div class="sc-result-card__actions">
+                  <a [routerLink]="['/discover/service', result.service.id]" class="sc-result-card__details">Details</a>
+                  <a [routerLink]="['/discover/service', result.service.id]" class="sc-result-card__go">Go to service</a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+
+        @if (results().length === 0) {
+          <div class="sc-empty-state">
+            <h3 class="sc-empty-state__title">No services match those filters</h3>
+            <p class="sc-empty-state__note">Try removing a filter, or search for a task instead.</p>
+            <button type="button" class="sc-empty-state__reset" (click)="clearAll()">Reset search</button>
+          </div>
+        }
+      </div>
+
+      <aside class="sc-refine">
+        <div class="sc-refine__head">
+          <h3 class="sc-refine__title">Refine</h3>
+          <button type="button" class="sc-refine__clear" (click)="clearAll()">Clear</button>
+        </div>
+        @for (group of facetGroups(); track group.id) {
+          <div class="sc-refine__group">
+            <div class="sc-refine__group-label">{{ group.label }}</div>
+            <div class="sc-refine__items">
+              @for (item of group.items; track item.key) {
+                <button
+                  type="button"
+                  class="sc-refine__item"
+                  [class.sc-refine__item--active]="item.active"
+                  (click)="toggleFacet(item.key)"
+                >{{ item.label }}</button>
+              }
+            </div>
+          </div>
+        }
+      </aside>
+    </div>
+  </section>
+</main>
+
+<app-sc-footer />
