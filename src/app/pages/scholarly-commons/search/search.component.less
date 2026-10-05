@@ -23,11 +23,20 @@ button.sc-refine__clear,
 button.sc-refine__item,
 button.sc-empty-state__reset {
   appearance: none;
-  border: none;
-  background: none;
   font-family: inherit;
   cursor: pointer;
   text-align: left;
+}
+
+// UIkit override attempted: same native-<button> reset as above, split out for the text-only buttons. The pill
+// buttons (.sc-refine__item, .sc-empty-state__reset) are left out on purpose: they set their own background and
+// border further down, and this selector's `button.` qualifier outranks their single-class rules, so including
+// them wiped the fill and outline (the active facet and "Reset search" rendered white text on a white card).
+button.sc-search__suggestion,
+button.sc-search__clear,
+button.sc-refine__clear {
+  border: none;
+  background: none;
 }
 
 // Task cards keep their uk-card-default background/border (set via the EOSC theme's card.less),

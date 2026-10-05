@@ -6,7 +6,11 @@
           Services for the <span class="sc-accent-teal">scholarly </span><span class="sc-accent-pink">commons</span>.
         </h1>
         <p class="sc-search__subtitle">
-          {{ totalCount }} services from trusted providers, for individual researchers and research teams.
+          @if (catalogueTotal(); as count) {
+            {{ count }} services from trusted providers, for individual researchers and research teams.
+          } @else {
+            Services from trusted providers, for individual researchers and research teams.
+          }
           Start from a task, or filter your way in.
         </p>
       </div>
@@ -16,10 +20,11 @@
             class="sc-search__input"
             type="search"
             [formControl]="searchControl"
+            (keydown.enter)="submitQuery()"
             placeholder="Search services"
             aria-label="Search services"
           />
-          <button class="sc-search__submit" type="button">Search</button>
+          <button class="sc-search__submit" type="button" (click)="submitQuery()">Search</button>
         </div>
         <div class="sc-search__suggestions">
           <span class="sc-search__suggestions-label">Popular:</span>
@@ -57,61 +62,125 @@
   <section class="uk-container uk-container-expand sc-search__body">
     <div class="sc-search__layout">
       <div class="sc-search__results-col">
-        <div class="sc-search__results-head">
+        <div id="sc-results" class="sc-search__results-head">
           <h2 class="sc-search__results-heading">{{ heading() }}</h2>
           <div class="sc-search__results-meta">
-            <span class="sc-search__count">{{ results().length }} results</span>
+            @if (!error() && !(loading() && results().length === 0)) {
+              <span class="sc-search__count">{{ total() }} results</span>
+            }
             @if (hasFilters()) {
               <button type="button" class="sc-search__clear" (click)="clearAll()">Clear filters</button>
             }
           </div>
         </div>
 
+        @if (error()) {
+          <div class="uk-alert uk-alert-danger" role="alert">
+            <p>We couldn't load the services right now. Please try again in a moment.</p>
+          </div>
+        }
+
+        @if (loading()) {
+          <div class="uk-text-center uk-margin" role="status" aria-label="Loading services">
+            <div uk-spinner></div>
+          </div>
+        }
+
         <div class="sc-search__results-grid">
-          @for (result of results(); track result.service.id) {
+          @for (result of results(); track result.id) {
             <article class="sc-result-card">
               <div class="sc-result-card__head">
-                @if (result.service.logo) {
-                  <img [src]="result.service.logo" [alt]="result.service.name" class="sc-result-card__logo" />
+                @if (result.logo) {
+                  <img [src]="result.logo" [alt]="result.name" class="sc-result-card__logo" />
                 } @else {
                   <div
                     class="sc-result-card__initials"
-                    [class.sc-result-card__initials--pink]="result.service.accent === 'pink'"
-                  >{{ result.service.initials }}</div>
+                    [class.sc-result-card__initials--pink]="result.accent === 'pink'"
+                  >{{ result.initials }}</div>
                 }
-                <span
-                  class="sc-result-card__order"
-                  [class.sc-result-card__order--open]="result.service.order === 'Fully open'"
-                >{{ result.service.order }}</span>
+                @if (result.order) {
+                  <span
+                    class="sc-result-card__order"
+                    [class.sc-result-card__order--open]="result.isOpen"
+                  >{{ result.order }}</span>
+                }
               </div>
               <div>
                 <h3 class="sc-result-card__name">
-                  <a [routerLink]="['/discover/service', result.service.id]">{{ result.service.name }}</a>
+                  <a [routerLink]="['/discover/service', result.id]">{{ result.name }}</a>
                 </h3>
-                <div class="sc-result-card__tagline">{{ result.service.tagline }}</div>
+                @if (result.tagline) {
+                  <div class="sc-result-card__tagline">{{ result.tagline }}</div>
+                }
               </div>
-              <p class="sc-result-card__desc">{{ result.shortDescription }}</p>
+              @if (result.shortDescription) {
+                <p class="sc-result-card__desc">{{ result.shortDescription }}</p>
+              }
               <div class="sc-result-card__tags">
-                <span class="sc-chip">{{ result.service.category }}</span>
-                <span class="sc-chip">{{ result.service.targetUsers.join(', ') }}</span>
+                @if (result.category) {
+                  <span class="sc-chip">{{ result.category }}</span>
+                }
+                @if (result.targetUsers.length) {
+                  <span class="sc-chip">{{ result.targetUsers.join(', ') }}</span>
+                }
               </div>
               <div class="sc-result-card__footer">
-                <span class="sc-result-card__provider">{{ result.service.provider }}</span>
+                <span class="sc-result-card__provider">{{ result.provider }}</span>
                 <div class="sc-result-card__actions">
-                  <a [routerLink]="['/discover/service', result.service.id]" class="sc-result-card__details">Details</a>
-                  <a [routerLink]="['/discover/service', result.service.id]" class="sc-result-card__go">Go to service</a>
+                  <a [routerLink]="['/discover/service', result.id]" class="sc-result-card__details">Details</a>
+                  <a [routerLink]="['/discover/service', result.id]" class="sc-result-card__go">Go to service</a>
                 </div>
               </div>
             </article>
           }
         </div>
 
-        @if (results().length === 0) {
+        @if (!loading() && !error() && results().length === 0) {
           <div class="sc-empty-state">
             <h3 class="sc-empty-state__title">No services match those filters</h3>
             <p class="sc-empty-state__note">Try removing a filter, or search for a task instead.</p>
             <button type="button" class="sc-empty-state__reset" (click)="clearAll()">Reset search</button>
           </div>
+        }
+
+        @if (pager(); as view) {
+          <nav aria-label="Results pages">
+            <ul class="uk-pagination uk-flex-center uk-margin-medium-top">
+              @if (view.hasPrevious) {
+                <li>
+                  <a
+                    [routerLink]="[]"
+                    [queryParams]="{from: view.previousFrom}"
+                    queryParamsHandling="merge"
+                    aria-label="Previous page"
+                    (click)="showResultsAfterNavigation()"
+                  ><span uk-pagination-previous></span></a>
+                </li>
+              }
+              @for (page of view.pages; track page.number) {
+                <li [class.uk-active]="page.active">
+                  <a
+                    [routerLink]="[]"
+                    [queryParams]="{from: page.from}"
+                    queryParamsHandling="merge"
+                    [attr.aria-current]="page.active ? 'page' : null"
+                    (click)="showResultsAfterNavigation()"
+                  >{{ page.number }}</a>
+                </li>
+              }
+              @if (view.hasNext) {
+                <li>
+                  <a
+                    [routerLink]="[]"
+                    [queryParams]="{from: view.nextFrom}"
+                    queryParamsHandling="merge"
+                    aria-label="Next page"
+                    (click)="showResultsAfterNavigation()"
+                  ><span uk-pagination-next></span></a>
+                </li>
+              }
+            </ul>
+          </nav>
         }
       </div>
 
@@ -124,12 +193,12 @@
           <div class="sc-refine__group">
             <div class="sc-refine__group-label">{{ group.label }}</div>
             <div class="sc-refine__items">
-              @for (item of group.items; track item.key) {
+              @for (item of group.items; track item.value) {
                 <button
                   type="button"
                   class="sc-refine__item"
                   [class.sc-refine__item--active]="item.active"
-                  (click)="toggleFacet(item.key)"
+                  (click)="toggleFacet(group.apiField, item.value)"
                 >{{ item.label }}</button>
               }
             </div>

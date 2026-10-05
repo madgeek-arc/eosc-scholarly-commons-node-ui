@@ -1,8 +1,9 @@
 // Mock catalogue data ported from the "Services.dc.html" / "Service Detail.dc.html" design mockups.
-// There is no live services-search API wired into this branch's scope, so both the search page
-// and the service detail page read from this single in-memory dataset, mirroring the design's
-// own SERVICES/TASKS constants. Colors are duplicated from scholarly-commons-theme.less (@sc-teal /
-// @sc-pink) because LESS variables aren't reachable from TypeScript — keep both in sync if they change.
+// The search page (search/search.component.ts) now reads live data from the catalogue API; only the
+// service detail page still reads SERVICES / SERVICE_DETAILS from here, and the search page still takes
+// its editorial TASK_SHORTCUTS / POPULAR_SEARCHES from here. Colors are duplicated from
+// scholarly-commons-theme.less (@sc-teal / @sc-pink) because LESS variables aren't reachable from
+// TypeScript — keep both in sync if they change.
 export const SC_TEAL = '#0E839E';
 export const SC_PINK = '#D44E7C';
 
@@ -187,24 +188,3 @@ export const TASK_SHORTCUTS: TaskShortcut[] = [
 ];
 
 export const POPULAR_SEARCHES: string[] = ['data management plan', 'deposit a dataset', 'citations API'];
-
-export type FacetGroupId = 'category' | 'provider' | 'targetUsers' | 'trl' | 'order';
-
-export const FACET_GROUPS: { id: FacetGroupId; label: string }[] = [
-  {id: 'category', label: 'Category'},
-  {id: 'provider', label: 'Provider'},
-  {id: 'targetUsers', label: 'Target user'},
-  {id: 'trl', label: 'Maturity'},
-  {id: 'order', label: 'Order type'},
-];
-
-export function facetValues(service: ServiceSummary, group: FacetGroupId): string[] {
-  switch (group) {
-    case 'trl':
-      return ['TRL ' + service.trl];
-    case 'targetUsers':
-      return service.targetUsers;
-    default:
-      return [service[group] as string];
-  }
-}
