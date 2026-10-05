@@ -13,6 +13,8 @@ server {
 
     ${ADD_PROXY_API}
 
+    ${ADD_PROXY_PAGES}
+
     location ~ ^/(images|files|ebooks|pitch-decks)/ {
         root /usr/share/nginx/html/data;
         autoindex on;
