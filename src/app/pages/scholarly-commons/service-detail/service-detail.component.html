@@ -3,8 +3,10 @@
     <div class="uk-container uk-container-expand sc-detail__breadcrumb">
       <a routerLink="/discover">Services</a>
       <span>/</span>
-      <span>{{ service.category }}</span>
-      <span>/</span>
+      @if (service.category) {
+        <span>{{ service.category }}</span>
+        <span>/</span>
+      }
       <span class="sc-detail__breadcrumb-current">{{ service.name }}</span>
     </div>
 
@@ -22,27 +24,50 @@
               <div>
                 <div class="sc-hero__name-row">
                   <h1 class="sc-hero__name">{{ service.name }}</h1>
-                  <span class="sc-hero__abbr">{{ service.abbreviation }}</span>
+                  @if (service.abbreviation) {
+                    <span class="sc-hero__abbr">{{ service.abbreviation }}</span>
+                  }
                 </div>
-                <div class="sc-hero__tagline">{{ service.tagline }}</div>
+                @if (service.tagline) {
+                  <div class="sc-hero__tagline">{{ service.tagline }}</div>
+                }
               </div>
             </div>
             <div class="sc-hero__pills">
-              <span class="sc-chip">{{ service.category }}</span>
-              <span class="sc-chip">{{ service.order }}</span>
-              <span class="sc-chip">TRL {{ service.trl }}</span>
-              <span class="sc-chip">{{ service.targetUsers.join(', ') }}</span>
-              <span class="sc-chip">{{ service.languages }}</span>
+              @if (service.category) {
+                <span class="sc-chip">{{ service.category }}</span>
+              }
+              @if (service.order) {
+                <span class="sc-chip">{{ service.order }}</span>
+              }
+              @if (service.trl !== null) {
+                <span class="sc-chip">TRL {{ service.trl }}</span>
+              }
+              @if (service.targetUsersSummary) {
+                <span class="sc-chip">{{ service.targetUsersSummary }}</span>
+              }
+              @if (service.languagesSummary) {
+                <span class="sc-chip">{{ service.languagesSummary }}</span>
+              }
             </div>
-            <p class="sc-hero__description">{{ service.description }}</p>
+            @if (service.description) {
+              <p class="sc-hero__description">{{ service.description }}</p>
+            }
           </div>
           <div class="sc-hero__actions">
-            <button type="button" class="sc-hero__go">Go to service</button>
-            <div class="sc-hero__actions-row">
-              <button type="button" class="sc-hero__secondary">User manual</button>
-              <button type="button" class="sc-hero__secondary">Helpdesk</button>
-            </div>
-            <div class="sc-hero__order-note">{{ service.order }} &middot; login via EOSC AAI</div>
+            @if (service.webpage) {
+              <a class="sc-hero__go" [href]="service.webpage" target="_blank" rel="noopener noreferrer">Go to service</a>
+            }
+            @if (service.userManual || service.helpdesk) {
+              <div class="sc-hero__actions-row">
+                @if (service.userManual) {
+                  <a class="sc-hero__secondary" [href]="service.userManual" target="_blank" rel="noopener noreferrer">User manual</a>
+                }
+                @if (service.helpdesk) {
+                  <a class="sc-hero__secondary" [href]="service.helpdesk" target="_blank" rel="noopener noreferrer">Helpdesk</a>
+                }
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -66,28 +91,17 @@
             </div>
           }
 
-          @if (service.gettingStarted.length) {
-            <div class="sc-panel">
-              <h2 class="sc-panel__title">Getting started</h2>
-              @for (step of service.gettingStarted; track step.step) {
-                <div class="sc-step">
-                  <div class="sc-step__marker">{{ step.step }}</div>
-                  <div>
-                    <h3 class="sc-step__title">{{ step.title }}</h3>
-                    <div class="sc-step__desc">{{ step.description }}</div>
-                  </div>
-                </div>
-              }
-            </div>
-          }
-
           @if (service.useCases.length) {
             <div class="sc-panel">
               <h2 class="sc-panel__title">Used in practice</h2>
               <div class="sc-usecases-grid">
                 @for (useCase of service.useCases; track useCase.title) {
                   <div class="sc-usecase">
-                    <div class="sc-usecase__image">use case image</div>
+                    @if (useCase.image) {
+                      <div class="sc-usecase__image">
+                        <img [src]="useCase.image" [alt]="useCase.title" class="sc-usecase__photo" />
+                      </div>
+                    }
                     <div class="sc-usecase__body">
                       <h3 class="sc-usecase__title">{{ useCase.title }}</h3>
                       <div class="sc-usecase__desc">{{ useCase.description }}</div>
@@ -102,15 +116,15 @@
             <div class="sc-panel">
               <h2 class="sc-panel__title">Documentation, training and support</h2>
               <div class="sc-resources-grid">
-                @for (resource of service.resources; track resource.title) {
-                  <div class="sc-resource">
+                @for (resource of service.resources; track resource.url) {
+                  <a class="sc-resource" [href]="resource.url" target="_blank" rel="noopener noreferrer">
                     <span class="sc-resource__title">{{ resource.title }}</span>
                     <span class="sc-resource__desc">{{ resource.description }}</span>
                     <span
                       class="sc-resource__origin"
                       [class.sc-resource__origin--pink]="resource.origin === 'OpenAIRE extension'"
                     >{{ resource.origin }}</span>
-                  </div>
+                  </a>
                 }
               </div>
             </div>
@@ -137,33 +151,45 @@
         </div>
 
         <aside class="sc-detail__side-col">
-          <div class="sc-panel sc-panel--side">
-            <h3 class="sc-panel__title sc-panel__title--small">At a glance</h3>
-            <div class="sc-facts">
-              @for (fact of atAGlance(); track fact.label) {
-                <div class="sc-facts__row">
-                  <div class="sc-facts__label">{{ fact.label }}</div>
-                  <div class="sc-facts__value">{{ fact.value }}</div>
-                </div>
-              }
+          @if (atAGlance().length) {
+            <div class="sc-panel sc-panel--side">
+              <h3 class="sc-panel__title sc-panel__title--small">At a glance</h3>
+              <div class="sc-facts">
+                @for (fact of atAGlance(); track fact.label) {
+                  <div class="sc-facts__row">
+                    <div class="sc-facts__label">{{ fact.label }}</div>
+                    <div class="sc-facts__value">{{ fact.value }}</div>
+                  </div>
+                }
+              </div>
             </div>
-          </div>
+          }
 
-          <div class="sc-panel sc-panel--side">
-            <h3 class="sc-panel__title sc-panel__title--small">Provider</h3>
-            <div class="sc-provider__name">{{ service.provider }}</div>
-            <div class="sc-provider__desc">Operates this service as part of the EOSC Scholarly Commons Node.</div>
-          </div>
-
-          <div class="sc-panel sc-panel--side">
-            <h3 class="sc-panel__title sc-panel__title--small">Terms &amp; policies</h3>
-            <div class="sc-terms-links">
-              <button type="button">Terms of use</button>
-              <button type="button">Privacy policy</button>
-              <button type="button">Access policy</button>
+          @if (service.provider) {
+            <div class="sc-panel sc-panel--side">
+              <h3 class="sc-panel__title sc-panel__title--small">Provider</h3>
+              <div class="sc-provider__name">{{ service.provider }}</div>
+              <div class="sc-provider__desc">Operates this service as part of the EOSC Scholarly Commons Node.</div>
             </div>
-            <div class="sc-terms-note">Service under the EOSC Federation terms of use.</div>
-          </div>
+          }
+
+          @if (hasPolicies()) {
+            <div class="sc-panel sc-panel--side">
+              <h3 class="sc-panel__title sc-panel__title--small">Terms &amp; policies</h3>
+              <div class="sc-terms-links">
+                @if (service.termsOfUse) {
+                  <a [href]="service.termsOfUse" target="_blank" rel="noopener noreferrer">Terms of use</a>
+                }
+                @if (service.privacyPolicy) {
+                  <a [href]="service.privacyPolicy" target="_blank" rel="noopener noreferrer">Privacy policy</a>
+                }
+                @if (service.accessPolicy) {
+                  <a [href]="service.accessPolicy" target="_blank" rel="noopener noreferrer">Access policy</a>
+                }
+              </div>
+              <div class="sc-terms-note">Service under the EOSC Federation terms of use.</div>
+            </div>
+          }
 
           @if (hasIdentifiers()) {
             <div class="sc-panel sc-panel--side">
@@ -179,22 +205,30 @@
             </div>
           }
 
-          <div class="sc-panel sc-panel--side">
-            <h3 class="sc-panel__title sc-panel__title--small">Tags</h3>
-            <div class="sc-tags">
-              @for (tag of service.tags; track tag) {
-                <span class="sc-chip">{{ tag }}</span>
-              }
+          @if (service.tags.length) {
+            <div class="sc-panel sc-panel--side">
+              <h3 class="sc-panel__title sc-panel__title--small">Tags</h3>
+              <div class="sc-tags">
+                @for (tag of service.tags; track tag) {
+                  <span class="sc-chip">{{ tag }}</span>
+                }
+              </div>
             </div>
-          </div>
+          }
         </aside>
       </div>
     </section>
   </main>
+} @else if (loading()) {
+  <main class="sc-detail sc-detail--loading">
+    <div class="uk-container uk-container-expand uk-text-center" role="status" aria-label="Loading service">
+      <div uk-spinner></div>
+    </div>
+  </main>
 } @else {
   <main class="sc-detail sc-detail--missing">
     <div class="uk-container uk-container-expand">
-      <h1>Service not found</h1>
+      <h1>We couldn't load this service</h1>
       <p><a routerLink="/discover">Back to services</a></p>
     </div>
   </main>

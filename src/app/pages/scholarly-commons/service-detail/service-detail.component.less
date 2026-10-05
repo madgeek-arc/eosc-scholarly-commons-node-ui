@@ -18,21 +18,19 @@ h1, h2, h3 {
   .sc-chip();
 }
 
-// UIkit override attempted: every plain-looking action below ("User manual", terms links, …) is a
-// <button> because it has no real destination in this branch's scope; this strips native button
-// chrome so the brand link/pill styling further down is what actually shows.
+// UIkit override attempted: the hero pills, terms links and resource cards below are plain <a> links styled
+// with the brand colours. uk-link-reset forces `color: inherit !important`, which would turn the white text
+// of the "Go to service" pill dark, so only the hover underline from UIkit's `a:hover` is removed here.
 .sc-hero__go,
 .sc-hero__secondary,
-.sc-terms-links button {
-  appearance: none;
-  border: none;
-  background: none;
-  font-family: inherit;
-  cursor: pointer;
+.sc-terms-links a,
+.sc-resource {
+  text-decoration: none;
 }
 
 .sc-detail {
-  &--missing {
+  &--missing,
+  &--loading {
     padding: 60px 32px;
   }
 }
@@ -209,13 +207,6 @@ h1, h2, h3 {
     border: 1px solid @sc-border-strong;
     border-radius: @sc-radius-pill;
   }
-
-  &__order-note {
-    font-size: 12px;
-    color: @sc-faint;
-    text-align: center;
-    padding-top: 2px;
-  }
 }
 
 // --- body layout ------------------------------------------------------------
@@ -352,6 +343,15 @@ h1, h2, h3 {
     justify-content: center;
     font: 11.5px ui-monospace, Menlo, monospace;
     color: @sc-faint;
+  }
+
+  // UIkit override attempted: UIkit 3.3.7 has no object-fit utility, and uk-cover needs a
+  // uk-cover-container wrapper plus JS sizing; this fills the fixed-height image box with a cropped photo.
+  &__photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &__body {
@@ -508,10 +508,8 @@ h1, h2, h3 {
   gap: 9px;
   font-size: 13.5px;
 
-  button {
+  a {
     color: @sc-teal;
-    text-align: left;
-    padding: 0;
   }
 }
 
