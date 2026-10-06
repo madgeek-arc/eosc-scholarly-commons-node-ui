@@ -8,7 +8,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   imports: [NgOptimizedImage, RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="sc-top-menu">
+    <header class="uk-navnar uk-navbar-container sc-top-menu">
       <div class="uk-container uk-container-expand sc-top-menu__bar">
         <a routerLink="/discover" class="sc-top-menu__logo-link">
           <img
@@ -29,7 +29,9 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
               class="sc-top-menu__link"
             >{{ link.label }}</a>
           }
-          <a routerLink="/join" class="sc-top-menu__join">Join</a>
+          <a routerLink="/join" routerLinkActive="sc-top-menu__link--active" [routerLinkActiveOptions]="{ exact: false }"
+             class="sc-top-menu__link">Join</a>
+<!--          <a routerLink="/join" class="sc-top-menu__join">Login</a>-->
         </nav>
       </div>
     </header>

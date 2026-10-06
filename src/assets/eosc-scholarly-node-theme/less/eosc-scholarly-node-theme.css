@@ -2064,7 +2064,6 @@ select.uk-form-width-xsmall {
   /* 1 */
   padding-top: 40px;
   padding-bottom: 40px;
-  border-radius: 16px;
 }
 /* Desktop and bigger */
 @media (min-width: 960px) {
@@ -2153,15 +2152,7 @@ select.uk-form-width-xsmall {
  */
 .uk-section-primary {
   background: #1C84B0;
-  color: #fff;
-}
-.uk-section-primary h1,
-.uk-section-primary h2,
-.uk-section-primary h3,
-.uk-section-primary h4,
-.uk-section-primary h5,
-.uk-section-primary h6 {
-  color: #fff;
+  background-color: #ffffff;
 }
 /*
  * Secondary
@@ -3049,7 +3040,7 @@ select.uk-form-width-xsmall {
   }
 }
 .uk-card-primary-light {
-  background-color: #edf5f9;
+  background-color: #edf5f9 !important;
   border: 2px solid #bbdae7;
   color: #0f4961;
 }
@@ -3150,6 +3141,19 @@ select.uk-form-width-xsmall {
   animation: uk-spinner-dash 1.4s ease-in-out infinite;
   stroke-width: 1;
   stroke-linecap: round;
+}
+@keyframes uk-spinner-dash {
+  0% {
+    stroke-dashoffset: 88px;
+  }
+  50% {
+    stroke-dashoffset: 22px;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 88px;
+    transform: rotate(450deg);
+  }
 }
 @keyframes uk-spinner-dash {
   0% {

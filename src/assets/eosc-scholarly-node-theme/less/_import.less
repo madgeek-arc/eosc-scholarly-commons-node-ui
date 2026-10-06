@@ -1,3 +1,7 @@
+// Makes round()/floor()/ceil() evaluate Less 3-style bare division, which UIkit 3.3.7 relies on and
+// the Less 4 bundled with Angular's builder doesn't compute. Must come before the UIkit import.
+@plugin "less4-division.plugin.js";
+
 // Import UIKit core
 @import "uikit/src/less/uikit";
 
@@ -31,6 +35,7 @@
 //@import "badge";
 @import "label";
 //@import "search";
+@import "spinner";
 
 // JavaScript
 //@import "accordion";

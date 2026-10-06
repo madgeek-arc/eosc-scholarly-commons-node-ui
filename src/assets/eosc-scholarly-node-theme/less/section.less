@@ -2,16 +2,17 @@
 // `.uk-section-muted` / `.uk-section-primary` / `.uk-section-secondary` already pick up the right
 // backgrounds from variables.less; the light-tint and dark variants shown in the reference have no
 // UIkit modifier of their own, so they're added via `.hook-section-misc()`.
-.hook-section() {
-  border-radius: 16px;
-}
+//.hook-section() {
+//  border-radius: 16px;
+//}
 
 .hook-section-primary() {
-  color: #fff;
+  background-color: @light-color;
+  //color: #fff;
 
-  h1, h2, h3, h4, h5, h6 {
-    color: #fff;
-  }
+  //h1, h2, h3, h4, h5, h6 {
+  //  color: #fff;
+  //}
 }
 
 .hook-section-secondary() {

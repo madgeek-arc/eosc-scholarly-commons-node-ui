@@ -11,8 +11,9 @@
     </div>
 
     <section class="uk-container uk-container-expand sc-detail__hero-section">
-      <div class="sc-hero" [class.sc-hero--pink]="service.accent === 'pink'">
-        <div class="sc-hero__accent-bar"></div>
+      <div class="sc-hero">
+<!--        <div class="sc-hero" [class.sc-hero&#45;&#45;pink]="service.accent === 'pink'">-->
+<!--        <div class="sc-hero__accent-bar"></div>-->
         <div class="sc-hero__body">
           <div class="sc-hero__main">
             <div class="sc-hero__identity">
@@ -120,10 +121,10 @@
                   <a class="sc-resource" [href]="resource.url" target="_blank" rel="noopener noreferrer">
                     <span class="sc-resource__title">{{ resource.title }}</span>
                     <span class="sc-resource__desc">{{ resource.description }}</span>
-                    <span
-                      class="sc-resource__origin"
-                      [class.sc-resource__origin--pink]="resource.origin === 'OpenAIRE extension'"
-                    >{{ resource.origin }}</span>
+<!--                    <span-->
+<!--                      class="sc-resource__origin"-->
+<!--                      [class.sc-resource__origin&#45;&#45;pink]="resource.origin === 'OpenAIRE extension'"-->
+<!--                    >{{ resource.origin }}</span>-->
                   </a>
                 }
               </div>
@@ -152,7 +153,7 @@
 
         <aside class="sc-detail__side-col">
           @if (atAGlance().length) {
-            <div class="sc-panel sc-panel--side">
+            <div class="sc-panel sc-panel--side uk-card-primary-light">
               <h3 class="sc-panel__title sc-panel__title--small">At a glance</h3>
               <div class="sc-facts">
                 @for (fact of atAGlance(); track fact.label) {
