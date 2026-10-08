@@ -153,13 +153,18 @@ export class ScSearchComponent {
     if (this.query()) {
       return null;
     }
-    const picked = FACET_GROUPS.flatMap(({apiField}) =>
-      (this.selected().get(apiField) ?? []).map((value) => ({apiField, value})),
+    const otherFacetPicked = FACET_GROUPS.some(
+      ({apiField}) => apiField !== CATEGORY_FIELD && this.selected().get(apiField)?.length,
     );
-    if (picked.length !== 1 || picked[0].apiField !== CATEGORY_FIELD) {
+    if (otherFacetPicked) {
       return null;
     }
-    return TASK_SHORTCUTS.find((task) => task.categoryFilter === picked[0].value) ?? null;
+    const picked = new Set(this.selected().get(CATEGORY_FIELD));
+    return (
+      TASK_SHORTCUTS.find(
+        (task) => task.categoryFilters.length === picked.size && task.categoryFilters.every((value) => picked.has(value)),
+      ) ?? null
+    );
   });
 
   readonly heading = computed(() => {
@@ -285,7 +290,7 @@ export class ScSearchComponent {
   }
 
   selectTask(task: TaskShortcut): void {
-    this.navigate({...CLEARED_FACETS, query: null, [CATEGORY_FIELD]: [task.categoryFilter]});
+    this.navigate({...CLEARED_FACETS, query: null, [CATEGORY_FIELD]: task.categoryFilters});
   }
 
   clearAll(): void {
