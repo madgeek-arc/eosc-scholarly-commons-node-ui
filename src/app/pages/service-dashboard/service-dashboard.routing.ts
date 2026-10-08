@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {CanActivateViaAuthGuard} from '../../services/can-activate-auth-guard.service';
+import {authGuard} from '../../services/auth.guard';
 import {ServiceHistoryComponent} from './service-history.component';
 import {ServiceFullHistoryComponent} from './service-full-history.component';
 import {ServiceDashboardComponent} from './service-dashboard.component';
@@ -10,7 +10,7 @@ const resourceDashboardRoutes: Routes = [
   {
     path: ':providerId/:resourceId',
     component: ServiceDashboardComponent,
-    canActivate: [CanActivateViaAuthGuard],
+    canActivate: [authGuard],
     data: {
       breadcrumb: environment.serviceORresource + ' dashboard'
       // breadcrumb: 'My Service Providers',

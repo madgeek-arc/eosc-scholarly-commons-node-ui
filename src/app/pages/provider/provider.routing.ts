@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {CanActivateViaAuthGuard} from '../../services/can-activate-auth-guard.service';
+import {authGuard} from '../../services/auth.guard';
 import {UpdateServiceProviderComponent} from './form/update-service-provider.component';
 import {ProviderDashboardComponent} from './dashboard/provider-dashboard.component';
 import {ProviderInfoComponent} from './dashboard/provider-Info/provider-info.component';
@@ -14,7 +14,7 @@ const providerRoutes: Routes = [
   {
     path: 'provider/add',
     component: ServiceProviderFormComponent,
-    canActivate: [CanActivateViaAuthGuard],
+    canActivate: [authGuard],
     data: {
       breadcrumb: 'Add new Provider'
     }
@@ -42,7 +42,7 @@ const providerRoutes: Routes = [
           {
             path: 'home',
             component: ProviderHomeComponent,
-            canActivate: [CanActivateViaAuthGuard],
+            canActivate: [authGuard],
             data: {
               dashboardMode: true
             },
@@ -50,7 +50,7 @@ const providerRoutes: Routes = [
           {
             path: 'info',
             component: ProviderInfoComponent,
-            canActivate: [CanActivateViaAuthGuard],
+            canActivate: [authGuard],
             data: {
               dashboardMode: true
             },
@@ -58,7 +58,7 @@ const providerRoutes: Routes = [
           {
             path: 'history',
             component: ProviderHistoryComponent,
-            canActivate: [CanActivateViaAuthGuard],
+            canActivate: [authGuard],
             data: {
               dashboardMode: true
             },
@@ -66,7 +66,7 @@ const providerRoutes: Routes = [
           {
             path: 'fullHistory',
             component: ProviderFullHistoryComponent,
-            canActivate: [CanActivateViaAuthGuard],
+            canActivate: [authGuard],
             data: {
               dashboardMode: true
             },
@@ -74,7 +74,7 @@ const providerRoutes: Routes = [
           {
             path: 'services',
             component: ProviderServicesComponent,
-            canActivate: [CanActivateViaAuthGuard],
+            canActivate: [authGuard],
             data: {
               dashboardMode: true
             },
@@ -84,7 +84,7 @@ const providerRoutes: Routes = [
       {
         path: 'update',
         component: UpdateServiceProviderComponent,
-        canActivate: [CanActivateViaAuthGuard],
+        canActivate: [authGuard],
         data: {
           breadcrumb: 'Update Provider'
         }

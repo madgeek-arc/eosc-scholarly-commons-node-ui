@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NavigationService {
 
   public searchParams: Subject<any> = new Subject();

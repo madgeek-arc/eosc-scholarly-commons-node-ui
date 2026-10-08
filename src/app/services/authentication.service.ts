@@ -1,53 +1,54 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {getCookie} from '../entities/utils';
 import {environment} from '../../environments/environment';
-import {BehaviorSubject} from 'rxjs';
 
+const REDIRECT_KEY = 'redirectUrl';
 
-@Injectable()
+/** A path inside this app: one leading slash, so it can never point at another site (`//host`, `/\host`). */
+export const isAppUrl = (url: string | null): url is string =>
+  !!url && url.startsWith('/') && !url.startsWith('//') && !url.startsWith('/\\');
+
+@Injectable({providedIn: 'root'})
 export class AuthenticationService {
+  private readonly router = inject(Router);
 
   base = environment.API_ENDPOINT;
   cookieName = 'AccessToken';
-  userLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  readonly loggedIn = signal(this.hasToken());
 
-  constructor(private router: Router) {
-    this.isLoggedIn();
+  /** Whether the login cookie is present. This is a client-side hint only: the API still decides what a user may do. */
+  isLoggedIn(): boolean {
+    const loggedIn = this.hasToken();
+    this.loggedIn.set(loggedIn);
+    return loggedIn;
   }
 
-  tryLogin(manual?: boolean) {
-    const cookie = getCookie(this.cookieName);
-    if (cookie === null || cookie === (this.cookieName + '=') || !this.userLoggedIn) {
-      console.debug('Didn\'t find cookie, user is not logged in.' );
-      sessionStorage.setItem('redirectUrl', window.location.pathname);
-      this.login();
-    } else {
-      console.debug('found cookie, user is logged in');
-      window.location.reload();
-    }
-  }
-
-  login() {
+  /** Remembers where to come back to, then leaves for the login page. */
+  login(returnUrl: string = this.router.url): void {
+    sessionStorage.setItem(REDIRECT_KEY, returnUrl);
     window.location.href = this.base + environment.AAI_LOGIN;
   }
 
-  logout() {
+  logout(): void {
     sessionStorage.clear();
     window.location.href = `${window.location.origin + this.base}/logout`;
   }
 
-  public isLoggedIn(): boolean {
-    this.userLoggedIn.next(getCookie(this.cookieName) !== null);
-    return getCookie(this.cookieName) !== null;
-  }
-
-  redirect() {
-    if (sessionStorage.getItem('redirectUrl') !== null) {
-      const url = sessionStorage.getItem('redirectUrl');
-      sessionStorage.removeItem('redirectUrl');
-      this.router.navigate([url]);
+  /** After coming back from the login page, returns to the route the user originally asked for. */
+  redirect(): void {
+    const url = sessionStorage.getItem(REDIRECT_KEY);
+    if (url === null) {
+      return;
+    }
+    sessionStorage.removeItem(REDIRECT_KEY);
+    if (isAppUrl(url)) {
+      void this.router.navigateByUrl(url);
     }
   }
 
+  private hasToken(): boolean {
+    const token = getCookie(this.cookieName);
+    return token !== null && token !== '';
+  }
 }

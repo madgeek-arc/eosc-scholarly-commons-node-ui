@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {SearchAireComponent} from './pages/search/search.aire.component';
-import {CanActivateViaAuthGuard} from './services/can-activate-auth-guard.service';
+import {authGuard} from './services/auth.guard';
 import {ForbiddenPageComponent} from './shared/forbidden-page/forbidden-page.component';
 import {NotFoundPageComponent} from './shared/not-found-page/not-found-page.component';
 import {IFRAME_PAGE_ROUTES} from './pages/scholarly-commons/iframe-page/iframe-pages.routes';
@@ -28,7 +28,7 @@ const appRoutes: Routes = [
   // {
   //   path: 'form',
   //   loadComponent: loadFormsComponent,
-  //   // canActivate: [CanActivateViaAuthGuard],
+  //   // canActivate: [authGuard],
   //   data: {
   //     breadcrumb: 'forms'
   //   }
@@ -37,7 +37,7 @@ const appRoutes: Routes = [
   // {
   //   path: 'admin',
   //   loadChildren: () => import('../app/pages/admin-dashboard/admin.module').then(m => m.AdminModule),
-  //   canActivate: [CanActivateViaAuthGuard]
+  //   canActivate: [authGuard]
   // },
 
   {

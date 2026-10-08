@@ -7,11 +7,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app.routing';
-import {AuthenticationService} from './services/authentication.service';
-import {CanActivateViaAuthGuard} from './services/can-activate-auth-guard.service';
-import {NavigationService} from './services/navigation.service';
 import {ResourceService} from './services/resource.service';
-import {CanActivateViaPubGuard} from './services/can-activate-pub-guard.service';
 import {ScTopMenuComponent} from './shared/scholarly-commons/top-menu/top-menu.component';
 import {ScFooterComponent} from './shared/scholarly-commons/footer/footer.component';
 import {ReusableComponentsModule} from './shared/reusablecomponents/reusable-components.module';
@@ -73,20 +69,16 @@ declare let require: any;
     }),
   ],
   providers: [
-    AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
       multi: true
     },
     ComparisonService,
-    CanActivateViaAuthGuard,
-    CanActivateViaPubGuard,
     ResourceService,
     UserService,
     ProviderService,
     DataSharingService,
-    NavigationService,
     DatePipe,
     {
       provide: ErrorHandler,
