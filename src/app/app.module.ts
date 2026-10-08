@@ -20,7 +20,6 @@ import {ComparisonService} from './services/comparison.service';
 import {SearchAireComponent} from './pages/search/search.aire.component';
 import {CookieLawModule} from './shared/reusablecomponents/cookie-law/cookie-law.module';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {ProviderModule} from './pages/provider/provider.module';
 import {NgxMatomoModule, NgxMatomoRouterModule} from 'ngx-matomo-client';
 import {environment} from '../environments/environment';
 import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
@@ -53,7 +52,6 @@ declare let require: any;
     ReactiveFormsModule,
     ReusableComponentsModule,
     SharedModule,
-    ProviderModule,
     CookieLawModule,
     NgSelectModule,
     NgxMatomoModule.forRoot({

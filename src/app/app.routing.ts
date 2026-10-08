@@ -25,125 +25,20 @@ const appRoutes: Routes = [
   },
   // home, how-to-start, use-cases, news, training, terms-and-policies: Joomla pages in an iframe
   ...IFRAME_PAGE_ROUTES,
-  {
-    path: 'search',
-    component: SearchAireComponent,
-    data: {
-      breadcrumb: 'Search'
-    }
-  },
-  {
-    path: 'datasources/search',
-    component: DatasourceSearchComponent,
-    data: {
-      breadcrumb: 'Datasources'
-    }
-  },
-  {
-    path: 'provider/:providerId/service/add',
-    loadComponent: loadFormsComponent,
-    canActivate: [CanActivateViaAuthGuard],
-    data: {
-      breadcrumb: 'add service'
-    }
-  },
-  {
-    path: 'service/edit/:resourceId',
-    loadComponent: loadFormsComponent,
-    canActivate: [CanActivateViaAuthGuard],
-    data: {
-      breadcrumb: 'edit service'
-    }
-  },
-  {
-    path: ':resourceType/subprofile/add/:resourceId',
-    loadComponent: loadFormsComponent,
-    canActivate: [CanActivateViaAuthGuard],
-    data: {
-      breadcrumb: 'add datasource'
-    }
-  },
-  {
-    path: ':resourceType/subprofile/edit/:datasourceId',
-    loadComponent: loadFormsComponent,
-    canActivate: [CanActivateViaAuthGuard],
-    data: {
-      breadcrumb: 'edit datasource'
-    }
-  },
-  {
-    path: 'form',
-    loadComponent: loadFormsComponent,
-    // canActivate: [CanActivateViaAuthGuard],
-    data: {
-      breadcrumb: 'forms'
-    }
-  },
-  {
-    path: 'portfolios/:id',
-    component: PortfolioItemComponent,
-    data: {
-      breadcrumb: 'portfolio'
-    }
-  },
-  {
-    path: 'users/:id',
-    component: UserItemComponent,
-    data: {
-      breadcrumb: 'Users'
-    }
-  },
-  {
-    path: 'datasource/:datasourceId',
-    component: Datasource,
-    data: {
-      breadcrumb: 'Datasource'
-    }
-  },
-  {
-    path: 'join/:token',
-    component: ProviderJoinComponent,
-    canActivate: [CanActivateViaAuthGuard],
-    data: {
-      breadcrumb: 'Join'
-    }
-  },
-  {
-    path: 'join',
-    component: JoinComponent,
-    data: {
-      breadcrumb: 'Join'
-    }
-  },
-  {
-    path: 'about',
-    component: AboutComponent,
-    data: {
-      breadcrumb: 'About'
-    }
-  },
-  {
-    path: 'provider',
-    loadChildren: () => import('../app/pages/provider/provider.module').then(m => m.ProviderModule),
-    canActivate: [CanActivateViaAuthGuard]
-  },
+  // {
+  //   path: 'form',
+  //   loadComponent: loadFormsComponent,
+  //   // canActivate: [CanActivateViaAuthGuard],
+  //   data: {
+  //     breadcrumb: 'forms'
+  //   }
+  // },
 
-  {
-    path: 'service-dashboard',
-    loadChildren: () => import('./pages/service-dashboard/service-dashboard.module').then(m => m.ServiceDashboardModule),
-    canActivate: [CanActivateViaAuthGuard]
-  },
-
-  {
-    path: 'service',
-    loadChildren: () => import('../app/pages/landingpages/service/service-landing-page.module').then(m => m.ServiceLandingPageModule),
-  },
-
-  {
-    path: 'admin',
-    loadChildren: () => import('../app/pages/admin-dashboard/admin.module').then(m => m.AdminModule),
-    canActivate: [CanActivateViaAuthGuard]
-  },
+  // {
+  //   path: 'admin',
+  //   loadChildren: () => import('../app/pages/admin-dashboard/admin.module').then(m => m.AdminModule),
+  //   canActivate: [CanActivateViaAuthGuard]
+  // },
 
   {
     path: 'discover',
