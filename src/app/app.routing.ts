@@ -8,12 +8,14 @@ import {NotFoundPageComponent} from './shared/not-found-page/not-found-page.comp
 import {IFRAME_PAGE_ROUTES} from './pages/scholarly-commons/iframe-page/iframe-pages.routes';
 import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
 import {UserItemComponent} from './pages/landingpages/user/user-item.component';
-import {FormsComponent} from './pages/forms/forms.component';
 import {DatasourceSearchComponent} from './pages/search/datasources-search/datasourceSearch.component';
 import {Datasource} from './pages/landingpages/datasource/datasource';
 import {ProviderJoinComponent} from './pages/provider/join/provider-join.component';
 import {JoinComponent} from './pages/public/join.component';
 import {AboutComponent} from './pages/public/about.component';
+
+// The dynamic form pulls in catalogue-ui, CKEditor and the date picker: keep them out of the main bundle.
+const loadFormsComponent = () => import('./pages/forms/forms.component').then(m => m.FormsComponent);
 
 const appRoutes: Routes = [
   {
@@ -39,7 +41,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'provider/:providerId/service/add',
-    component: FormsComponent,
+    loadComponent: loadFormsComponent,
     canActivate: [CanActivateViaAuthGuard],
     data: {
       breadcrumb: 'add service'
@@ -47,7 +49,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'service/edit/:resourceId',
-    component: FormsComponent,
+    loadComponent: loadFormsComponent,
     canActivate: [CanActivateViaAuthGuard],
     data: {
       breadcrumb: 'edit service'
@@ -55,7 +57,7 @@ const appRoutes: Routes = [
   },
   {
     path: ':resourceType/subprofile/add/:resourceId',
-    component: FormsComponent,
+    loadComponent: loadFormsComponent,
     canActivate: [CanActivateViaAuthGuard],
     data: {
       breadcrumb: 'add datasource'
@@ -63,7 +65,7 @@ const appRoutes: Routes = [
   },
   {
     path: ':resourceType/subprofile/edit/:datasourceId',
-    component: FormsComponent,
+    loadComponent: loadFormsComponent,
     canActivate: [CanActivateViaAuthGuard],
     data: {
       breadcrumb: 'edit datasource'
@@ -71,7 +73,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'form',
-    component: FormsComponent,
+    loadComponent: loadFormsComponent,
     // canActivate: [CanActivateViaAuthGuard],
     data: {
       breadcrumb: 'forms'

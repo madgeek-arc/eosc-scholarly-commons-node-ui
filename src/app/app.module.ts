@@ -27,8 +27,6 @@ import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-i
 import {UserItemComponent} from './pages/landingpages/user/user-item.component';
 import {DataSharingService} from './services/data-sharing.service';
 import {AuthenticationInterceptor} from './services/authentication-interceptor';
-import {FormsComponent} from './pages/forms/forms.component';
-import {CatalogueUiModule} from '../catalogue-ui/catalogue-ui.module';
 import {DatasourceSearchComponent} from './pages/search/datasources-search/datasourceSearch.component';
 import {Datasource} from './pages/landingpages/datasource/datasource';
 import {ServiceWorkerModule} from '@angular/service-worker';
@@ -46,7 +44,6 @@ declare let require: any;
     PortfolioItemComponent,
     UserItemComponent,
     // ServiceLandingPageComponent,
-    FormsComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +66,6 @@ declare let require: any;
       ]
     }),
     NgxMatomoRouterModule,
-    CatalogueUiModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
