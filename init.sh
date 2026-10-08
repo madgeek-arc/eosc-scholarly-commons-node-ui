@@ -27,29 +27,40 @@ EOM
 # have no CORS headers. /pages/ is stripped, the asset prefixes are passed through as they are.
 # ^~ makes these win over the regex locations in nginx.conf.txt.
 # /images is shared with the local data volume: local files first, Joomla as the fallback.
+# The pages are public, so no cookies cross in either direction: the browser's Cookie header (it
+# carries the app's AccessToken) is not forwarded to the Joomla host, and the Set-Cookie headers of
+# Joomla are not set on our origin.
 read -r -d '' ADD_PROXY_PAGES_CONF << EOM
     location ^~ /pages/ {
          proxy_set_header        Host \$proxy_host;
          proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for;
          proxy_set_header        X-Forwarded-Proto \$scheme;
+         proxy_set_header        Cookie "";
+         proxy_hide_header       Set-Cookie;
          proxy_ssl_server_name   on;
          proxy_pass              ${PROXY_PAGES_ENDPOINT}/;
     }
 
     location ^~ /templates/ {
          proxy_set_header        Host \$proxy_host;
+         proxy_set_header        Cookie "";
+         proxy_hide_header       Set-Cookie;
          proxy_ssl_server_name   on;
          proxy_pass              ${PROXY_PAGES_ENDPOINT};
     }
 
     location ^~ /media/ {
          proxy_set_header        Host \$proxy_host;
+         proxy_set_header        Cookie "";
+         proxy_hide_header       Set-Cookie;
          proxy_ssl_server_name   on;
          proxy_pass              ${PROXY_PAGES_ENDPOINT};
     }
 
     location ^~ /component/ {
          proxy_set_header        Host \$proxy_host;
+         proxy_set_header        Cookie "";
+         proxy_hide_header       Set-Cookie;
          proxy_ssl_server_name   on;
          proxy_pass              ${PROXY_PAGES_ENDPOINT};
     }
@@ -61,6 +72,8 @@ read -r -d '' ADD_PROXY_PAGES_CONF << EOM
 
     location @pages_fallback {
          proxy_set_header        Host \$proxy_host;
+         proxy_set_header        Cookie "";
+         proxy_hide_header       Set-Cookie;
          proxy_ssl_server_name   on;
          proxy_pass              ${PROXY_PAGES_ENDPOINT};
     }
@@ -73,7 +86,7 @@ if [ -f "$PROXY_CONF_FILE" ]; then
 else
     echo "Creating Nginx configuration: $PROXY_CONF_FILE"
 
-    [ ! -z ${SERVER_NAME+x} ] && export ADD_SERVER_NAME="server_name ${SERVER_NAME}";
+    [ ! -z ${SERVER_NAME+x} ] && export ADD_SERVER_NAME="server_name ${SERVER_NAME};";
     [ ! -z ${PROXY_API_ENDPOINT+x} ] && export ADD_PROXY_API=$(echo "$ADD_PROXY_API_CONF");
     [ ! -z ${PROXY_PAGES_ENDPOINT+x} ] && export ADD_PROXY_PAGES=$(echo "$ADD_PROXY_PAGES_CONF");
     envsubst '${ADD_SERVER_NAME} ${ADD_PROXY_API} ${ADD_PROXY_PAGES}' < $CONF_TMPL > $PROXY_CONF_FILE

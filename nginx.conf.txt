@@ -3,8 +3,19 @@ server {
     listen 80;
     root /usr/share/nginx/html;
 
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/css text/javascript application/javascript application/json image/svg+xml;
+
     location / {
         try_files $uri$args $uri$args/ /index.html;
+    }
+
+    # Angular names its bundles <name>.<16 hex digits>.js|css, so a changed file always gets a new URL
+    # and these can be cached for a year. index.html and the service worker files are not matched.
+    location ~ "\.[0-9a-f]{16}\.(js|css)$" {
+        expires 1y;
     }
 
     location ~* \.(eot|ttf|woff)$ {
@@ -17,7 +28,6 @@ server {
 
     location ~ ^/(images|files|ebooks|pitch-decks)/ {
         root /usr/share/nginx/html/data;
-        autoindex on;
     }
 
 }
