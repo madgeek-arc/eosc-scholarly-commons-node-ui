@@ -6,11 +6,9 @@
 //@import "../node_modules/uikit/src/scss/uikit-theme.scss";
 
 /* Import OpenAIRE theme */
-/* Precompiled by `npm run build-eosc-theme` (runs automatically before `ng build`/`ng serve` via
-   the prebuild/prestart npm hooks) — see scripts/build-eosc-theme.js for why this isn't a raw
-   .less @import: Angular's browser builder can't compile UIkit's LESS source directly here. */
+/* Compiled by Angular's own LESS pipeline from UIkit's LESS source. The theme's _import.less loads
+   less4-division.plugin.js first, which lets UIkit 3.3.7's Less 3-style division compile under Less 4. */
 @import "assets/eosc-scholarly-node-theme/less/_import";
-//@import "assets/eosc-scholarly-node-theme/less/eosc-scholarly-node-theme.css";
 
 /* lib scss */
 //@import 'catalogue-ui/assets/scss/service-catalogue-theme.css';

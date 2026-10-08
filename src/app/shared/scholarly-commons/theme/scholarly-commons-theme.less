@@ -1,9 +1,8 @@
 // Shared brand partial for the Scholarly Commons redesign (search, service detail, top menu, footer).
-// These are local LESS variables/mixins, not overrides of UIkit's own global theme —
-// see the "Styling" note in the branch design: this repo has no live UIkit LESS build today
-// (styles.less's UIkit theme import is commented out; UIkit ships as a precompiled theme.css),
-// so redefining UIkit's own variables would re-skin the whole existing app. Each component below
-// imports this partial and applies its mixins locally, kept inside Angular's view encapsulation.
+// These are local LESS variables/mixins, not overrides of UIkit's own global theme (that is built
+// from assets/eosc-scholarly-node-theme via styles.less), so redefining UIkit's own variables would
+// re-skin the whole existing app. Each component below imports this partial and applies its mixins
+// locally, kept inside Angular's view encapsulation.
 
 @sc-teal: #0E839E;
 @sc-pink: #D44E7C;
