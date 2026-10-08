@@ -1,0 +1,61 @@
+@import '../theme/scholarly-commons-theme.less';
+
+.sc-top-menu {
+  background: #fff;
+  border-bottom: 1px solid @sc-border;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  font-family: @sc-font-body;
+}
+
+.sc-top-menu__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 16px 32px;
+}
+
+.sc-top-menu__logo-link {
+  display: block;
+  line-height: 0;
+}
+
+.sc-top-menu__logo {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+.sc-top-menu__nav {
+  gap: 22px;
+  font-size: 14px;
+  color: @sc-muted;
+}
+
+.sc-top-menu__link {
+  color: @sc-muted;
+  text-decoration: none;
+
+  //&--static {
+  //  cursor: default;
+  //}
+
+  // UIkit override attempted: the active tab needs a 2px inset underline in the exact
+  // brand teal; UIkit's routerLinkActive-friendly classes don't expose an inset box-shadow underline.
+  &--active {
+    color: @sc-teal;
+    font-weight: 700;
+    box-shadow: inset 0 -2px 0 @sc-teal;
+    padding-bottom: 3px;
+  }
+}
+
+.sc-top-menu__join {
+  .sc-pill-button();
+  padding: 8px 20px;
+  text-decoration: none;
+  font-size: 14px;
+}

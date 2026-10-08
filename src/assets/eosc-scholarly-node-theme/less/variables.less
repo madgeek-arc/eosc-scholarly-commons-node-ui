@@ -1,0 +1,81 @@
+@import "color";
+
+/** Typography */
+@global-font-family: 'Nunito Sans', sans-serif;
+@global-font-size: 16px;
+@global-line-height: 1.5 * @global-font-size;
+@global-xsmall-font-size: 12px;
+@global-small-font-size: 14px;
+@global-medium-font-size: 18px;
+@global-large-font-size: 20px;
+@global-xlarge-font-size: 34px;
+
+/** Colors */
+@global-color: @grey-color;
+@global-emphasis-color: @eosc-text-color;
+@global-inverse-color: @light-color;
+//@global-link-color: @info-color;
+@global-link-color: @primary-color;
+@global-muted-color: @eosc-text-muted-color;
+@global-meta-color: @placeholder-color;
+//@global-link-hover-color: @openaire-secondary-color;
+@global-link-hover-color: @primary-dark-color;
+@global-overlay-background: fade(@black-color, 60%);
+
+/** Backgrounds */
+//@global-background: @light-color;
+@global-background: @default-color;
+@global-danger-background: @danger-color;
+@global-muted-background: @muted-color;
+@global-primary-background: @primary-color;
+@global-secondary-background: @secondary-color;
+@global-dark-background: @dark-color;
+@global-success-background: @success-color;
+@global-warning-background: @warning-color;
+// Reference uses flat brand colors throughout (no gradients); primary->primary-dark keeps this
+// close to flat while still giving `.hook-card-primary()`'s `background-image` a valid gradient.
+@global-primary-gradient: linear-gradient(51deg, @primary-color 0%, @primary-dark-color 100%);
+@global-opacity: 30%;
+
+/** Borders */
+@global-border: @eosc-border-color;
+@global-border-radius: 6px;
+@global-small-border-radius: 4px;
+@global-xlarge-border-radius: 4 * @global-border-radius;
+
+/* Shadows*/
+@global-default-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
+@global-inset-shadow: inset -3px -3px 6px rgba(255, 255, 255, 0.9), inset 3px 3px 6px rgba(0, 0, 0, 0.1);
+@global-small-box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.02), 2px 2px 4px rgba(0, 0, 0, 0.08);
+@global-medium-box-shadow: -5px -5px 15px rgba(0, 0, 0, 0.02), 5px 5px 15px rgba(0, 0, 0, 0.08);
+@global-large-box-shadow: -15px -15px 20px rgba(0, 0, 0, 0.02), 15px 15px 20px rgba(0, 0, 0, 0.08);
+@global-xlarge-box-shadow: -20px -20px 25px rgba(0, 0, 0, 0.02), 20px 20px 25px rgba(0, 0, 0, 0.08);
+
+/* Spacings */
+@global-xsmall-gutter: 8px;
+@global-small-gutter: 16px;
+@global-gutter: 32px;
+@global-medium-gutter: 40px;
+@global-large-gutter: 72px;
+
+@global-xsmall-margin: 4px;
+@global-small-margin: 8px;
+@global-margin: 16px;
+@global-medium-margin: 40px;
+@global-large-margin: 72px;
+@global-xlarge-margin: 144px;
+
+
+/* Controls */
+@global-control-small-height: 30px;
+@global-control-height: 40px;
+@global-control-large-height: 50px;
+
+/* Header */
+@global-header-height: 65px;
+
+/* Inverse */
+@inverse-global-small-box-shadow: -2px -2px 5px rgba(255, 255, 255, 0.05), 2px 2px 4px rgba(0, 0, 0, 0.3);
+@inverse-global-medium-box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.3);
+@inverse-global-large-box-shadow: -15px -15px 20px rgba(255, 255, 255, 0.05), 15px 15px 20px rgba(0, 0, 0, 0.3);
+@inverse-global-xlarge-box-shadow: -20px -20px 25px rgba(255, 255, 255, 0.05), 20px 20px 25px rgba(0, 0, 0, 0.3);

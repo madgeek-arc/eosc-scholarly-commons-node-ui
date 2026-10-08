@@ -7,14 +7,15 @@ import {ResourceService} from '../../services/resource.service';
 import {zip} from 'rxjs';
 import {Datasource, Service, Vocabulary} from '../../entities/eic-model';
 import {PremiumSortPipe} from '../../shared/pipes/premium-sort.pipe';
+import {CatalogueUiModule} from '../../../catalogue-ui/catalogue-ui.module';
 
 import * as uikit from 'uikit';
 
 @Component({
   selector: 'app-form',
   templateUrl: 'forms.component.html',
-  providers: [FormControlService],
-  standalone: false
+  imports: [CatalogueUiModule],
+  providers: [FormControlService]
 })
 
 export class FormsComponent implements OnInit{

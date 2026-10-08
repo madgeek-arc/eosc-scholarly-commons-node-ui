@@ -18,7 +18,6 @@ export class ProviderJoinComponent implements OnInit {
       params=> {
         this.token = params['token'];
         sessionStorage.setItem('token', this.token);
-        console.log(sessionStorage.getItem('token'));
       }
     );
   }

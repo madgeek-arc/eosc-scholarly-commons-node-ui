@@ -1,69 +1,41 @@
-import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import {Injectable, Injector} from '@angular/core';
-import {AuthenticationService} from './authentication.service';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Injectable, inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {EMPTY, Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
 
-
+/**
+ * Handles failed API calls in one place. Every error reaches the caller as the original HttpErrorResponse, so each
+ * page decides what to show (the search and service pages render their own error states). The interceptor only does
+ * what is the same everywhere:
+ *  - 401 on the user-info call: forget the session data kept in sessionStorage;
+ *  - 403: show the forbidden page.
+ * Network failures (status 0) of the FAQ service, which is known to be unreliable, end quietly instead of erroring.
+ *
+ * It is a class registered under HTTP_INTERCEPTORS, not a functional interceptor: catalogue-ui provides its own
+ * HttpClient with `withInterceptorsFromDi()`, and only DI-registered interceptors reach the requests it makes.
+ */
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
+  private readonly router = inject(Router);
 
-  constructor(public http: HttpClient, public router: Router, private authService: AuthenticationService) {
-  }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // const authenticationService = this.injector.get(AuthenticationService);
-
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      catchError((response: HttpErrorResponse) => {
-        let errorMessage: string;
-        if (response.error.message) {
-          errorMessage = response.error.message;
-        } else {
-          // if (response.error.length > 100) {
-          //   errorMessage = 'Server error';
-          // } else {
-            errorMessage = response.error;
-          // }
+      catchError((error: unknown) => {
+        if (!(error instanceof HttpErrorResponse)) {
+          return throwError(error);
         }
-        const message = errorMessage;
-        if (response.error instanceof ErrorEvent) {
-          // A client-side or network error occurred. Handle it accordingly.
-          console.error('An error occurred:', response.error.message);
-        } else {
-          if (response.status === 401) {
-
-            // authenticationService.redirectURL = this.router.url
-            // authenticationService.login();
-            // console.log(response.url.includes('user/info'));
-            // console.log('came here don\'t know what to do...');
-            if (response.url.includes('user/info')) {
-              sessionStorage.clear();
-            }
-            return null;
-          } else if (response.status === 403) {
-            this.router.navigate(['/forbidden']);
-          } else if (response.status === 404 && request.url.includes('/faq/api/page/route')) {
-            // avoiding page 404 for non-working faq
-          } else if (response.status === 404) {
-            this.router.navigate(['/notFound']);
-          } else if (response.status === 0) { // this is a bandage until faq is fixed
-            return [];
-          } else {
-            console.error(
-              `Backend returned code ${response.status}, ` +
-              `body was: ${JSON.stringify(errorMessage)}`);
-          }
+        if (error.status === 0 && request.url.startsWith(environment.FAQ_ENDPOINT)) {
+          return EMPTY;
         }
-        // return an observable with a user-facing error message
-        // Uncomment to enable modal errors
-        // UIkit.notification.closeAll();
-        // UIkit.notification({message: message, status: 'danger', pos: 'top-center', timeout: 5000});
-        return throwError(response);
-      })
+        if (error.status === 401 && request.url.includes('user/info')) {
+          sessionStorage.clear();
+        } else if (error.status === 403) {
+          void this.router.navigate(['/forbidden']);
+        }
+        return throwError(error);
+      }),
     );
-
   }
-
 }

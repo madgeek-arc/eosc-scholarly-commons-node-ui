@@ -1,11 +1,11 @@
 ### Install and Build ###
-FROM node:14-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 
-RUN npm install
+RUN npm ci
 COPY . .
 ARG configuration=prod
 RUN npm run build:$configuration

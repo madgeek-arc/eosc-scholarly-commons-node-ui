@@ -1,0 +1,550 @@
+@import '../../../shared/scholarly-commons/theme/scholarly-commons-theme.less';
+
+:host {
+  display: block;
+  font-family: @sc-font-body;
+  color: @sc-ink;
+  background: @sc-bg;
+}
+
+h1, h2, h3 {
+  font-family: @sc-font-heading;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.sc-chip {
+  .sc-chip();
+}
+
+// UIkit override attempted: the hero pills, terms links and resource cards below are plain <a> links styled
+// with the brand colours. uk-link-reset forces `color: inherit !important`, which would turn the white text
+// of the "Go to service" pill dark, so only the hover underline from UIkit's `a:hover` is removed here.
+.sc-hero__go,
+.sc-hero__secondary,
+.sc-terms-links a,
+.sc-resource {
+  text-decoration: none;
+}
+
+.sc-detail {
+  &--missing,
+  &--loading {
+    padding: 60px 32px;
+  }
+}
+
+.sc-detail__breadcrumb {
+  padding: 16px 32px 0;
+  font-size: 13px;
+  color: @sc-faint;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  a {
+    color: @sc-faint;
+    text-decoration: none;
+  }
+
+  &-current {
+    color: @sc-muted;
+  }
+}
+
+// --- hero card ------------------------------------------------------------
+// UIkit override attempted: uk-card has no top accent-bar variant, and the two-column
+// content/actions split with a pill "Go to service" button is bespoke to this design.
+.sc-detail__hero-section {
+  padding: 22px 32px 0;
+}
+
+.sc-hero {
+  .sc-card();
+  border-radius: 24px;
+  overflow: hidden;
+
+  &__accent-bar {
+    height: 6px;
+    background: @sc-teal;
+  }
+
+  &--pink &__accent-bar {
+    background: @sc-pink;
+  }
+
+  &__body {
+    padding: 30px 34px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__main {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  &__identity {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  &__logo {
+    max-height: 78px;
+    max-width: 160px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__avatar {
+    width: 78px;
+    height: 78px;
+    border-radius: 18px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 25px;
+    color: #fff;
+    background: @sc-teal;
+  }
+
+  &--pink &__avatar {
+    background: @sc-pink;
+  }
+
+  &__name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  // UIkit override attempted: this repo's legacy theme.css sets its own h1/h2/h3 font-size at a
+  // @media (min-width:960px) breakpoint (e.g. ".uk-h1,h1{font-size:44px}") that keeps winning over
+  // this component's scoped heading rules regardless of selector specificity — !important pins
+  // this design's own heading scale against that legacy cascade.
+  &__name {
+    font-size: 38px !important;
+    line-height: 1.05;
+
+    @media (max-width: 640px) {
+      font-size: 28px !important;
+    }
+  }
+
+  &__abbr {
+    font-size: 13px;
+    color: @sc-faint;
+  }
+
+  &__tagline {
+    font-size: 17px;
+    color: @sc-teal;
+    margin-top: 5px;
+    max-width: 52ch;
+  }
+
+  &--pink &__tagline {
+    color: @sc-pink;
+  }
+
+  &__pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__description {
+    margin: 20px 0 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: @sc-muted;
+    max-width: 70ch;
+    text-wrap: pretty;
+  }
+
+  &__actions {
+    flex: 0 0 268px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__go {
+    .sc-pill-button();
+    text-align: center;
+    padding: 14px;
+    font-weight: 700;
+    font-size: 15.5px;
+  }
+
+  &--pink &__go {
+    background: @sc-pink;
+  }
+
+  &__actions-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__secondary {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    color: @sc-muted;
+    border: 1px solid @sc-border-strong;
+    border-radius: @sc-radius-pill;
+  }
+}
+
+// --- body layout ------------------------------------------------------------
+.sc-detail__body {
+  padding: 22px 32px 56px;
+}
+
+.sc-detail__layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.sc-detail__main-col {
+  flex: 1 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.sc-detail__side-col {
+  flex: 1 1 320px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sc-panel {
+  .sc-card();
+  border-radius: 20px;
+  padding: 26px 28px;
+
+  &--side {
+    padding: 22px 24px;
+  }
+
+  // UIkit override attempted: this repo's legacy theme.css sets its own h1/h2/h3 font-size at a
+  // @media (min-width:960px) breakpoint that keeps winning over this h2/h3's font-size regardless
+  // of selector specificity — !important pins this design's own heading scale against that cascade.
+  &__title {
+    font-size: 20px !important;
+    margin-bottom: 16px;
+
+    &--small {
+      font-size: 15.5px !important;
+      margin-bottom: 14px;
+    }
+  }
+}
+
+.sc-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.sc-benefit {
+  border: 1px solid @sc-border-soft;
+  border-radius: 16px;
+  padding: 18px 20px;
+  background: @sc-bg;
+
+  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-hero__name above.
+  &__title {
+    font-size: 15px !important;
+    margin-bottom: 5px;
+  }
+
+  &__desc {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: @sc-muted;
+  }
+}
+
+// UIkit override attempted: no UIkit component gives a numbered, ringed step marker beside
+// step content with a divider between rows.
+.sc-step {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid @sc-border-soft;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__marker {
+    width: 27px;
+    height: 27px;
+    border-radius: @sc-radius-pill;
+    border: 1.5px solid @sc-teal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12.5px;
+    color: @sc-teal;
+  }
+
+  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-hero__name above.
+  &__title {
+    font-size: 15px !important;
+  }
+
+  &__desc {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: @sc-muted;
+    margin-top: 2px;
+  }
+}
+
+.sc-usecases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.sc-usecase {
+  border: 1px solid @sc-border-soft;
+  border-radius: 16px;
+  overflow: hidden;
+
+  &__image {
+    //height: 96px;
+    min-height: 96px;
+    background: repeating-linear-gradient(135deg, @sc-bg, @sc-bg 8px, @sc-border-soft 8px, @sc-border-soft 16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 11.5px ui-monospace, Menlo, monospace;
+    color: @sc-faint;
+  }
+
+  // UIkit override attempted: UIkit 3.3.7 has no object-fit utility, and uk-cover needs a
+  // uk-cover-container wrapper plus JS sizing; this fills the fixed-height image box with a cropped photo.
+  &__photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__body {
+    padding: 16px 18px;
+  }
+
+  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-hero__name above.
+  &__title {
+    font-size: 15px !important;
+    margin-bottom: 4px;
+  }
+
+  &__desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: @sc-muted;
+  }
+}
+
+.sc-resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.sc-resource {
+  border: 1px solid @sc-border-soft;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: @sc-bg;
+
+  &__title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: @sc-ink;
+  }
+
+  &__desc {
+    font-size: 12.5px;
+    color: @sc-muted;
+  }
+
+  &__origin {
+    font-size: 11px;
+    font-weight: 700;
+    color: @sc-teal;
+    margin-top: 4px;
+
+    &--pink {
+      color: @sc-pink;
+    }
+  }
+}
+
+.sc-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.sc-related {
+  display: block;
+  border: 1px solid @sc-border-soft;
+  border-radius: 16px;
+  padding: 18px;
+  text-decoration: none;
+  color: inherit;
+
+  &__logo {
+    max-height: 30px;
+    max-width: 130px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  &__initials {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    background: @sc-teal;
+    margin-bottom: 10px;
+  }
+
+  &__name {
+    font-family: @sc-font-heading;
+    font-size: 15.5px;
+    color: @sc-ink;
+  }
+
+  &__tagline {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: @sc-muted;
+    margin-top: 3px;
+  }
+}
+
+.sc-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 106px minmax(0, 1fr);
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  &__label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: @sc-faint;
+  }
+
+  &__value {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: @sc-ink;
+  }
+}
+
+.sc-provider {
+  &__name {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  &__desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: @sc-muted;
+    margin-top: 5px;
+  }
+}
+
+.sc-terms-links {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 13.5px;
+
+  a {
+    color: @sc-teal;
+  }
+}
+
+.sc-terms-note {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: @sc-muted;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid @sc-border-soft;
+}
+
+.sc-identifiers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font: 12px ui-monospace, Menlo, monospace;
+  color: @sc-muted;
+  word-break: break-all;
+
+  &__label {
+    display: block;
+    font-family: @sc-font-body;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: @sc-faint;
+    margin-bottom: 2px;
+  }
+}
+
+.sc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

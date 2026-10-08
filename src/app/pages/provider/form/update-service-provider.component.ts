@@ -16,19 +16,19 @@ declare let UIkit: any;
   standalone: false
 })
 export class UpdateServiceProviderComponent extends ServiceProviderFormComponent implements OnInit {
-  errorMessage: string;
+  override errorMessage: string;
   provider: Provider;
 
-  constructor(public fb: UntypedFormBuilder,
-              public authService: AuthenticationService,
-              public providerService: ProviderService,
-              public resourceService: ResourceService,
-              public router: Router,
-              public route: ActivatedRoute) {
+  constructor(public override fb: UntypedFormBuilder,
+              public override authService: AuthenticationService,
+              public override providerService: ProviderService,
+              public override resourceService: ResourceService,
+              public override router: Router,
+              public override route: ActivatedRoute) {
     super(fb, authService, providerService, resourceService, router, route);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     this.edit = true;
     this.providerId = this.route.snapshot.paramMap.get('providerId');
     const path = this.route.snapshot.routeConfig.path;
@@ -68,7 +68,7 @@ export class UpdateServiceProviderComponent extends ServiceProviderFormComponent
     }
   }
 
-  registerProvider(tempSave: boolean) {
+  override registerProvider(tempSave: boolean) {
     super.registerProvider(tempSave);
   }
 

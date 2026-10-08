@@ -1,0 +1,46 @@
+// Badges — from "EOSC Node Colors & UI Elements": pill tags in IBM Plex Mono, uppercase.
+// Mapped onto UIkit's Label component (`.uk-label`), the closest built-in match for a small
+// tag. Its built-in success/warning/danger modifiers stay semantic (untouched); the reference's
+// extra tint/outline combinations are added here via `.hook-label-misc()`, UIkit's documented
+// escape hatch for variants a component has no dedicated hook for.
+@label-background: @eosc-primary-color;
+@label-color: #fff;
+
+.hook-label() {
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hook-label-misc() {
+  .uk-label-primary-light {
+    background-color: @eosc-primary-light-background;
+    color: @eosc-primary-dark-color;
+  }
+
+  .uk-label-secondary {
+    background-color: @eosc-secondary-color;
+    color: #fff;
+  }
+
+  .uk-label-secondary-light {
+    background-color: @eosc-secondary-light-background;
+    color: @eosc-secondary-dark-color;
+  }
+
+  .uk-label-muted {
+    background-color: #eceef0;
+    color: #3d454d;
+  }
+
+  .uk-label-outline {
+    background-color: transparent;
+    color: @eosc-primary-dark-color;
+    border: 2px solid @eosc-primary-light-border;
+    padding: 3px 10px;
+  }
+}

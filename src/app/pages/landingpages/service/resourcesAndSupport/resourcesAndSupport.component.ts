@@ -27,6 +27,8 @@ export class ResourcesAndSupportComponent {
         return 'rgb(76, 137, 242)';
       case 'Removed':
         return 'rgb(250, 160, 90)';
+      default:
+        return undefined;
     }
   }
 

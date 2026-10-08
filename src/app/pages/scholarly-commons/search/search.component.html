@@ -1,0 +1,213 @@
+<main class="sc-search">
+  <section class="uk-section uk-section-small uk-section-primary uk-preserve-color">
+    <div class="uk-container uk-container-expand uk-flex uk-flex-between">
+      <div class="sc-search__intro">
+        <h1 class="sc-search__title">
+          Services for the <span class="sc-accent-teal">scholarly </span><span class="sc-accent-pink">commons</span>.
+        </h1>
+        <p class="sc-search__subtitle">
+          @if (catalogueTotal(); as count) {
+            {{ count }} services from trusted providers, for institutions, funders, research teams and individual researchers.
+          } @else {
+            Services from trusted providers, for institutions, funders, research teams and individual researchers.
+          }
+          Start from a task, or filter your way in.
+        </p>
+      </div>
+      <div class="sc-search__box">
+        <div class="sc-search__input-row">
+          <input
+            class="sc-search__input"
+            type="search"
+            [formControl]="searchControl"
+            (keydown.enter)="submitQuery()"
+            placeholder="Search services"
+            aria-label="Search services"
+          />
+          <button class="sc-search__submit" type="button" (click)="submitQuery()">Search</button>
+        </div>
+<!--        <div class="sc-search__suggestions">-->
+<!--          <span class="sc-search__suggestions-label">Popular:</span>-->
+<!--          @for (term of popularSearches; track term) {-->
+<!--            <button type="button" class="sc-search__suggestion" (click)="pickSuggestion(term)">{{ term }}</button>-->
+<!--          }-->
+<!--        </div>-->
+      </div>
+    </div>
+  </section>
+
+  <section class="uk-section uk-section-default uk-section-small">
+    <div class="uk-container uk-container-expand">
+      <div class="sc-search__tasks-label">I want to&hellip;</div>
+      <div class="uk-child-width-1-2@s uk-child-width-1-4@m uk-grid-match" uk-grid>
+        @for (task of taskShortcuts; track task.title) {
+          <div>
+            <button
+              type="button"
+              class="sc-result-card uk-card-hover uk-padding-small sc-task-card"
+              [class.sc-task-card--pink]="task.accent === 'pink'"
+              (click)="selectTask(task)"
+            >
+              <span class="sc-task-card__bar"></span>
+              <h3 class="sc-task-card__title">{{ task.title }}</h3>
+              <div class="sc-task-card__note">{{ task.note }}</div>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+  </section>
+
+  <section class="uk-container uk-container-expand sc-search__body">
+    <div uk-grid>
+      <div class="uk-width-3-4">
+        <div class="sc-search__results-col">
+          <div id="sc-results" class="sc-search__results-head">
+            <h2 class="sc-search__results-heading">{{ heading() }}</h2>
+            <div class="sc-search__results-meta">
+              @if (!error() && !(loading() && results().length === 0)) {
+                <span class="sc-search__count">{{ total() }} results</span>
+              }
+              @if (hasFilters()) {
+                <button type="button" class="sc-search__clear" (click)="clearAll()">Clear filters</button>
+              }
+            </div>
+          </div>
+
+          @if (error()) {
+            <div class="uk-alert uk-alert-danger" role="alert">
+              <p>We couldn't load the services right now. Please try again in a moment.</p>
+            </div>
+          }
+
+          @if (loading()) {
+            <div class="uk-text-center uk-margin" role="status" aria-label="Loading services">
+              <div uk-spinner></div>
+            </div>
+          }
+
+          <div class="sc-search__results-grid">
+            @for (result of results(); track result.id) {
+              <article class="sc-result-card">
+                <div class="sc-result-card__head">
+                  @if (result.logo) {
+                    <img [src]="result.logo" [alt]="result.name" class="sc-result-card__logo" />
+                  } @else {
+                    <div
+                      class="sc-result-card__initials"
+                      [class.sc-result-card__initials--pink]="result.accent === 'pink'"
+                    >{{ result.initials }}</div>
+                  }
+                  @if (result.order) {
+                    <span
+                      class="sc-result-card__order"
+                      [class.sc-result-card__order--open]="result.isOpen"
+                    >{{ result.order }}</span>
+                  }
+                </div>
+                <div>
+                  <h3 class="sc-result-card__name">
+                    <a [routerLink]="['/discover/service', result.id]">{{ result.name }}</a>
+                  </h3>
+                  @if (result.tagline) {
+                    <div class="sc-result-card__tagline">{{ result.tagline }}</div>
+                  }
+                </div>
+                @if (result.shortDescription) {
+                  <p class="sc-result-card__desc">{{ result.shortDescription }}</p>
+                }
+                <div class="sc-result-card__tags">
+                  @if (result.category) {
+                    <span class="sc-chip">{{ result.category }}</span>
+                  }
+                  @if (result.targetUsers.length) {
+                    <span class="sc-chip">{{ result.targetUsers.join(', ') }}</span>
+                  }
+                </div>
+                <div class="sc-result-card__footer">
+                  <span class="sc-result-card__provider">{{ result.provider }}</span>
+                  <div class="sc-result-card__actions">
+                    <a [routerLink]="['/discover/service', result.id]" class="sc-result-card__go">Details</a>
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+
+          @if (!loading() && !error() && results().length === 0) {
+            <div class="sc-empty-state">
+              <h3 class="sc-empty-state__title">No services match those filters</h3>
+              <p class="sc-empty-state__note">Try removing a filter, or search for a task instead.</p>
+              <button type="button" class="sc-empty-state__reset" (click)="clearAll()">Reset search</button>
+            </div>
+          }
+
+          @if (pager(); as view) {
+            <nav aria-label="Results pages">
+              <ul class="uk-pagination uk-flex-center uk-margin-medium-top">
+                @if (view.hasPrevious) {
+                  <li>
+                    <a
+                      [routerLink]="[]"
+                      [queryParams]="{from: view.previousFrom}"
+                      queryParamsHandling="merge"
+                      aria-label="Previous page"
+                      (click)="showResultsAfterNavigation()"
+                    ><span uk-pagination-previous></span></a>
+                  </li>
+                }
+                @for (page of view.pages; track page.number) {
+                  <li [class.uk-active]="page.active">
+                    <a
+                      [routerLink]="[]"
+                      [queryParams]="{from: page.from}"
+                      queryParamsHandling="merge"
+                      [attr.aria-current]="page.active ? 'page' : null"
+                      (click)="showResultsAfterNavigation()"
+                    >{{ page.number }}</a>
+                  </li>
+                }
+                @if (view.hasNext) {
+                  <li>
+                    <a
+                      [routerLink]="[]"
+                      [queryParams]="{from: view.nextFrom}"
+                      queryParamsHandling="merge"
+                      aria-label="Next page"
+                      (click)="showResultsAfterNavigation()"
+                    ><span uk-pagination-next></span></a>
+                  </li>
+                }
+              </ul>
+            </nav>
+          }
+        </div>
+      </div>
+      <div class="uk-width-1-4">
+        <aside class="sc-refine">
+          <div class="sc-refine__head">
+            <h3 class="sc-refine__title">Refine</h3>
+            <button type="button" class="sc-refine__clear" (click)="clearAll()">Clear</button>
+          </div>
+          @for (group of facetGroups(); track group.id) {
+            <div class="sc-refine__group">
+              <div class="sc-refine__group-label">{{ group.label }}</div>
+              <div class="sc-refine__items">
+                @for (item of group.items; track item.value) {
+                  <button
+                    type="button"
+                    class="sc-refine__item"
+                    [class.sc-refine__item--active]="item.active"
+                    (click)="toggleFacet(group.apiField, item.value)"
+                  >{{ item.label }}</button>
+                }
+              </div>
+            </div>
+          }
+        </aside>
+      </div>
+    </div>
+
+  </section>
+</main>

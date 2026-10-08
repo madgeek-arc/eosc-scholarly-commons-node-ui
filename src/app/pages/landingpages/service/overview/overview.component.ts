@@ -32,6 +32,7 @@ export class OverviewComponent {
       if (vocabulary.id === id)
         return vocabulary.name;
     }
+    return undefined;
   }
 
   dragSlide(id: string) {

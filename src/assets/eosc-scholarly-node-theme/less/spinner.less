@@ -1,0 +1,17 @@
+// UIkit 3.3.7's spinner keyframes use `@spinner-circumference/4`, a bare division that Less 3
+// computes but the Less 4 bundled with Angular's builder leaves as the invalid CSS `88px/4`.
+// Redefined here (a later @keyframes with the same name wins) with the division parenthesised,
+// which both Less versions compute.
+.hook-spinner-misc() {
+  @keyframes uk-spinner-dash {
+    0% { stroke-dashoffset: @spinner-circumference; }
+    50% {
+      stroke-dashoffset: (@spinner-circumference / 4);
+      transform: rotate(135deg);
+    }
+    100% {
+      stroke-dashoffset: @spinner-circumference;
+      transform: rotate(450deg);
+    }
+  }
+}

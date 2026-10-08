@@ -1,27 +1,37 @@
-# Resource Catalogue UI
+# EOSC Scholarly Commons UI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.9.
+Angular 21 front end for the EOSC Node Scholarly Commons service catalogue (npm package `resource-catalogue-ui`).
 
-## Development server
+## Requirements
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+Node 22 (see `.nvmrc`); Angular 21 needs Node 20.19 or newer.
 
-## Code scaffolding
+## Commands
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+| Command | What it does |
+| --- | --- |
+| `npm ci` | Install the locked dependencies |
+| `npm start` | Dev server on http://localhost:3000 with `proxy.conf.json`: `/openaire` goes to `localhost:8482` (the catalogue API, for example through an SSH tunnel) and the Joomla pages to https://innovation.openaire.eu |
+| `npm run build:prod` | Production build (AOT, hashed bundles) into `dist/resource-catalogue-ui`; `build:beta` uses the beta environment |
+| `npm run lint` | ESLint over TypeScript and templates |
+| `npm run lint:ci` | Same, but fails when the warning count is above the limit in `package.json` |
 
-## Build
+## Quality gates
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+The GitHub workflow in `.github/workflows/ci.yml` runs on every pull request and on pushes to `master`:
 
-## Running unit tests
+1. **Lint:** `npm run lint:ci`. Many Angular rules (standalone, `inject()`, signals, OnPush, control flow, `NgOptimizedImage`, no `any`, no console) are warnings. The limit in the `lint:ci` script is the current count; it can only go down. Fix warnings, then lower the number. `src/catalogue-ui` is excluded from these rules.
+2. **Build:** `npm run build:prod`. The budgets in `angular.json` (initial bundle 1.8 MB warning, 2.1 MB error) fail the build when the bundle grows.
+3. **Audit:** `npm audit --audit-level=critical` prints every finding and fails on critical ones only.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+TypeScript runs with `alwaysStrict`, `noImplicitThis`, `useUnknownInCatchVariables`, `strictFunctionTypes`, `strictBindCallApply`, `noFallthroughCasesInSwitch`, `noImplicitOverride` and `noImplicitReturns`. `noImplicitAny` and `strictNullChecks` are not on yet.
 
-## Running end-to-end tests
+## Docker
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+`docker build -t catalogue-ui .` builds the production bundle and an nginx image. At start `init.sh` writes the nginx config from three environment variables: `SERVER_NAME`, `PROXY_API_ENDPOINT` (the catalogue API, served under `/api`) and `PROXY_PAGES_ENDPOINT` (the Joomla site embedded in iframes). See `docker-compose.yml`.
 
-## Further help
+## Layout
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- `src/app`: the application. `pages/scholarly-commons` and `shared/scholarly-commons` hold the current design (search, service detail, header, footer, Joomla iframe pages).
+- `src/catalogue-ui`: the dynamic form library used by the service and datasource edit forms. It is lazy-loaded.
+- `src/assets/eosc-scholarly-node-theme`: the UIkit LESS theme, built by Angular from `styles.less`.

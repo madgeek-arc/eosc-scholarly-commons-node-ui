@@ -242,6 +242,7 @@ export class ProviderServicesComponent implements OnInit {
         return vocabulary.name;
       }
     }
+    return undefined;
   }
 
   getPayload(bundle: Bundle<Service | Datasource>): Service | Datasource {

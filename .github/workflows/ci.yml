@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # The warning limit in package.json only goes down: fix warnings, then lower it.
+      - name: Lint
+        run: npm run lint:ci
+
+      # The budgets in angular.json fail this step when the initial bundle grows past the limit.
+      - name: Build
+        run: npm run build:prod
+
+      # Prints every finding; fails only on critical ones.
+      - name: Audit
+        run: npm audit --audit-level=critical
