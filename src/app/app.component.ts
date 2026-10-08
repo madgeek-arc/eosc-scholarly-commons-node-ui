@@ -12,36 +12,12 @@ import {NavigationService} from './services/navigation.service';
   standalone: false
 })
 export class AppComponent implements OnInit {
-  isLoginOrRegister = false;
-
-  breadcrumbs: string[] = [];
-
-  // Seeded synchronously from the current URL (not just the router.events subscription below)
-  // because on a hard page load the very first navigation event can fire before ngOnInit
-  // subscribes, which would otherwise let the top menu/footer mount for one frame on
-  // /changeLogClean before cleanView catches up.
-  cleanView = AppComponent.isCleanViewUrl(window.location.pathname);
-  dashboardView = false;
-
-  private static isCleanViewUrl(url: string): boolean {
-    return url.includes('/changeLogClean');
-  }
 
   constructor(public router: Router, private auth: AuthenticationService) {
     this.auth.redirect();
   }
 
   ngOnInit() {
-    this.router.events.subscribe((evt: any) => {
-      if (evt.url) {
-        this.cleanView = AppComponent.isCleanViewUrl(evt.url);
-        this.dashboardView = evt.url.includes('/dashboard');
-        this.breadcrumbs = evt.url.split(/\//);
-      }
-      this.breadcrumbs[0] = 'Home';
-      // this.isLoginOrRegister = ["/signUp", "/signIn"].indexOf(evt.url) >= 0;
-    });
-
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
