@@ -19,7 +19,6 @@ import {ProviderService} from './services/provider.service';
 import {ComparisonService} from './services/comparison.service';
 import {SearchAireComponent} from './pages/search/search.aire.component';
 import {CookieLawModule} from './shared/reusablecomponents/cookie-law/cookie-law.module';
-import {HomeAireComponent} from './pages/home/home.aire.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {ProviderModule} from './pages/provider/provider.module';
 import {NgxMatomoModule, NgxMatomoRouterModule} from 'ngx-matomo-client';
@@ -41,7 +40,6 @@ declare let require: any;
 @NgModule({
   declarations: [
     AppComponent,
-    HomeAireComponent,
     SearchAireComponent,
     DatasourceSearchComponent,
     Datasource,
