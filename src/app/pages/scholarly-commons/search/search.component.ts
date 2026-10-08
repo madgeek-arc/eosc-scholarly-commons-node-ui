@@ -4,7 +4,7 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, NavigationEnd, Params, Router, RouterLink} from '@angular/router';
 import {of} from 'rxjs';
-import {catchError, debounceTime, defaultIfEmpty, filter, map, scan, startWith, switchMap} from 'rxjs/operators';
+import {catchError, debounceTime, filter, map, scan, startWith, switchMap} from 'rxjs/operators';
 import {Datasource, Service} from '../../../entities/eic-model';
 import {Paging} from '../../../entities/paging';
 import {URLParameter} from '../../../entities/url-parameter';
@@ -112,14 +112,12 @@ export class ScSearchComponent {
       switchMap((params) => {
         const filtered = isFiltered(params);
         return this.resources.searchWithDatasource(params).pipe(
-          // For status-0 (network) failures AuthenticationInterceptor swallows the error and completes without
-          // emitting; map that to the error state rather than leaving the page loading forever.
-          defaultIfEmpty(null),
-          map((paging) =>
-            paging
-              ? {loading: false, error: false, paging, ...(filtered ? {} : {catalogueTotal: paging.total})}
-              : {loading: false, error: true, paging: null},
-          ),
+          map((paging) => ({
+            loading: false,
+            error: false,
+            paging,
+            ...(filtered ? {} : {catalogueTotal: paging.total}),
+          })),
           catchError(() => of({loading: false, error: true, paging: null})),
           startWith({loading: true}),
         );

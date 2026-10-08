@@ -1,8 +1,9 @@
+import {HttpErrorResponse} from '@angular/common/http';
 import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import {Observable, forkJoin, of} from 'rxjs';
-import {catchError, defaultIfEmpty, map, shareReplay, startWith, switchMap} from 'rxjs/operators';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {EMPTY, Observable, forkJoin, of} from 'rxjs';
+import {catchError, map, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import {ResourceService} from '../../../services/resource.service';
 import {
   RelatedService,
@@ -40,6 +41,7 @@ const RELATED_LIMIT = 3;
 })
 export class ScServiceDetailComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly resources = inject(ResourceService);
 
   private readonly serviceId = toSignal(
@@ -48,11 +50,9 @@ export class ScServiceDetailComponent {
   );
 
   // Fetched once and replayed for every service this component instance shows (related-service links reuse the
-  // instance). A vocabulary failure, including the interceptor's silent status-0 completion, falls back to
-  // raw ids rather than failing the page.
+  // instance). A vocabulary failure falls back to raw ids rather than failing the page.
   private readonly labels$ = this.resources.getUiVocabularies().pipe(
     map((vocabularies) => buildVocabularyLookup(vocabularies as unknown as Vocabularies)),
-    defaultIfEmpty(buildVocabularyLookup(null)),
     catchError(() => of(buildVocabularyLookup(null))),
     shareReplay(1),
   );
@@ -96,25 +96,25 @@ export class ScServiceDetailComponent {
 
   private load(id: string): Observable<DetailState> {
     return forkJoin([this.resources.getServiceOrDatasource(id), this.labels$]).pipe(
-      // AuthenticationInterceptor completes without emitting on status-0 failures; that is a failed load too.
-      defaultIfEmpty(null),
-      switchMap((loaded) => {
-        if (!loaded) {
-          return of(FAILED);
-        }
-        const [resource, label] = loaded;
+      switchMap(([resource, label]) => {
         const detail = toServiceDetailView(resource, label);
         const relatedIds = (resource.relatedResources ?? []).filter((related) => related && related !== resource.id);
         const related$: Observable<RelatedService[]> = relatedIds.length
           ? this.resources.getServicesByIdArray(relatedIds).pipe(
               map((services) => services.slice(0, RELATED_LIMIT).map(toRelatedService)),
-              defaultIfEmpty([] as RelatedService[]),
               catchError(() => of([] as RelatedService[])),
             )
           : of([]);
         return related$.pipe(map((related): DetailState => ({loading: false, error: false, detail, related})));
       }),
-      catchError(() => of(FAILED)),
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse && error.status === 404) {
+          // Unknown service: leave for the not-found page, and keep the spinner up until the navigation lands.
+          void this.router.navigate(['/notFound'], {replaceUrl: true});
+          return EMPTY;
+        }
+        return of(FAILED);
+      }),
       startWith(LOADING),
     );
   }
