@@ -8,7 +8,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   imports: [NgOptimizedImage, RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="uk-navnar uk-navbar-container sc-top-menu">
+    <header class="uk-navbar-container sc-top-menu">
       <div class="uk-container uk-container-expand sc-top-menu__bar">
         <a routerLink="/discover" class="sc-top-menu__logo-link">
           <img
