@@ -34,6 +34,7 @@ export class ComparisonService {
     if (go) {
       return this.go();
     }
+    return undefined;
   }
 
   clearAll() {
@@ -47,5 +48,6 @@ export class ComparisonService {
     } else {
       this.router.search({});
     }
+    return undefined;
   }
 }

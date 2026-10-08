@@ -74,8 +74,8 @@ export class Indicator implements Identifiable {
 }
 
 export class ServiceBundle extends Bundle<any> {
-  service: Service;
-  datasource: Datasource;
+  override service: Service;
+  override datasource: Datasource;
 }
 
 export class Measurement implements Identifiable {
@@ -246,9 +246,9 @@ export class Service implements Identifiable {
 }
 
 export class Datasource extends Service implements Identifiable {
-  id: string;
+  override id: string;
   serviceId: string;
-  catalogueId: string;
+  override catalogueId: string;
   submissionPolicyURL: URL;
   preservationPolicyURL: URL;
   versionControl: boolean;

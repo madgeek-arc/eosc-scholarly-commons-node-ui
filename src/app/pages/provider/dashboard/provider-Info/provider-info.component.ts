@@ -56,6 +56,7 @@ export class ProviderInfoComponent implements OnInit, OnChanges {
       if (vocabulary.id === id)
         return vocabulary.name;
     }
+    return undefined;
   }
 
   setVocabularies() {

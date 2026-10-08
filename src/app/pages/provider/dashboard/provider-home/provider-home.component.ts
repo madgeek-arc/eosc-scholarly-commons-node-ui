@@ -67,6 +67,7 @@ export class ProviderHomeComponent implements OnInit, OnChanges {
       if (vocabulary.id === id)
         return vocabulary.name;
     }
+    return undefined;
   }
 
   // formatLogDate(logDate: string): string {

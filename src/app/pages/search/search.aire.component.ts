@@ -280,6 +280,7 @@ export class SearchAireComponent implements OnInit {
         return vocabulary.name;
       }
     }
+    return undefined;
   }
 
 }
