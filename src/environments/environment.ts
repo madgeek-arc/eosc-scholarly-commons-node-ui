@@ -10,6 +10,9 @@ export const environment = {
   FAQ_ENDPOINT: 'https://dl105.madgik.di.uoa.gr/faq/api',
   // API_ENDPOINT: '/eic-registry', // to change the end point go to proxy.conf.json file
   API_ENDPOINT: '/openaire', // to change the end point go to proxy.conf.json file
+  // Public address of the Joomla site behind the iframe pages (no trailing slash). Keep in line with the proxy target
+  // (proxy.conf.json, PROXY_PAGES_ENDPOINT in docker-compose.yml).
+  JOOMLA_SITE_ORIGIN: 'https://innovation.openaire.eu',
   AAI_LOGIN: '/login',
   AAI_LOGOUT: 'https://aai.openaire.eu/proxy/saml2/idp/SingleLogoutService.php?ReturnTo=',
   STATS_ENDPOINT: 'https://providers.eosc-portal.eu/stats-api/',

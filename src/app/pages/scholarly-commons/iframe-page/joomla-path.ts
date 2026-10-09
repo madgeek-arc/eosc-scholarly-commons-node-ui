@@ -1,8 +1,13 @@
+import {environment} from '../../../../environments/environment';
+
 /** Same-origin prefix that the dev server (proxy.conf.json) and nginx forward to the Joomla host. */
 export const JOOMLA_PROXY_PREFIX = '/pages';
 
-/** Public address of the Joomla site: where its pages open when they are shown outside the app. */
-export const JOOMLA_SITE_ORIGIN = 'https://innovation.openaire.eu';
+/**
+ * Public address of the Joomla site: where its pages open when they are shown outside the app. Set per
+ * environment, so moving the Joomla host is a configuration change (plus the proxy target), not a code change.
+ */
+export const JOOMLA_SITE_ORIGIN = environment.JOOMLA_SITE_ORIGIN;
 
 /** What an HTML `id` looks like in practice; also keeps anything that is not a plain anchor name out of the URL. */
 const FRAGMENT = /^\w[\w:.-]{0,99}$/;

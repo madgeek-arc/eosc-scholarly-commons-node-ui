@@ -30,6 +30,23 @@ TypeScript runs with `alwaysStrict`, `noImplicitThis`, `useUnknownInCatchVariabl
 
 `docker build -t catalogue-ui .` builds the production bundle and an nginx image. At start `init.sh` writes the nginx config from three environment variables: `SERVER_NAME`, `PROXY_API_ENDPOINT` (the catalogue API, served under `/api`) and `PROXY_PAGES_ENDPOINT` (the Joomla site embedded in iframes). See `docker-compose.yml`.
 
+## Joomla pages (iframes)
+
+Home, How to start, Use Cases, News, Training, Terms & Policies and Join are Joomla articles shown in an iframe through the `/pages` proxy. The list is `IFRAME_PAGES` in `src/app/pages/scholarly-commons/iframe-page/iframe-pages.config.ts`; a new page is one entry with its article id.
+
+**Writing links in Joomla content.** Use host-free, root-relative links, so that nothing in them depends on where Joomla is hosted:
+
+| Link goes to | Write | What happens |
+| --- | --- | --- |
+| A page of this app | The app's own path: `/discover`, `/join`, `/how-to-start#esc-researcher` | The app navigates there. Hovering shows the app's address. |
+| Another Joomla page or a file | The Joomla path: `/some-article.html`, `/images/guide.pdf` | Opens in a new tab on the Joomla site |
+| Another website | The full `https://` address | Opens in a new tab |
+| A place on the same page | `#anchor` | Handled by the browser |
+
+Avoid the Joomla host, `.html` aliases and `?option=com_content&view=article&id=` for pages of the app. The older forms still work and are rewritten to the app's path when the page loads, so existing content keeps working until it is edited.
+
+**Moving the Joomla host.** Change `PROXY_PAGES_ENDPOINT` (deployment), the proxy target in `proxy.conf.json` (dev server) and `JOOMLA_SITE_ORIGIN` in the three `src/environments` files. Links in the content need no change.
+
 ## Layout
 
 - `src/app`: the application. `pages/scholarly-commons` and `shared/scholarly-commons` hold the current design (search, service detail, header, footer, Joomla iframe pages).
