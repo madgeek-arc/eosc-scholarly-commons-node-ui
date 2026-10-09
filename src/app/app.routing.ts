@@ -1,18 +1,9 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {CommonModule} from '@angular/common';
-import {SearchAireComponent} from './pages/search/search.aire.component';
-import {authGuard} from './services/auth.guard';
-import {ForbiddenPageComponent} from './shared/forbidden-page/forbidden-page.component';
-import {NotFoundPageComponent} from './shared/not-found-page/not-found-page.component';
-import {IFRAME_PAGE_ROUTES} from './pages/scholarly-commons/iframe-page/iframe-pages.routes';
-import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
-import {UserItemComponent} from './pages/landingpages/user/user-item.component';
-import {DatasourceSearchComponent} from './pages/search/datasources-search/datasourceSearch.component';
-import {Datasource} from './pages/landingpages/datasource/datasource';
-import {ProviderJoinComponent} from './pages/provider/join/provider-join.component';
-import {JoinComponent} from './pages/public/join.component';
-import {AboutComponent} from './pages/public/about.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ForbiddenPageComponent } from './shared/forbidden-page/forbidden-page.component';
+import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component';
+import { IFRAME_PAGE_ROUTES } from './pages/scholarly-commons/iframe-page/iframe-pages.routes';
 
 // The dynamic form pulls in catalogue-ui, CKEditor and the date picker: keep them out of the main bundle.
 const loadFormsComponent = () => import('./pages/forms/forms.component').then(m => m.FormsComponent);
