@@ -21,6 +21,7 @@ export const IFRAME_PAGES: IframePage[] = [
   {path: 'news', title: 'News', articleId: 27},
   {path: 'training', title: 'Training', articleId: 28},
   {path: 'terms-and-policies', title: 'Terms & Policies', articleId: 29},
+  {path: 'join', title: 'Join', articleId: 32},
 ];
 
 /** Root-relative Joomla path of a page's article; `tmpl=yootheme` is added when building the iframe URL. */
