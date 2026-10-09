@@ -1,6 +1,7 @@
 // Pure display helpers shared by the search cards and the service detail page, so a service reads the same on both.
 
 export const ORDER_FULLY_OPEN = 'order_type-fully_open_access';
+export const ORDER_OPEN_ACCESS = 'order_type-open_access';
 export const ORDER_REQUIRED = 'order_type-order_required';
 
 // The API labels are long sentences for TRL ("9 - actual system proven in operational environment") and

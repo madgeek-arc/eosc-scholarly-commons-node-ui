@@ -39,6 +39,30 @@
   box-shadow: 0 2px 8px rgba(28, 33, 38, .05);
 }
 
+// UIkit override attempted: uk-subnav-pill supplies the hover/focus/active states (the active item is already filled
+// with the theme's primary colour), but has no bordered pill-shaped track or rounded items, and its default negative
+// margin and per-item gutter have to be reset. Apply to the <ul class="uk-subnav uk-subnav-pill">. Deliberately sets
+// no colour on the items, so UIkit's inverse text on the active one is kept.
+.sc-segmented-toggle() {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid @sc-border;
+  border-radius: @sc-radius-pill;
+
+  > li {
+    padding-left: 0;
+  }
+
+  > li > a {
+    padding: 7px 16px;
+    font-size: 14px;
+    border-radius: @sc-radius-pill;
+  }
+}
+
 // UIkit override attempted: UIkit's .uk-label/.uk-badge don't offer a pill shape on the
 // muted grey background this design uses for facet/tag chips.
 .sc-chip(@bg: @sc-bg, @fg: @sc-muted, @border: @sc-border-soft) {

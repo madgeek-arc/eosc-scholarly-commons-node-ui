@@ -210,6 +210,12 @@ button.sc-task-card {
   }
 }
 
+// UIkit override attempted: uk-subnav-pill already provides the item states and the primary-colour active fill,
+// but not the rounded track around the "Show" toggle; the shared mixin adds only that.
+.sc-search__order-toggle {
+  .sc-segmented-toggle();
+}
+
 // --- results + refine -----------------------------------------------------
 .sc-search__body {
   padding: 30px 32px 56px;

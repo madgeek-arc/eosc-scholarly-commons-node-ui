@@ -10,7 +10,7 @@ import {Paging} from '../../../entities/paging';
 import {URLParameter} from '../../../entities/url-parameter';
 import {ResourceService} from '../../../services/resource.service';
 import {POPULAR_SEARCHES, TASK_SHORTCUTS, TaskShortcut} from '../services-data';
-import {CATEGORY_FIELD, FACET_GROUPS, FacetGroupId, PAGE_SIZE} from './facet-groups';
+import {CATEGORY_FIELD, FACET_GROUPS, FacetGroupId, ORDER_FIELD, ORDER_GROUPS, OrderGroup, PAGE_SIZE} from './facet-groups';
 import {displayLabel} from '../service-display';
 import {ServiceCard, buildFacetLabels, toServiceCard} from './service-card.mapper';
 
@@ -25,6 +25,10 @@ interface FacetGroupView {
   label: string;
   apiField: string;
   items: FacetItem[];
+}
+
+interface OrderToggleOption extends OrderGroup {
+  active: boolean;
 }
 
 interface PagerPage {
@@ -192,6 +196,16 @@ export class ScSearchComponent {
     }).filter((group) => group.items.length > 0);
   });
 
+  // "All" is lit while no order type is picked; a group is lit only while exactly its values are picked, so a
+  // partial pick made in the Refine sidebar leaves the toggle with no active option.
+  readonly orderToggle = computed<OrderToggleOption[]>(() => {
+    const picked = this.selected().get(ORDER_FIELD) ?? [];
+    return [{label: 'All', values: []}, ...ORDER_GROUPS].map((group) => ({
+      ...group,
+      active: picked.length === group.values.length && group.values.every((value) => picked.includes(value)),
+    }));
+  });
+
   readonly pager = computed<PagerView | null>(() => {
     const paging = this.paging();
     if (!paging) {
@@ -281,6 +295,10 @@ export class ScSearchComponent {
     const current = this.selected().get(apiField) ?? [];
     const next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
     this.navigate({[apiField]: next.length ? next : null});
+  }
+
+  selectOrderGroup(values: string[]): void {
+    this.navigate({[ORDER_FIELD]: values.length ? values : null});
   }
 
   pickSuggestion(term: string): void {

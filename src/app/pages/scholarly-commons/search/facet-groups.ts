@@ -1,3 +1,5 @@
+import {ORDER_FULLY_OPEN, ORDER_OPEN_ACCESS, ORDER_REQUIRED} from '../service-display';
+
 export type FacetGroupId = 'category' | 'provider' | 'targetUsers' | 'trl' | 'order';
 
 export interface FacetGroupConfig {
@@ -15,10 +17,24 @@ export const PAGE_SIZE = 9;
 // service. `service_categories` is empty in the API and `subcategories` has roughly one value per service.
 export const CATEGORY_FIELD = 'portfolios';
 
+export const ORDER_FIELD = 'order_type';
+
 export const FACET_GROUPS: FacetGroupConfig[] = [
   {id: 'category', label: 'Category', apiField: CATEGORY_FIELD},
   {id: 'provider', label: 'Provider', apiField: 'resource_organisation'},
   {id: 'targetUsers', label: 'Target user', apiField: 'target_users'},
   {id: 'trl', label: 'Maturity', apiField: 'trl'},
-  {id: 'order', label: 'Order type', apiField: 'order_type'},
+  {id: 'order', label: 'Order type', apiField: ORDER_FIELD},
+];
+
+export interface OrderGroup {
+  label: string;
+  // `order_type` facet values this option selects together.
+  values: string[];
+}
+
+// Options of the "Show" toggle above the results; each one is a shortcut for a set of `order_type` values.
+export const ORDER_GROUPS: OrderGroup[] = [
+  {label: 'Open to anyone', values: [ORDER_FULLY_OPEN, ORDER_OPEN_ACCESS]},
+  {label: 'Set up for your organisation', values: [ORDER_REQUIRED]},
 ];

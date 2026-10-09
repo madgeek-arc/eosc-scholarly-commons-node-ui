@@ -75,6 +75,21 @@
             </div>
           </div>
 
+          <div class="uk-flex uk-flex-middle uk-margin-bottom">
+            <span id="sc-order-label" class="uk-text-meta uk-margin-small-right">Show</span>
+            <ul class="uk-subnav uk-subnav-pill sc-search__order-toggle" aria-labelledby="sc-order-label">
+              @for (option of orderToggle(); track option.label) {
+                <li [class.uk-active]="option.active">
+                  <a
+                    href="#"
+                    [attr.aria-current]="option.active ? 'true' : null"
+                    (click)="$event.preventDefault(); selectOrderGroup(option.values)"
+                  >{{ option.label }}</a>
+                </li>
+              }
+            </ul>
+          </div>
+
           @if (error()) {
             <div class="uk-alert uk-alert-danger" role="alert">
               <p>We couldn't load the services right now. Please try again in a moment.</p>
