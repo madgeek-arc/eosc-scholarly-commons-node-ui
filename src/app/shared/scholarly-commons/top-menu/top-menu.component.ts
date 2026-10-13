@@ -12,9 +12,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       <div class="uk-container uk-container-expand sc-top-menu__bar">
         <a routerLink="/home" class="sc-top-menu__logo-link">
           <img
-            ngSrc="assets/images/scholarly-commons-logo.png"
+            ngSrc="assets/images/scholarly-commons-logo.svg"
             alt="EOSC Node Scholarly Commons"
-            width="250"
+            width="447"
             height="50"
             priority
             class="sc-top-menu__logo"
