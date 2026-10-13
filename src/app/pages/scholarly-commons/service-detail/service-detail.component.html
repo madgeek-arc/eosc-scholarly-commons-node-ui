@@ -18,6 +18,7 @@
           <div class="sc-hero__main">
             <div class="sc-hero__identity">
               @if (service.logo) {
+                <!-- eslint-disable-next-line @angular-eslint/template/prefer-ngsrc -- API-supplied image of unknown size -->
                 <img [src]="service.logo" [alt]="service.name" class="sc-hero__logo" />
               } @else {
                 <div class="sc-hero__avatar">{{ service.initials }}</div>
@@ -100,6 +101,7 @@
                   <div class="sc-usecase">
                     @if (useCase.image) {
                       <div class="sc-usecase__image">
+                        <!-- eslint-disable-next-line @angular-eslint/template/prefer-ngsrc -- API-supplied image of unknown size -->
                         <img [src]="useCase.image" [alt]="useCase.title" class="sc-usecase__photo" />
                       </div>
                     }
@@ -138,6 +140,7 @@
                 @for (related of relatedServices(); track related.id) {
                   <a [routerLink]="['/discover/service', related.id]" class="sc-related">
                     @if (related.logo) {
+                      <!-- eslint-disable-next-line @angular-eslint/template/prefer-ngsrc -- API-supplied image of unknown size -->
                       <img [src]="related.logo" [alt]="related.name" class="sc-related__logo" />
                     } @else {
                       <div class="sc-related__initials">{{ related.initials }}</div>

@@ -81,6 +81,55 @@
     },
     {
       "files": [
+        "src/main.ts",
+        "src/app/app.component.ts",
+        "src/app/app.module.ts",
+        "src/app/app.routing.ts",
+        "src/app/pages/scholarly-commons/**/*.ts",
+        "src/app/shared/scholarly-commons/**/*.ts",
+        "src/app/shared/forbidden-page/*.ts",
+        "src/app/shared/not-found-page/*.ts",
+        "src/app/services/authentication.service.ts",
+        "src/app/services/authentication-interceptor.ts",
+        "src/app/services/auth.guard.ts",
+        "src/app/services/resource.service.ts"
+      ],
+      "rules": {
+        "@angular-eslint/prefer-standalone": "error",
+        "@angular-eslint/prefer-inject": "error",
+        "@angular-eslint/prefer-signals": "error",
+        "@angular-eslint/prefer-on-push-component-change-detection": "error",
+        "@angular-eslint/prefer-host-metadata-property": "error",
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-unused-vars": "error",
+        "eqeqeq": "error",
+        "no-console": [
+          "error",
+          {
+            "allow": [
+              "warn",
+              "error"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "src/app/app.component.html",
+        "src/app/pages/scholarly-commons/**/*.html",
+        "src/app/shared/scholarly-commons/**/*.html",
+        "src/app/shared/forbidden-page/*.html",
+        "src/app/shared/not-found-page/*.html"
+      ],
+      "rules": {
+        "@angular-eslint/template/prefer-ngsrc": "error",
+        "@angular-eslint/template/prefer-class-binding": "error",
+        "@angular-eslint/template/no-inline-styles": "error"
+      }
+    },
+    {
+      "files": [
         "src/catalogue-ui/**/*.ts",
         "src/catalogue-ui/**/*.html"
       ],
