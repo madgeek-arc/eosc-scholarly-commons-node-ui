@@ -76,7 +76,7 @@ export class ProviderServicesComponent implements OnInit {
         this.resourceState = value[2];
         // this.loading = false;
       },
-      error => {console.log(error);}
+      error => {console.error(error);}
     );
   }
 
@@ -94,7 +94,7 @@ export class ProviderServicesComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key;});
+      this.queryParams = this.queryParams.filter(params => {return params.key !== key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -201,7 +201,7 @@ export class ProviderServicesComponent implements OnInit {
     }
     this.showLoader = true;
     this.resourceService.publishService(bundle.id, !bundle.active).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error.error ;
@@ -223,7 +223,7 @@ export class ProviderServicesComponent implements OnInit {
   deleteService(bundle: Bundle<Service | Datasource>) {
     this.showLoader = true;
     this.resourceService.deleteService(bundle.id).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error ;

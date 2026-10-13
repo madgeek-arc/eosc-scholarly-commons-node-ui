@@ -44,7 +44,7 @@ export class EmailModalComponent {
     this.emailErrorMessage = '';
     if (this.emailForm.valid) {
       this.emailService.sendMail(this.serviceIdsArray, this.emailForm.value).subscribe(
-        res => UIkit.modal('#email-modal').hide(),
+        () => UIkit.modal('#email-modal').hide(),
         err =>  this.emailErrorMessage = 'Something went bad, server responded: ' + err.error
       );
     } else {

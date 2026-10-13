@@ -1,6 +1,6 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Bundle, Datasource, LoggingInfo, Provider, ProviderBundle, Service, ServiceBundle, Vocabulary} from '../../../../entities/eic-model';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Datasource, LoggingInfo, Provider, ProviderBundle, Service, ServiceBundle} from '../../../../entities/eic-model';
 import {ProviderService} from '../../../../services/provider.service';
 import {ResourceService} from '../../../../services/resource.service';
 import {DatePipe} from '@angular/common';
@@ -39,7 +39,7 @@ export class ProviderHomeComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.providerBundle) {
       this.provider = this.providerBundle.provider;
       this.loggingInfo = this.providerBundle.loggingInfo;

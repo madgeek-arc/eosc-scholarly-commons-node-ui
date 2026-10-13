@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Provider, Type} from '../../../entities/eic-model';
+import {Provider} from '../../../entities/eic-model';
 import {ServiceProviderFormComponent} from './service-provider-form.component';
 import {ResourceService} from '../../../services/resource.service';
 import {UntypedFormBuilder} from '@angular/forms';
@@ -7,7 +7,6 @@ import {AuthenticationService} from '../../../services/authentication.service';
 import {ProviderService} from '../../../services/provider.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
-declare let UIkit: any;
 
 @Component({
   selector: 'app-update-service-provider',
@@ -79,7 +78,7 @@ export class UpdateServiceProviderComponent extends ServiceProviderFormComponent
       .subscribe(
       provider => this.provider = provider,
       err => {
-        console.log(err);
+        console.error(err);
         this.errorMessage = 'Something went wrong.';
       },
       () => {

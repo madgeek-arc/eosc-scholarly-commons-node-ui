@@ -78,14 +78,14 @@ export class SearchAireComponent implements OnInit {
             this.vocabularies = value[0].concat(value[1]);
             this.loading = false;
           },
-          error => {console.log(error);}
+          error => {console.error(error);}
       );
 
       this.resourceService.searchWithDatasource(this.urlParameters).subscribe(
         searchResults => {
           this.updateSearchResultsSnippets(searchResults);
         },
-      error => {},
+      () => {},
       () => {this.paginationInit();}
       );
     });
@@ -108,7 +108,7 @@ export class SearchAireComponent implements OnInit {
       this.myProviders = [];
       this.resourceService.getMyServiceProviders().subscribe(
         res => this.myProviders = res,
-        error => console.log(error),
+        error => console.error(error),
         () => {
           this.canAddOrEditService = this.myProviders.some(p => p.id === 'openaire');
         }

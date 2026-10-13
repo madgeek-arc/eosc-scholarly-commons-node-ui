@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {DatasourceService} from '../../../services/datasource.service';
 import {DatasourceDetails} from '../../../entities/datasource';
 
@@ -24,7 +24,7 @@ export class Datasource implements OnInit {
             if (next.results.length === 1)
               this.datasource = next.results[0];
           },
-          error => {console.log(error);}
+          error => {console.error(error);}
         );
       }
     );

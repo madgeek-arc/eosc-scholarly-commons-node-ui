@@ -9,7 +9,6 @@ import {Datasource, Service, Vocabulary} from '../../entities/eic-model';
 import {PremiumSortPipe} from '../../shared/pipes/premium-sort.pipe';
 import {CatalogueUiModule} from '../../../catalogue-ui/catalogue-ui.module';
 
-import * as uikit from 'uikit';
 
 @Component({
   selector: 'app-form',
@@ -60,7 +59,7 @@ export class FormsComponent implements OnInit{
               this.model = next[1].results[0];
               this.vocabulariesMap = next[2];
             },
-            error => {console.log(error);},
+            error => {console.error(error);},
             () => {
               this.prepareVocabularies();
               this.ready = true;
@@ -75,7 +74,7 @@ export class FormsComponent implements OnInit{
               this.model = next[0].results[0];
               this.vocabulariesMap = next[1];
             },
-            error => {console.log(error);},
+            error => {console.error(error);},
             () => {
               this.prepareVocabularies();
               this.ready = true;
@@ -84,7 +83,7 @@ export class FormsComponent implements OnInit{
         }
 
       },
-      error => {console.log(error);}
+      error => {console.error(error);}
     );
   }
 
@@ -105,7 +104,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]);
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. \nError Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -116,7 +115,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]);
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. \nError Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -136,7 +135,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]); //todo change page
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. Error Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -147,7 +146,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]); //todo change page
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. Error Code: '+ error.error.transactionId;
             this.ready = true;
           }

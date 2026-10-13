@@ -56,12 +56,12 @@ export class ServiceLandingPageComponent implements OnInit, OnDestroy {
                   else {
                     this.resourceService.getServicesByIdArray(this.resourcePayload.relatedResources).subscribe(
                       next => {this.relatedServices = next;},
-                      error => {console.log(error);},
+                      error => {console.error(error);},
                       () => {this.ready = true;}
                     );
                   }
                 },
-              error => {console.log(error);},
+              error => {console.error(error);},
               () => {}
             )
           );
@@ -75,7 +75,7 @@ export class ServiceLandingPageComponent implements OnInit, OnDestroy {
       this.myProviders = [];
       this.resourceService.getMyServiceProviders().subscribe(
         res => this.myProviders = res,
-        error => console.log(error.error),
+        error => console.error(error.error),
         () => {
           this.canAddOrEditService = this.myProviders.some(p => p.id === 'openaire');
         }

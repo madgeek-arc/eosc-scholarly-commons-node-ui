@@ -20,7 +20,7 @@ Node 22 (see `.nvmrc`); Angular 21 needs Node 20.19 or newer.
 
 The GitHub workflow in `.github/workflows/ci.yml` runs on every pull request and on pushes to `master`:
 
-1. **Lint:** `npm run lint:ci`. Many Angular rules (standalone, `inject()`, signals, OnPush, control flow, `NgOptimizedImage`, no `any`, no console) are warnings. The limit in the `lint:ci` script is the current count; it can only go down. Fix warnings, then lower the number. The shell and the redesign (`pages/scholarly-commons`, `shared/scholarly-commons`, the error pages, `app.*`, `main.ts` and the auth and resource services, listed in `.eslintrc.json`) are held to `error`, so new code there cannot add warnings; `console.warn` and `console.error` are allowed. `src/catalogue-ui` is excluded from these rules.
+1. **Lint:** `npm run lint:ci`. Many Angular rules (standalone, `inject()`, signals, OnPush, control flow, `NgOptimizedImage`, no `any`, no `console.log`) are warnings; `console.warn` and `console.error` are allowed, and `== null` checks are too. The limit in the `lint:ci` script is the current count; it can only go down. Fix warnings, then lower the number. The shell and the redesign (`pages/scholarly-commons`, `shared/scholarly-commons`, the error pages, `app.*`, `main.ts` and the auth and resource services, listed in `.eslintrc.json`) are held to `error`, so new code there cannot add warnings, and `== null` is not allowed there. `src/catalogue-ui` is excluded from these rules.
 2. **Build:** `npm run build:prod`. The budgets in `angular.json` (initial bundle 1.8 MB warning, 2.1 MB error) fail the build when the bundle grows.
 3. **Audit:** `npm audit --audit-level=critical` prints every finding and fails on critical ones only.
 

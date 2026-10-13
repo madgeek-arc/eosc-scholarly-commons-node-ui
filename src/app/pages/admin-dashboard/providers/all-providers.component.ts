@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Paging} from '../../../entities/paging';
 import {Bundle, Datasource, ProviderBundle, Service, Vocabulary} from '../../../entities/eic-model';
 import {FacetValue} from '../../../entities/facet';
@@ -152,7 +152,7 @@ export class AllProvidersDashboardComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key;});
+      this.queryParams = this.queryParams.filter(params => {return params.key !== key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -194,8 +194,8 @@ export class AllProvidersDashboardComponent implements OnInit {
 
   verifyProvider(id, active, status) {
     this.providerService.verifyProvider(id, active, status).subscribe(
-      res => this.getProviders(),
-      err => console.log(err),
+      () => this.getProviders(),
+      err => console.error(err),
       () => {}
     );
   }
@@ -208,7 +208,7 @@ export class AllProvidersDashboardComponent implements OnInit {
     }
     this.showLoader = true;
     this.providerService.publishProvider(bundle.id, !bundle.active).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error.error ;
@@ -230,14 +230,14 @@ export class AllProvidersDashboardComponent implements OnInit {
   deleteProvider(providerId) {
     this.providerService.deleteProvider(providerId)
       .subscribe(
-        res => {
+        () => {
           UIkit.modal('#deletionModal').hide();
           location.reload();
           // this.getProviders();
         },
         err => {
           UIkit.modal('#deletionModal').hide();
-          console.log(err);
+          console.error(err);
         },
         () => {
         }

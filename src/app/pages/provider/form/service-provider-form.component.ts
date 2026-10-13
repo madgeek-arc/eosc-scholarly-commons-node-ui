@@ -12,7 +12,6 @@ import {PremiumSortPipe} from '../../../shared/pipes/premium-sort.pipe';
 
 import {ClassicEditor} from '../../../shared/ckeditor-classic-editor';
 
-declare let UIkit: any;
 
 @Component({
   selector: 'app-new-service-provider',
@@ -330,7 +329,7 @@ export class ServiceProviderFormComponent implements OnInit {
         );
       } else {
         this.providerService[method](this.newProviderForm.value, this.providerId).subscribe(
-          res => {},
+          () => {},
           err => {
             this.showLoader = false;
             window.scrollTo(0, 0);
@@ -457,7 +456,7 @@ export class ServiceProviderFormComponent implements OnInit {
         this.networksVocabulary = this.vocabularies['Provider network'];
         this.societalGrandChallengesVocabulary = this.vocabularies['Provider societal grand challenge'];
       },
-      error => console.log(JSON.stringify(error.error)),
+      error => console.error(JSON.stringify(error.error)),
       () => {
         this.premiumSort.transform(this.placesVocabulary, ['Europe', 'Worldwide']);
         return this.vocabularies;
@@ -703,8 +702,8 @@ export class ServiceProviderFormComponent implements OnInit {
   acceptTerms() {
     if (this._hasUserConsent && this.edit) {
       this.providerService.adminAcceptedTerms(this.providerId, this.pendingProvider).subscribe(
-        res => {},
-        error => { console.log(error); },
+        () => {},
+        error => { console.error(error); },
         () => {}
       );
     }

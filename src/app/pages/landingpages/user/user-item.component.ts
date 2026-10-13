@@ -33,7 +33,7 @@ export class UserItemComponent implements OnInit {
       res => {
         this.userVoc = res[0];
         this.response = res[1];
-        for (const [key, value] of Object.entries(res[1])) {
+        for (const [, value] of Object.entries(res[1])) {
           this.services = value;
         }
         this.portfolios = res[2];
@@ -42,18 +42,18 @@ export class UserItemComponent implements OnInit {
           next => {
             this.portfoliosMap.set('all', next.results);
           },
-          error => { console.log(error); }
+          error => { console.error(error); }
         );
         for (const portfolio of this.portfolios) {
           this.resourceService.getServicesSnippetByUserContentAndPortfolioType(this.userVocId.replace('&', '%26'), portfolio['id']).subscribe(
             next => {
               this.portfoliosMap.set(portfolio.id, next.results);
             },
-            error => { console.log(error); }
+            error => { console.error(error); }
           );
         }
       },
-      error => { console.log(error); },
+      error => { console.error(error); },
       () => {
         this.ready = true;
       }

@@ -8,7 +8,7 @@
     "build:prod": "ng build --configuration production --aot --output-hashing=all",
     "build:beta": "ng build --configuration beta --aot --output-hashing=all",
     "lint": "ng lint",
-    "lint:ci": "ng lint --max-warnings 598"
+    "lint:ci": "ng lint --max-warnings 501"
   },
   "private": true,
   "dependencies": {

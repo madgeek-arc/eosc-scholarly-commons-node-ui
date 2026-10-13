@@ -165,7 +165,7 @@ export class AllDatasourcesDashboardComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key;});
+      this.queryParams = this.queryParams.filter(params => {return params.key !== key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -208,8 +208,8 @@ export class AllDatasourcesDashboardComponent implements OnInit {
 
   verifyDatasource(id, active, status) {
     this.resourceService.verifyDatasource(id, active, status).subscribe(
-      res => this.getDatasources(),
-      err => console.log(err),
+      () => this.getDatasources(),
+      err => console.error(err),
       () => {}
     );
   }
@@ -222,7 +222,7 @@ export class AllDatasourcesDashboardComponent implements OnInit {
     }
     this.showLoader = true;
     this.resourceService.publishDatasource(bundle.id, !bundle.active).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error.error ;
@@ -244,7 +244,7 @@ export class AllDatasourcesDashboardComponent implements OnInit {
   deleteDatasource(bundle: Bundle<Datasource>) {
     this.showLoader = true;
     this.resourceService.deleteDatasource(bundle.id).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error ;

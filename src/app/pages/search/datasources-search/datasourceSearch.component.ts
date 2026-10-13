@@ -65,14 +65,14 @@ export class DatasourceSearchComponent implements OnInit {
         searchResults => {
           this.updateSearchResultsSnippets(searchResults);
         },
-      error => {},
+      () => {},
       () => {this.paginationInit();}
       );
     });
 
     this.datasourceService.getDatasourceTypes().subscribe(
       res => {this.datasourceTypes = res;},
-      error => {console.log(error);}
+      error => {console.error(error);}
     );
 
     fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
@@ -197,8 +197,6 @@ export class DatasourceSearchComponent implements OnInit {
   }
 
   onSelect(key: string, value: string) {
-    console.log(key);
-    console.log(value);
     this.updateURLParameters(key, value);
     return this.navigateUsingParameters();
   }

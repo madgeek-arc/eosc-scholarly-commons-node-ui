@@ -1,7 +1,5 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Provider, ProviderBundle, Type, Vocabulary} from '../../../../entities/eic-model';
-import {ProviderService} from '../../../../services/provider.service';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Provider, ProviderBundle} from '../../../../entities/eic-model';
 import {ResourceService} from '../../../../services/resource.service';
 
 @Component({
@@ -44,7 +42,7 @@ export class ProviderInfoComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.providerBundle) {
       this.provider = this.providerBundle.provider;
     }

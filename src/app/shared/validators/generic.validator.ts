@@ -1,4 +1,4 @@
-import {AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, ValidationErrors} from '@angular/forms';
 import {Observable, timer} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {ProviderService} from '../../services/provider.service';
@@ -29,7 +29,7 @@ export class UrlValidator {
 export const urlAsyncValidator = (service: ProviderService, time = 0) => {
   return (control: AbstractControl): Observable<ValidationErrors> => {
     if (control.value === '') {
-      return timer(time).pipe(map(res => {
+      return timer(time).pipe(map(() => {
         return null;
         })
       );

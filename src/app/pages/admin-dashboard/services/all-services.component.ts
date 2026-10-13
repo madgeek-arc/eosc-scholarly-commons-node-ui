@@ -164,7 +164,7 @@ export class AllServicesDashboardComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key;});
+      this.queryParams = this.queryParams.filter(params => {return params.key !== key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -207,8 +207,8 @@ export class AllServicesDashboardComponent implements OnInit {
 
   verifyService(id, active, status) {
     this.resourceService.verifyService(id, active, status).subscribe(
-      res => this.getResources(),
-      err => console.log(err),
+      () => this.getResources(),
+      err => console.error(err),
       () => {}
     );
   }
@@ -221,7 +221,7 @@ export class AllServicesDashboardComponent implements OnInit {
     }
     this.showLoader = true;
     this.resourceService.publishService(bundle.id, !bundle.active).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error.error ;
@@ -243,7 +243,7 @@ export class AllServicesDashboardComponent implements OnInit {
   deleteService(bundle: Bundle<Service>) {
     this.showLoader = true;
     this.resourceService.deleteService(bundle.id).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error ;

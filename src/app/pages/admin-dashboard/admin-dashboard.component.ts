@@ -131,8 +131,7 @@ export class AdminDashboardComponent implements OnInit {
     textArea.select();
 
     try {
-      const successful = document.execCommand('copy');
-      if (successful) console.log('copied');
+      document.execCommand('copy');
       // this.title = 'copied to clipboard';
       // const msg = successful ? 'successful' : 'unsuccessful';
       // console.log('Fallback: Copying text command was ' + msg);
