@@ -1,20 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-not-found-page',
   templateUrl: './not-found-page.component.html',
-  styleUrls: ['./not-found-page.component.css'],
-  standalone: false
+  styleUrl: './not-found-page.component.less',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotFoundPageComponent implements OnInit {
+export class NotFoundPageComponent {
 
   projectName = environment.projectName;
   serviceORresource = environment.serviceORresource;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

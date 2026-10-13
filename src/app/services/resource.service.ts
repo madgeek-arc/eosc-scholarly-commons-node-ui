@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {AuthenticationService} from './authentication.service';
 import {environment} from '../../environments/environment';
 import {Provider, Service, ServiceHistory, Vocabulary, Type, Datasource, Bundle} from '../entities/eic-model';
 import {Paging,} from '../entities/paging';
 import {URLParameter} from '../entities/url-parameter';
-import {PortfolioMap, ServiceSnippet} from '../entities/portfolioMap';
 
 
 @Injectable()
@@ -14,7 +13,8 @@ export class ResourceService {
   base = environment.API_ENDPOINT;
   private options = {withCredentials: true};
 
-  constructor(public http: HttpClient, public authenticationService: AuthenticationService) {}
+  readonly http = inject(HttpClient);
+  readonly authenticationService = inject(AuthenticationService);
 
   static removeNulls(obj) {
     const isArray = obj instanceof Array;

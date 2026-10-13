@@ -9,8 +9,6 @@ import {KeysPipe} from './pipes/keys.pipe';
 import {LookUpPipe} from './pipes/lookup.pipe';
 import {SafePipe} from './pipes/safe.pipe';
 import {ValuesPipe} from './pipes/getValues.pipe';
-import { ForbiddenPageComponent } from './forbidden-page/forbidden-page.component';
-import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { EmailModalComponent } from './email-modal/email-modal.component';
 // import {BreadcrumbsComponent} from './breadcrumbs/breadcrumbs.component';
 // import {PendingServicesComponent} from '../pages/provider/dashboard/pendingservices/pending-services.component';
@@ -32,8 +30,6 @@ import { EmailModalComponent } from './email-modal/email-modal.component';
     PremiumSortFacetsPipe,
     SafePipe,
     ValuesPipe,
-    ForbiddenPageComponent,
-    NotFoundPageComponent,
     EmailModalComponent,
     // BreadcrumbsComponent,
     // PendingServicesComponent,

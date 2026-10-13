@@ -1,4 +1,4 @@
-import { enableProdMode, ErrorHandler, provideZoneChangeDetection } from '@angular/core';
+import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
 import { platformBrowser } from '@angular/platform-browser';
 import * as Sentry from '@sentry/angular';
 

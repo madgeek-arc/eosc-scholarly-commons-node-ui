@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ApplicationRef, ErrorHandler, NgModule} from '@angular/core';
 import {Router} from '@angular/router';
 import * as Sentry from '@sentry/angular';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
@@ -8,8 +8,6 @@ import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app.routing';
 import {ResourceService} from './services/resource.service';
-import {ScTopMenuComponent} from './shared/scholarly-commons/top-menu/top-menu.component';
-import {ScFooterComponent} from './shared/scholarly-commons/footer/footer.component';
 import {ReusableComponentsModule} from './shared/reusablecomponents/reusable-components.module';
 import {ProviderService} from './services/provider.service';
 import {ComparisonService} from './services/comparison.service';
@@ -28,11 +26,8 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {UserService} from './services/user.service';
 
 
-declare let require: any;
-
 @NgModule({
   declarations: [
-    AppComponent,
     SearchAireComponent,
     DatasourceSearchComponent,
     Datasource,
@@ -41,9 +36,8 @@ declare let require: any;
     // ServiceLandingPageComponent,
   ],
   imports: [
+    AppComponent,
     CommonModule,
-    ScTopMenuComponent,
-    ScFooterComponent,
     FormsModule,
     ReactiveFormsModule,
     ReusableComponentsModule,
@@ -101,7 +95,10 @@ declare let require: any;
   exports: [
     LowerCasePipe
   ],
-  bootstrap: [AppComponent]
 })
 export class AppModule {
+  // A standalone component cannot go in the `bootstrap` array of an NgModule.
+  ngDoBootstrap(appRef: ApplicationRef): void {
+    appRef.bootstrap(AppComponent);
+  }
 }

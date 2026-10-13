@@ -1,0 +1,15 @@
+// Shared by the Forbidden and Not Found pages.
+
+// UIkit override attempted: UIkit has no min-height utility (the uk-height-* classes set a fixed height), so the
+// section's minimum height is set here.
+.error-page-section() {
+  min-height: 325px;
+}
+
+// UIkit override attempted: uk-heading-hero stops at 8rem (128px) and UIkit's colour classes use the theme's primary
+// colour, but the status code is drawn at 180px in the original blue.
+.error-page-code() {
+  font-size: 180px;
+  color: #0055b9;
+  line-height: 1.2;
+}
