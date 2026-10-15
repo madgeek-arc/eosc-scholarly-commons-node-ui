@@ -11,30 +11,18 @@ import {ResourceService} from './services/resource.service';
 import {ReusableComponentsModule} from './shared/reusablecomponents/reusable-components.module';
 import {ProviderService} from './services/provider.service';
 import {ComparisonService} from './services/comparison.service';
-import {SearchAireComponent} from './pages/search/search.aire.component';
 import {CookieLawModule} from './shared/reusablecomponents/cookie-law/cookie-law.module';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {NgxMatomoModule, NgxMatomoRouterModule} from 'ngx-matomo-client';
 import {environment} from '../environments/environment';
-import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
-import {UserItemComponent} from './pages/landingpages/user/user-item.component';
 import {DataSharingService} from './services/data-sharing.service';
 import {AuthenticationInterceptor} from './services/authentication-interceptor';
-import {DatasourceSearchComponent} from './pages/search/datasources-search/datasourceSearch.component';
-import {Datasource} from './pages/landingpages/datasource/datasource';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {UserService} from './services/user.service';
 
 
 @NgModule({
-  declarations: [
-    SearchAireComponent,
-    DatasourceSearchComponent,
-    Datasource,
-    PortfolioItemComponent,
-    UserItemComponent,
-    // ServiceLandingPageComponent,
-  ],
+  declarations: [],
   imports: [
     AppComponent,
     CommonModule,
