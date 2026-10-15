@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Content, PageContent} from '../../entities/page-content';
 import {HelpContentService} from '../../services/help-content.service';
@@ -20,7 +20,7 @@ export class HelpContentComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  @Input() position: string;
+  readonly position = input<string>(undefined);
 
   contents: Content[];
   errorMessage: string = null;
@@ -34,7 +34,7 @@ export class HelpContentComponent implements OnInit {
   }
 
   shiftThroughContent(pageContent: PageContent) {
-    this.contents = pageContent.content[this.position];
+    this.contents = pageContent.content[this.position()];
   }
 
   isPresent() {

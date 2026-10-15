@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import {UntypedFormBuilder, Validators} from '@angular/forms';
 import {NavigationService} from '../../services/navigation.service';
 import {ActivatedRoute} from '@angular/router';
@@ -26,7 +26,7 @@ export class EmailModalComponent {
   emailService = inject(EmailService);
 
 
-  @Input() serviceIdsArray;
+  readonly serviceIdsArray = input(undefined);
   public emailErrorMessage = '';
 
   emailForm = this.fb.group({
@@ -46,7 +46,7 @@ export class EmailModalComponent {
   sendMail() {
     this.emailErrorMessage = '';
     if (this.emailForm.valid) {
-      this.emailService.sendMail(this.serviceIdsArray, this.emailForm.value).subscribe(
+      this.emailService.sendMail(this.serviceIdsArray(), this.emailForm.value).subscribe(
         () => UIkit.modal('#email-modal').hide(),
         err =>  this.emailErrorMessage = 'Something went bad, server responded: ' + err.error
       );
