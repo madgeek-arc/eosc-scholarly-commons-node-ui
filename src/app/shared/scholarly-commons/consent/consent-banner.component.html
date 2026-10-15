@@ -1,0 +1,35 @@
+@if (consent.bannerVisible()) {
+  <section class="uk-card uk-card-default uk-card-body uk-position-fixed uk-position-bottom uk-height-max-large uk-overflow-auto sc-consent"
+           aria-labelledby="sc-consent-title">
+    <div class="uk-container uk-container-expand">
+      <h2 id="sc-consent-title" class="uk-h4 uk-margin-small-bottom">Cookies and privacy</h2>
+      <p class="uk-margin-small-top">
+        The site stores only what it needs to work (such as your sign-in) without asking. The two options below are
+        off until you switch them on. You can change your mind at any time with "Cookie settings" in the footer.
+        See the <a routerLink="/terms-and-policies">Terms &amp; Policies</a> for details.
+      </p>
+      <div class="uk-margin">
+        <label class="uk-display-block uk-margin-small-bottom">
+          <input class="uk-checkbox" type="checkbox" [checked]="analytics()"
+                 (change)="analytics.set(checked($event))">
+          <strong> Statistics.</strong> Matomo counts visits and page views so the service can be improved
+          (analytics.openaire.eu).
+        </label>
+        <label class="uk-display-block">
+          <input class="uk-checkbox" type="checkbox" [checked]="errorMonitoring()"
+                 (change)="errorMonitoring.set(checked($event))">
+          <strong> Error reports.</strong> Sentry receives details of errors, with a recording of the page around
+          each error, so they can be fixed.
+        </label>
+      </div>
+      <div class="uk-flex uk-flex-wrap uk-flex-middle">
+        <button type="button" class="uk-button uk-button-default uk-margin-small-right uk-margin-small-bottom"
+                (click)="consent.rejectAll()">Reject all</button>
+        <button type="button" class="uk-button uk-button-default uk-margin-small-right uk-margin-small-bottom"
+                (click)="consent.acceptAll()">Accept all</button>
+        <button type="button" class="uk-button uk-button-primary uk-margin-small-bottom"
+                (click)="save()">Save my choices</button>
+      </div>
+    </div>
+  </section>
+}

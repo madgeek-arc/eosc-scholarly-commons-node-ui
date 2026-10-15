@@ -14,8 +14,6 @@ export const environment = {
   projectName: 'OpenAIRE Catalogue',
   projectMail: 'example@oac.eu',
   serviceORresource: 'Resource',
-  hasUserConsent: false,
-  privacyPolicyURL: '',
   marketplaceBaseURL: '',
   showHelpContent: false,
   sentry: {

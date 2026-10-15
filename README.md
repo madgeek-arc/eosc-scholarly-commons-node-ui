@@ -47,6 +47,19 @@ Avoid the Joomla host, `.html` aliases and `?option=com_content&view=article&id=
 
 **Moving the Joomla host.** Change `PROXY_PAGES_ENDPOINT` (deployment), the proxy target in `proxy.conf.json` (dev server) and `JOOMLA_SITE_ORIGIN` in the three `src/environments` files. Links in the content need no change.
 
+## Privacy and consent
+
+Nothing optional runs before the visitor agrees. `ConsentService` (`src/app/shared/scholarly-commons/consent`) keeps their choices in `localStorage` (`sc-consent`) for six months; the banner asks on the first visit and again from "Cookie settings" in the footer. `TrackingService` (`src/app/services`) starts the optional services when the matching choice is true:
+
+| Choice | Service | Started by |
+| --- | --- | --- |
+| Statistics | Matomo (`MATOMO_URL`, `MATOMO_SITE` in `src/environments`). A site id of 0 or less (development, beta) never loads it. | `MatomoInitializerService`; `NgxMatomoModule` runs in `deferred` mode, so the script is not requested before consent |
+| Error reports | Sentry (`sentry` and `disableSentry` in `src/environments`) | `startSentry()` in `src/app/services/sentry-init.ts` |
+
+Withdrawing Sentry stops it at once. Withdrawing statistics deletes Matomo's cookies and reloads the page, because the Matomo script cannot be unloaded. Fonts and icons are self-hosted (the `@fontsource` packages and `material-icons`, listed under `styles` in `angular.json`), so no page request goes to Google.
+
+To add another optional service, give it a flag in `ConsentService`, a switch in the banner, and start it from `TrackingService`; raise `CONSENT_VERSION` so that everyone is asked again.
+
 ## Layout
 
 - `src/app`: the application. `pages/scholarly-commons` and `shared/scholarly-commons` hold the current design (search, service detail, header, footer, Joomla iframe pages).

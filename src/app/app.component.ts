@@ -3,12 +3,13 @@ import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {AuthenticationService} from './services/authentication.service';
 import {ScTopMenuComponent} from './shared/scholarly-commons/top-menu/top-menu.component';
 import {ScFooterComponent} from './shared/scholarly-commons/footer/footer.component';
+import {ScConsentBannerComponent} from './shared/scholarly-commons/consent/consent-banner.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [RouterOutlet, ScTopMenuComponent, ScFooterComponent],
+  imports: [RouterOutlet, ScTopMenuComponent, ScFooterComponent, ScConsentBannerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {

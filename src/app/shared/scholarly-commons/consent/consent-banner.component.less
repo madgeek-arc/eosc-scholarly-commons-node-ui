@@ -1,0 +1,5 @@
+// UIkit override attempted: uk-position-z-index only sets z-index: 1, and the sticky top menu already uses 20,
+// so the banner would slide under the page. It needs a z-index above everything else.
+.sc-consent {
+  z-index: 1000;
+}

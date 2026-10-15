@@ -1,5 +1,6 @@
-import {APP_INITIALIZER, ApplicationRef, ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ApplicationRef, ErrorHandler, inject, NgModule, provideAppInitializer} from '@angular/core';
 import {Router} from '@angular/router';
+import {BrowserModule} from '@angular/platform-browser';
 import * as Sentry from '@sentry/angular';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
@@ -11,7 +12,6 @@ import {ResourceService} from './services/resource.service';
 import {ReusableComponentsModule} from './shared/reusablecomponents/reusable-components.module';
 import {ProviderService} from './services/provider.service';
 import {ComparisonService} from './services/comparison.service';
-import {CookieLawModule} from './shared/reusablecomponents/cookie-law/cookie-law.module';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {NgxMatomoModule, NgxMatomoRouterModule} from 'ngx-matomo-client';
 import {environment} from '../environments/environment';
@@ -19,28 +19,22 @@ import {DataSharingService} from './services/data-sharing.service';
 import {AuthenticationInterceptor} from './services/authentication-interceptor';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {UserService} from './services/user.service';
+import {TrackingService} from './services/tracking.service';
 
 
 @NgModule({
   declarations: [],
   imports: [
+    BrowserModule,
     AppComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ReusableComponentsModule,
     SharedModule,
-    CookieLawModule,
     NgSelectModule,
-    NgxMatomoModule.forRoot({
-      scriptUrl: environment.MATOMO_URL + 'matomo.js',
-      trackers: [
-        {
-          trackerUrl: environment.MATOMO_URL,
-          siteId: environment.MATOMO_SITE
-        }
-      ]
-    }),
+    // The Matomo script is loaded by TrackingService once the visitor has agreed to statistics.
+    NgxMatomoModule.forRoot({mode: 'deferred'}),
     NgxMatomoRouterModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -79,6 +73,10 @@ import {UserService} from './services/user.service';
       multi: true,
     },
     provideHttpClient(withInterceptorsFromDi()),
+    // Creates TrackingService, which starts Matomo and Sentry if consent was given on an earlier visit.
+    provideAppInitializer(() => {
+      inject(TrackingService);
+    }),
   ],
   exports: [
     LowerCasePipe

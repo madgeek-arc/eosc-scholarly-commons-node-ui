@@ -20,9 +20,7 @@ export const environment = {
   projectName: 'OpenAIRE Catalogue',
   projectMail: 'example@oac.eu',
   serviceORresource: 'Resource',
-  hasUserConsent: true,
   showHelpContent: false,
-  privacyPolicyURL: '',
   marketplaceBaseURL: '',
   sentry: {
     dsn: 'https://c14ac91c2adaafb644a200288035d5d2@sentry.vereniki.athenarc.gr/6',

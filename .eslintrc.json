@@ -106,7 +106,9 @@
         "src/app/services/authentication.service.ts",
         "src/app/services/authentication-interceptor.ts",
         "src/app/services/auth.guard.ts",
-        "src/app/services/resource.service.ts"
+        "src/app/services/resource.service.ts",
+        "src/app/services/tracking.service.ts",
+        "src/app/services/sentry-init.ts"
       ],
       "rules": {
         "@angular-eslint/prefer-standalone": "error",
