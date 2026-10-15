@@ -14,7 +14,7 @@ import {
 import {
   CookieLawService,
 } from './cookie-law.service';
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output, inject } from '@angular/core';
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 
 export type CookieLawPosition = 'top' | 'bottom';
@@ -48,6 +48,9 @@ export type CookieLawTarget = '_blank' | '_self';
   standalone: false
 })
 export class CookieLawComponent implements OnInit {
+  private _service = inject(CookieLawService);
+  private domSanitizer = inject(DomSanitizer);
+
   public cookieLawSeen: boolean;
 
   @Input('learnMore')
@@ -85,10 +88,7 @@ export class CookieLawComponent implements OnInit {
   private _target: CookieLawTarget;
   private _position: CookieLawPosition;
 
-  constructor(
-    private _service: CookieLawService,
-    private domSanitizer: DomSanitizer,
-  ) {
+  constructor() {
     this.isSeenEvt = new EventEmitter<boolean>();
     this.animation = 'topIn';
     this._position = 'bottom';

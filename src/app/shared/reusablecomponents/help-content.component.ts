@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Content, PageContent} from '../../entities/page-content';
 import {HelpContentService} from '../../services/help-content.service';
@@ -16,14 +16,14 @@ import {environment} from '../../../environments/environment';
   standalone: false
 })
 export class HelpContentComponent implements OnInit {
+  _helpContentService = inject(HelpContentService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+
   @Input() position: string;
 
   contents: Content[];
   errorMessage: string = null;
-
-  constructor(public _helpContentService: HelpContentService, public route: ActivatedRoute,
-              public router: Router) {
-  }
 
   ngOnInit() {
     this.errorMessage = null;

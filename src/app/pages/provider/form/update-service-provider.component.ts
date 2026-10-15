@@ -2,10 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Provider} from '../../../entities/eic-model';
 import {ServiceProviderFormComponent} from './service-provider-form.component';
 import {ResourceService} from '../../../services/resource.service';
-import {UntypedFormBuilder} from '@angular/forms';
-import {AuthenticationService} from '../../../services/authentication.service';
-import {ProviderService} from '../../../services/provider.service';
-import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -17,15 +13,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class UpdateServiceProviderComponent extends ServiceProviderFormComponent implements OnInit {
   override errorMessage: string;
   provider: Provider;
-
-  constructor(public override fb: UntypedFormBuilder,
-              public override authService: AuthenticationService,
-              public override providerService: ProviderService,
-              public override resourceService: ResourceService,
-              public override router: Router,
-              public override route: ActivatedRoute) {
-    super(fb, authService, providerService, resourceService, router, route);
-  }
 
   override ngOnInit() {
     this.edit = true;

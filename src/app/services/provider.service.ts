@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {AuthenticationService} from './authentication.service';
 import {Bundle, Datasource, Provider, ProviderBundle, Service} from '../entities/eic-model';
@@ -9,9 +9,9 @@ import {URLParameter} from '../entities/url-parameter';
 
 @Injectable()
 export class ProviderService {
+  http = inject(HttpClient);
+  authenticationService = inject(AuthenticationService);
 
-  constructor(public http: HttpClient, public authenticationService: AuthenticationService) {
-  }
 
   private base = environment.API_ENDPOINT;
   private httpOption = {

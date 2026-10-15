@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {Bundle, Datasource, ProviderBundle, Service, Vocabulary} from '../../../../entities/eic-model';
 import {ProviderService} from '../../../../services/provider.service';
 import {Paging} from '../../../../entities/paging';
@@ -16,6 +16,11 @@ declare let UIkit: any;
 })
 
 export class ProviderServicesComponent implements OnInit {
+  private providerService = inject(ProviderService);
+  private resourceService = inject(ResourceService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
 
   @Input() providerBundle: ProviderBundle = null;
 
@@ -40,10 +45,6 @@ export class ProviderServicesComponent implements OnInit {
   showLoader = false;
   errorMessage: string;
   loadingMessage = '';
-
-  constructor(private providerService: ProviderService, private resourceService: ResourceService, private router: Router,
-              private route: ActivatedRoute) {
-  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {

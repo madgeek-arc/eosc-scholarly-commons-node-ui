@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ResourceService} from '../../services/resource.service';
@@ -13,6 +13,11 @@ import {Subscription} from 'rxjs';
   standalone: false
 })
 export class ServiceDashboardComponent implements OnInit {
+  authenticationService = inject(AuthenticationService);
+  resourceService = inject(ResourceService);
+  router = inject(NavigationService);
+  private route = inject(ActivatedRoute);
+
 
   public serviceBundle: Bundle<Service | Datasource>;
   public service: Service;
@@ -21,12 +26,6 @@ export class ServiceDashboardComponent implements OnInit {
   datasource: Datasource = null;
 
   private sub: Subscription;
-
-  constructor(public authenticationService: AuthenticationService,
-              public resourceService: ResourceService,
-              public router: NavigationService,
-              private route: ActivatedRoute) {
-  }
 
   ngOnInit() {
     this.providerId = this.route.snapshot.paramMap.get('providerId');

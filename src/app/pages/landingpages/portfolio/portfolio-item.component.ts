@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ResourceService} from '../../../services/resource.service';
 import {ActivatedRoute} from '@angular/router';
 import {Service, Vocabulary} from '../../../entities/eic-model';
@@ -12,14 +12,14 @@ import {Paging} from '../../../entities/paging';
   standalone: false
 })
 export class PortfolioItemComponent implements OnInit{
+  protected resourceService = inject(ResourceService);
+  protected route = inject(ActivatedRoute);
+
 
   response: Paging<Service>;
   portfolioVoc: Vocabulary;
   portfolioId: string;
   ready = false;
-
-  constructor(protected resourceService: ResourceService, protected route: ActivatedRoute) {
-  }
 
   ngOnInit() {
     this.portfolioId = this.route.snapshot.paramMap.get('id');

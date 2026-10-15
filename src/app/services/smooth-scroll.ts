@@ -1,17 +1,21 @@
 import {NavigationEnd, Router} from '@angular/router';
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SmoothScroll {
+  private router = inject(Router);
+
   private interval;
   private readonly sub;
   private lastRoute;
   private whitelist = [];
 
-  constructor(private router: Router) {
+  constructor() {
+    const router = this.router;
+
     if(typeof window !== 'undefined') {
       this.sub = router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {

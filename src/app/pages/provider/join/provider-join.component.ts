@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -8,10 +8,10 @@ import {ActivatedRoute} from '@angular/router';
 })
 
 export class ProviderJoinComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+
 
   token: string;
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.subscribe(

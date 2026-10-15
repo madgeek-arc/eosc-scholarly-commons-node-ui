@@ -1,16 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class NavigationService {
+  router = inject(Router);
+
 
   public searchParams: Subject<any> = new Subject();
 
   private breadcrumbs_: Subject<any> = new Subject<any>();
-
-  constructor(public router: Router) {
-  }
 
   service(id: string) {
     return this.router.navigate(['/service', id]);

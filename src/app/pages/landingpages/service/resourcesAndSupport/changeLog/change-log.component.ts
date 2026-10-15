@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { Service } from '../../../../../entities/eic-model';
 import { Router } from '@angular/router';
 
@@ -9,12 +9,12 @@ import { Router } from '@angular/router';
 })
 
 export class ChangeLogComponent {
+  router = inject(Router);
+
 
   @Input() resourcePayload: Service = null;
 
   cleanView = this.router.url.includes('/changeLogClean');
-
-  constructor(public router: Router) {}
 
   badgeColor(status: string) {
     switch (status) {

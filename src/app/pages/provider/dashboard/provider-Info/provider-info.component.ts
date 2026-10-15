@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import {Provider, ProviderBundle} from '../../../../entities/eic-model';
 import {ResourceService} from '../../../../services/resource.service';
 
@@ -9,29 +9,12 @@ import {ResourceService} from '../../../../services/resource.service';
 })
 
 export class ProviderInfoComponent implements OnInit, OnChanges {
+  private resourceService = inject(ResourceService);
+
 
   @Input() providerBundle: ProviderBundle = null;
   provider: Provider = null;
   vocabularies: Map<string, Object[]> = null;
-
-  // vocabularies: Map<string, Vocabulary[]> = null;
-  // placesVocabulary: Vocabulary[] = null;
-  // providerTypeVocabulary: Vocabulary[] = null;
-  // providerLCSVocabulary: Vocabulary[] = null;
-  // domainsVocabulary: Vocabulary[] = null;
-  // categoriesVocabulary: Vocabulary[] = null;
-  // merilDomainsVocabulary: Vocabulary[] = null;
-  // merilCategoriesVocabulary: Vocabulary[] = null;
-  // esfriDomainVocabulary: Vocabulary[] = null;
-  // legalStatusVocabulary: Vocabulary[] = null;
-  // esfriVocabulary: Vocabulary[] = null;
-  // areasOfActivityVocabulary: Vocabulary[] = null;
-  // networksVocabulary: Vocabulary[] = null;
-  // societalGrandChallengesVocabulary: Vocabulary[] = null;
-  // hostingLegalEntityVocabulary: Vocabulary[] = null;
-
-  constructor(private resourceService: ResourceService) {
-  }
 
   ngOnInit() {
 

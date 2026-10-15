@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {UntypedFormBuilder, Validators} from '@angular/forms';
 import {NavigationService} from '../../services/navigation.service';
 import {ActivatedRoute} from '@angular/router';
@@ -16,15 +16,18 @@ declare let UIkit: any;
   standalone: false
 })
 export class EmailModalComponent {
+  fb = inject(UntypedFormBuilder);
+  router = inject(NavigationService);
+  route = inject(ActivatedRoute);
+  resourceService = inject(ResourceService);
+  authenticationService = inject(AuthenticationService);
+  comparisonService = inject(ComparisonService);
+  navigationService = inject(NavigationService);
+  emailService = inject(EmailService);
+
 
   @Input() serviceIdsArray;
   public emailErrorMessage = '';
-
-  constructor(public fb: UntypedFormBuilder, public router: NavigationService, public route: ActivatedRoute,
-              public resourceService: ResourceService,
-              public authenticationService: AuthenticationService, public comparisonService: ComparisonService,
-              public navigationService: NavigationService, public emailService: EmailService) {
-  }
 
   emailForm = this.fb.group({
     recipientEmail: '',

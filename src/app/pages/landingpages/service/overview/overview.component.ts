@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {UiVocabulary} from '../../../../entities/dynamic-form-model';
 import {Service, URL} from '../../../../entities/eic-model';
@@ -12,6 +12,8 @@ import * as uikit from 'uikit';
   standalone: false
 })
 export class OverviewComponent {
+  private router = inject(Router);
+
 
   @Input() vocabularies: Map<string, UiVocabulary[]>;
   @Input() relatedServices: Service[] = null;
@@ -23,8 +25,6 @@ export class OverviewComponent {
 
   slideMobile = 0;
   benefitSlideMobile = 0;
-
-  constructor(private router: Router) {}
 
   getVocabularyName(vocabularyType: string, id: string): string {
     // console.log(this.vocabularies);

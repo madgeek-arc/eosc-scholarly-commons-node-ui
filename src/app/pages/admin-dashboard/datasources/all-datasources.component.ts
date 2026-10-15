@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Paging} from '../../../entities/paging';
 import {Bundle, Datasource, Vocabulary} from '../../../entities/eic-model';
@@ -15,6 +15,10 @@ declare let UIkit: any;
 })
 
 export class AllDatasourcesDashboardComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private resourceService = inject(ResourceService);
+
 
   datasources: Paging<Bundle<Datasource>> = null;
   selectedDatasource: Bundle<Datasource> = null;
@@ -38,8 +42,6 @@ export class AllDatasourcesDashboardComponent implements OnInit {
   showLoader = false;
   errorMessage: string;
   loadingMessage = '';
-
-  constructor(private route: ActivatedRoute, private router: Router, private resourceService: ResourceService) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
