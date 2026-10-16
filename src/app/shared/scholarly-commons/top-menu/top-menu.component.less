@@ -9,23 +9,25 @@
   font-family: @sc-font-body;
 }
 
+// Only the vertical padding is set here: the sides come from uk-container (15px, 32px from 640px, 40px from 960px).
 .sc-top-menu__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  flex-wrap: wrap;
-  padding: 16px 32px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
+// UIkit override attempted: uk-responsive-width caps the logo at the width of its container, but the link around it
+// is a flex item that never shrinks below its content unless min-width is 0, and UIkit has no min-width utility.
 .sc-top-menu__logo-link {
   display: block;
   line-height: 0;
+  min-width: 0;
 }
 
 .sc-top-menu__logo {
-  height: 50px;
-  width: auto;
   display: block;
 }
 

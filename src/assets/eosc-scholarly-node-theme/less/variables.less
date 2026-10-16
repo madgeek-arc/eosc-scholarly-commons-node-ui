@@ -74,6 +74,11 @@
 /* Header */
 @global-header-height: 65px;
 
+/* Offcanvas: the mobile menu drawer is white like the header; UIkit's default is the secondary (pink) background
+   with light text, which leaves the menu links hard to read. */
+@offcanvas-bar-background: @global-background;
+@offcanvas-bar-color-mode: dark;
+
 /* Inverse */
 @inverse-global-small-box-shadow: -2px -2px 5px rgba(255, 255, 255, 0.05), 2px 2px 4px rgba(0, 0, 0, 0.3);
 @inverse-global-medium-box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.3);
