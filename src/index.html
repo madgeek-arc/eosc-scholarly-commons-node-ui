@@ -6,6 +6,16 @@
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Defaults for crawlers and link previews that do not run JavaScript. PageMetaService replaces the
+       title, description and og:title / og:description on every navigation; keep the text in sync with
+       DEFAULT_DESCRIPTION in src/app/services/page-meta.service.ts. -->
+  <meta name="description" content="Services from trusted providers for the scholarly commons, for institutions, funders, research teams and individual researchers.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="EOSC Scholarly Commons Node">
+  <meta property="og:title" content="EOSC Scholarly Commons Node">
+  <meta property="og:description" content="Services from trusted providers for the scholarly commons, for institutions, funders, research teams and individual researchers.">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 
   <!-- Fonts are self-hosted: the @fontsource packages and material-icons are listed in the "styles" of angular.json.

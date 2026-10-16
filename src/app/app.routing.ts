@@ -35,6 +35,7 @@ const appRoutes: Routes = [
 
   {
     path: 'discover',
+    title: 'Discover services',
     loadComponent: () => import('./pages/scholarly-commons/search/search.component').then(m => m.ScSearchComponent),
     data: {
       breadcrumb: 'Discover'
@@ -42,6 +43,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'discover/service/:id',
+    // Replaced by the service name once it has loaded (see ScServiceDetailComponent).
+    title: 'Service',
     loadComponent: () => import('./pages/scholarly-commons/service-detail/service-detail.component').then(m => m.ScServiceDetailComponent),
     data: {
       breadcrumb: 'Service'
@@ -49,16 +52,20 @@ const appRoutes: Routes = [
   },
   {
     path: 'forbidden',
+    title: 'Forbidden',
     component: ForbiddenPageComponent,
     data: {
-      breadcrumb: 'Forbidden'
+      breadcrumb: 'Forbidden',
+      noindex: true
     }
   },
   {
     path: 'notFound',
+    title: 'Page not found',
     component: NotFoundPageComponent,
     data: {
-      breadcrumb: 'Not Found'
+      breadcrumb: 'Not Found',
+      noindex: true
     }
   },
   {

@@ -3,6 +3,7 @@ import {IFRAME_PAGES, joomlaPathFor} from './iframe-pages.config';
 
 export const IFRAME_PAGE_ROUTES: Routes = IFRAME_PAGES.map(page => ({
   path: page.path,
+  title: page.title,
   loadComponent: () => import('./iframe-page.component').then(m => m.IframePageComponent),
   data: {joomlaPath: joomlaPathFor(page), title: page.title, breadcrumb: page.title},
 }));

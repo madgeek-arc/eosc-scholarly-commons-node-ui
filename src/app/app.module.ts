@@ -1,5 +1,5 @@
 import {APP_INITIALIZER, ApplicationRef, ErrorHandler, inject, NgModule, provideAppInitializer} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, TitleStrategy} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import * as Sentry from '@sentry/angular';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
@@ -20,6 +20,7 @@ import {AuthenticationInterceptor} from './services/authentication-interceptor';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {UserService} from './services/user.service';
 import {TrackingService} from './services/tracking.service';
+import {PageTitleStrategy} from './services/page-title.strategy';
 
 
 @NgModule({
@@ -73,6 +74,8 @@ import {TrackingService} from './services/tracking.service';
       multi: true,
     },
     provideHttpClient(withInterceptorsFromDi()),
+    // Sets the document title and meta tags from the `title` of the route on screen.
+    {provide: TitleStrategy, useExisting: PageTitleStrategy},
     // Creates TrackingService, which starts Matomo and Sentry if consent was given on an earlier visit.
     provideAppInitializer(() => {
       inject(TrackingService);

@@ -1,9 +1,10 @@
 import {HttpErrorResponse} from '@angular/common/http';
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, inject} from '@angular/core';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {EMPTY, Observable, forkJoin, of} from 'rxjs';
 import {catchError, map, shareReplay, startWith, switchMap} from 'rxjs/operators';
+import {PageMetaService} from '../../../services/page-meta.service';
 import {ResourceService} from '../../../services/resource.service';
 import {
   RelatedService,
@@ -43,6 +44,7 @@ export class ScServiceDetailComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly resources = inject(ResourceService);
+  private readonly pageMeta = inject(PageMetaService);
 
   private readonly serviceId = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('id') ?? '')),
@@ -66,6 +68,16 @@ export class ScServiceDetailComponent {
   readonly detail = computed(() => this.state().detail);
   readonly loading = computed(() => this.state().loading);
   readonly relatedServices = computed(() => this.state().related);
+
+  // The route title ("Service") is applied when the navigation ends; swap in the service name once it has loaded.
+  // Related-service links reuse this instance, so this follows detail() instead of running once. The next
+  // navigation resets the title and description through PageTitleStrategy, so there is nothing to undo on destroy.
+  private readonly syncPageMeta = effect(() => {
+    const detail = this.detail();
+    if (detail) {
+      this.pageMeta.set(detail.name, {description: detail.tagline || detail.description});
+    }
+  });
 
   readonly atAGlance = computed<AtAGlanceFact[]>(() => {
     const detail = this.detail();
