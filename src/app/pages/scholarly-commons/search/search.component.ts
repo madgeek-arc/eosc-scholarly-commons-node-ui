@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, effect, inject} from '@angular/core';
-import {ViewportScroller} from '@angular/common';
+import {NgTemplateOutlet, ViewportScroller} from '@angular/common';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, NavigationEnd, Params, Router, RouterLink} from '@angular/router';
@@ -70,7 +70,7 @@ const isFiltered = (params: URLParameter[]): boolean =>
 @Component({
   selector: 'app-sc-search',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [NgTemplateOutlet, ReactiveFormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './search.component.html',
   styleUrl: './search.component.less',

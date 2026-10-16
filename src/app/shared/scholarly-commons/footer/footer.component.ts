@@ -11,7 +11,7 @@ import {ConsentService} from '../consent/consent.service';
     <footer class="sc-footer">
       <div class="uk-container uk-container-expand sc-footer__bar">
         <span>EOSC Node &middot; Scholarly Commons &mdash; Data, Computing &amp; Digital</span>
-        <span class="uk-flex sc-footer__links">
+        <span class="uk-flex uk-flex-wrap sc-footer__links">
           <a routerLink="/terms-and-policies" class="uk-link-muted">Terms &amp; Policies</a>
           <a href="#" role="button" class="uk-link-muted" (click)="openCookieSettings($event)">Cookie settings</a>
           <span>Contact</span>

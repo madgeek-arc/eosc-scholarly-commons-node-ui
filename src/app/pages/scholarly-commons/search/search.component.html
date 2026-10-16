@@ -1,37 +1,42 @@
 <main class="sc-search">
   <section class="uk-section uk-section-small uk-section-primary uk-preserve-color">
-    <div class="uk-container uk-container-expand uk-flex uk-flex-between">
-      <div class="sc-search__intro">
-        <h1 class="sc-search__title">
-          Services for the <span class="sc-accent-teal">scholarly </span><span class="sc-accent-pink">commons</span>.
-        </h1>
-        <p class="sc-search__subtitle">
-          @if (catalogueTotal(); as count) {
-            {{ count }} services from trusted providers, for institutions, funders, research teams and individual researchers.
-          } @else {
-            Services from trusted providers, for institutions, funders, research teams and individual researchers.
-          }
-          Start from a task, or filter your way in.
-        </p>
-      </div>
-      <div class="sc-search__box">
-        <div class="sc-search__input-row">
-          <input
-            class="sc-search__input"
-            type="search"
-            [formControl]="searchControl"
-            (keydown.enter)="submitQuery()"
-            placeholder="Search services"
-            aria-label="Search services"
-          />
-          <button class="sc-search__submit" type="button" (click)="submitQuery()">Search</button>
+    <div class="uk-container uk-container-expand">
+      <!-- Side by side from @m (960px); the search box drops under the intro below that. -->
+      <div class="uk-flex-between" uk-grid>
+        <div class="uk-width-1-1 uk-width-expand@m sc-search__intro">
+          <h1 class="sc-search__title">
+            Services for the <span class="sc-accent-teal">scholarly </span><span class="sc-accent-pink">commons</span>.
+          </h1>
+          <p class="sc-search__subtitle">
+            @if (catalogueTotal(); as count) {
+              {{ count }} services from trusted providers, for institutions, funders, research teams and individual researchers.
+            } @else {
+              Services from trusted providers, for institutions, funders, research teams and individual researchers.
+            }
+            Start from a task, or filter your way in.
+          </p>
         </div>
-<!--        <div class="sc-search__suggestions">-->
-<!--          <span class="sc-search__suggestions-label">Popular:</span>-->
-<!--          @for (term of popularSearches; track term) {-->
-<!--            <button type="button" class="sc-search__suggestion" (click)="pickSuggestion(term)">{{ term }}</button>-->
-<!--          }-->
-<!--        </div>-->
+        <div class="uk-width-1-1 uk-width-auto@m">
+          <div class="sc-search__box">
+            <div class="sc-search__input-row">
+              <input
+                class="sc-search__input"
+                type="search"
+                [formControl]="searchControl"
+                (keydown.enter)="submitQuery()"
+                placeholder="Search services"
+                aria-label="Search services"
+              />
+              <button class="sc-search__submit" type="button" (click)="submitQuery()">Search</button>
+            </div>
+<!--            <div class="sc-search__suggestions">-->
+<!--              <span class="sc-search__suggestions-label">Popular:</span>-->
+<!--              @for (term of popularSearches; track term) {-->
+<!--                <button type="button" class="sc-search__suggestion" (click)="pickSuggestion(term)">{{ term }}</button>-->
+<!--              }-->
+<!--            </div>-->
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -61,7 +66,7 @@
 
   <section class="uk-container uk-container-expand sc-search__body">
     <div uk-grid>
-      <div class="uk-width-3-4">
+      <div class="uk-width-1-1 uk-width-3-4@m">
         <div class="sc-search__results-col">
           <div id="sc-results" class="sc-search__results-head">
             <h2 class="sc-search__results-heading">{{ heading() }}</h2>
@@ -161,7 +166,7 @@
 
           @if (pager(); as view) {
             <nav aria-label="Results pages">
-              <ul class="uk-pagination uk-flex-center uk-margin-medium-top">
+              <ul class="uk-pagination uk-flex-center uk-flex-wrap uk-margin-medium-top">
                 @if (view.hasPrevious) {
                   <li>
                     <a
@@ -200,30 +205,49 @@
           }
         </div>
       </div>
-      <div class="uk-width-1-4">
+      <!-- Above the results on phones (collapsed behind "Refine"), beside them from @m (960px). -->
+      <div class="uk-width-1-1 uk-width-1-4@m uk-flex-first uk-flex-last@m">
         <aside class="sc-refine">
-          <div class="sc-refine__head">
-            <h3 class="sc-refine__title">Refine</h3>
-            <button type="button" class="sc-refine__clear" (click)="clearAll()">Clear</button>
-          </div>
-          @for (group of facetGroups(); track group.id) {
-            <div class="sc-refine__group">
-              <div class="sc-refine__group-label">{{ group.label }}</div>
-              <div class="sc-refine__items">
-                @for (item of group.items; track item.value) {
-                  <button
-                    type="button"
-                    class="sc-refine__item"
-                    [class.sc-refine__item--active]="item.active"
-                    (click)="toggleFacet(group.apiField, item.value)"
-                  >{{ item.label }}</button>
-                }
+          <ul class="uk-hidden@m" uk-accordion>
+            <li>
+              <a class="uk-accordion-title" href="#">Refine</a>
+              <div class="uk-accordion-content">
+                <div class="uk-flex uk-flex-right">
+                  <button type="button" class="sc-refine__clear" (click)="clearAll()">Clear</button>
+                </div>
+                <ng-container [ngTemplateOutlet]="refineGroups" />
               </div>
+            </li>
+          </ul>
+          <div class="uk-visible@m">
+            <div class="sc-refine__head">
+              <h3 class="sc-refine__title">Refine</h3>
+              <button type="button" class="sc-refine__clear" (click)="clearAll()">Clear</button>
             </div>
-          }
+            <ng-container [ngTemplateOutlet]="refineGroups" />
+          </div>
         </aside>
       </div>
     </div>
 
   </section>
 </main>
+
+<!-- Rendered twice, once in the phone accordion and once in the sidebar; UIkit hides whichever does not apply. -->
+<ng-template #refineGroups>
+  @for (group of facetGroups(); track group.id) {
+    <div class="sc-refine__group">
+      <div class="sc-refine__group-label">{{ group.label }}</div>
+      <div class="sc-refine__items">
+        @for (item of group.items; track item.value) {
+          <button
+            type="button"
+            class="sc-refine__item"
+            [class.sc-refine__item--active]="item.active"
+            (click)="toggleFacet(group.apiField, item.value)"
+          >{{ item.label }}</button>
+        }
+      </div>
+    </div>
+  }
+</ng-template>

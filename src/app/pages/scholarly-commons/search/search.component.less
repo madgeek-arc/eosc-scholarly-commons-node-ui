@@ -74,8 +74,8 @@ button.sc-task-card {
   justify-content: space-between;
 }
 
+// Width and wrapping come from the uk-grid / uk-width-* classes on the hero.
 .sc-search__intro {
-  flex: 1 1 440px;
   min-width: 0;
 }
 
@@ -102,9 +102,11 @@ button.sc-task-card {
   max-width: 54ch;
 }
 
+// UIkit override attempted: uk-width-large is 450px, the design's search box is 420px; max-width keeps it inside a
+// phone screen.
 .sc-search__box {
-  flex: 0 1 420px;
-  min-width: 300px;
+  width: 420px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -217,8 +219,10 @@ button.sc-task-card {
 }
 
 // --- results + refine -----------------------------------------------------
+// Only the vertical padding is set here: the sides come from uk-container (15px, 32px from 640px, 40px from 960px).
 .sc-search__body {
-  padding: 30px 32px 56px;
+  padding-top: 30px;
+  padding-bottom: 56px;
 }
 
 .sc-search__layout {
@@ -264,9 +268,11 @@ button.sc-task-card {
   color: @sc-teal;
 }
 
+// UIkit override attempted: uk-child-width-* needs fixed column counts per breakpoint, while this grid fills the row
+// with as many 330px cards as fit; the column minimum is capped at 100% so a card never exceeds a narrow screen.
 .sc-search__results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(~"min(330px, 100%)", 1fr));
   gap: 18px;
 }
 

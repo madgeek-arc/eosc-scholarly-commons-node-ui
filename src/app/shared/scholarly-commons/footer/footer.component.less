@@ -6,13 +6,15 @@
   font-family: @sc-font-body;
 }
 
+// Only the vertical padding is set here: the sides come from uk-container (15px, 32px from 640px, 40px from 960px).
 .sc-footer__bar {
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
   align-items: center;
   justify-content: space-between;
-  padding: 28px 32px;
+  padding-top: 28px;
+  padding-bottom: 28px;
   font-size: 13px;
   color: @sc-faint;
 }
