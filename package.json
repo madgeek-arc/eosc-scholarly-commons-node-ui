@@ -54,7 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.0",
-    "less": "^3.13.1",
+    "less": "^4.2.0",
     "typescript": "~5.9.3"
   }
 }
