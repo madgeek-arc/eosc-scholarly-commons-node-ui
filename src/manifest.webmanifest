@@ -1,7 +1,7 @@
 {
   "name": "EOSC Scholarly Commons Node",
   "short_name": "Scholarly Commons",
-  "theme_color": "#1976d2",
+  "theme_color": "#1C84B0",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
