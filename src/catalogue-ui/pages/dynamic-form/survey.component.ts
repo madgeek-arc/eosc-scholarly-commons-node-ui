@@ -38,7 +38,7 @@ export class SurveyComponent implements OnInit, OnChanges {
   chapterChangeMap: Map<string,boolean> = new Map<string, boolean>();
   currentChapter: Section = null;
   chapterForSubmission: Section = null;
-  sortedSurveyAnswers: Object = {};
+  sortedSurveyAnswers: object = {};
   editMode = false;
   bitset: Tabs = new Tabs();
 
@@ -233,7 +233,7 @@ export class SurveyComponent implements OnInit, OnChanges {
   }
 
   /** create additional fields for arrays if needed --> **/
-  prepareForm(answer: Object, fields: Section[], arrayIndex?: number) { // I don't think it will work with greater depth than 2 of array nesting
+  prepareForm(answer: object, fields: Section[], arrayIndex?: number) { // I don't think it will work with greater depth than 2 of array nesting
     for (const [key, value] of Object.entries(answer)) {
       if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
         this.prepareForm(value, fields);

@@ -60,7 +60,7 @@ export class CompareSurveysComponent implements OnChanges{
 
   }
 
-  patchForm(form: UntypedFormGroup, payload: Object) {
+  patchForm(form: UntypedFormGroup, payload: object) {
     for (let i = 0; i < this.model.sections.length; i++) {
       if (payload[this.model.sections[i].name])
         this.prepareForm(form, payload[this.model.sections[i].name], this.model.sections[i].subSections);
@@ -82,7 +82,7 @@ export class CompareSurveysComponent implements OnChanges{
 
 
   /** create additional fields for arrays if needed --> **/
-  prepareForm(form: UntypedFormGroup, answer: Object, fields: Section[], arrayIndex?: number) { // I don't think it will work with greater depth than 2 of array nesting
+  prepareForm(form: UntypedFormGroup, answer: object, fields: Section[], arrayIndex?: number) { // I don't think it will work with greater depth than 2 of array nesting
     for (const [key, value] of Object.entries(answer)) {
       if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
         this.prepareForm(form, value, fields);

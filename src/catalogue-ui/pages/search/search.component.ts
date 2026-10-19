@@ -28,7 +28,7 @@ export class SearchComponent implements OnInit {
   searchForm: UntypedFormGroup;
   itemPath = '/service/';
 
-  searchResults: Paging<Object>;
+  searchResults: Paging<object>;
   facetOrder = ['category', 'trl', 'lifeCycleStatus', 'provider'];
 
   //Paging
@@ -86,10 +86,10 @@ export class SearchComponent implements OnInit {
     params['query'] = searchValue.query;*/
     searchValue = searchValue.replace(/[;=]/g, '');
     let url = window.location.href;
-    let params: String[] = url.split(';');
+    let params: string[] = url.split(';');
     if (params.length > 1) {
       // let query: String[] = params[1].split('=');
-      let query: String[];
+      let query: string[];
       for (const i of params) {
         query = i.split('=');
         if (query[0] === 'query') {
@@ -111,7 +111,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  updateSearchResultsSnippets(searchResults: Paging<Object>) {
+  updateSearchResultsSnippets(searchResults: Paging<object>) {
 
     // INITIALISATIONS
 

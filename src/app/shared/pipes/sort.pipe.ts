@@ -11,7 +11,7 @@ import {isNullOrUndefined} from '../tools';
     standalone: false
 })
 export class StringArraySortPipe implements PipeTransform {
-    transform(array: Array<String>): Array<String> {
+    transform(array: Array<string>): Array<string> {
         if (isNullOrUndefined(array)) {
             return undefined;
         }

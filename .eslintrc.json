@@ -38,7 +38,6 @@
         "@typescript-eslint/member-ordering": "off",
         "max-len": "off",
         "@typescript-eslint/naming-convention": "off",
-        "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/prefer-for-of": "off",
         "radix": "off",
         "eqeqeq": [

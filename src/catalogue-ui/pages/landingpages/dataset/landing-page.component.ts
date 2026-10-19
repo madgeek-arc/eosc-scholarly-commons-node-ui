@@ -13,8 +13,8 @@ import {Subscriber} from 'rxjs';
 
 export class LandingPageComponent implements OnInit, OnDestroy {
   subscriptions = [];
-  dataset: Object = null;
-  instances: Object[] = null;
+  dataset: object = null;
+  instances: object[] = null;
 
   constructor(protected route: ActivatedRoute,
               protected landingPageService: LandingPageService) {}
