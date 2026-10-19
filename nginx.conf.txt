@@ -12,10 +12,19 @@ server {
         try_files $uri$args $uri$args/ /index.html;
     }
 
-    # Angular names its bundles <name>.<16 hex digits>.js|css, so a changed file always gets a new URL
-    # and these can be cached for a year. index.html and the service worker files are not matched.
-    location ~ "\.[0-9a-f]{16}\.(js|css)$" {
+    # Angular names its bundles <name>-<8 characters>.js|css (main-WYIZ6B7F.js), so a changed file always
+    # gets a new URL and these can be cached for a year. index.html, ngsw.json and the service worker files
+    # carry no hash and are not matched.
+    location ~ "-[A-Z0-9]{8}\.(js|css)$" {
         expires 1y;
+    }
+
+    # The fonts and images that the stylesheets refer to are built into /app-media/ with the same kind of
+    # hash in their names (the build option outputPath.media in angular.json). Not /media/: that path goes to
+    # the Joomla site. The CORS header is the one the font rule below adds, which this prefix location overrides.
+    location ^~ /app-media/ {
+        expires 1y;
+        add_header Access-Control-Allow-Origin *;
     }
 
     location ~* \.(eot|ttf|woff)$ {

@@ -30,6 +30,7 @@
       "resources": {
         "files": [
           "/assets/**",
+          "/app-media/**",
           "/*.(eot|svg|cur|jpg|jpeg|mp4|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
       }

@@ -66,7 +66,11 @@ export class ReadMoreComponent implements AfterContentInit {
       <a (click)="isCollapsed =! isCollapsed">View {{isCollapsed ? 'more' : 'less'}}...</a>
     }
     `,
+  // The application builder never exits after a build when two components in one file have identical inline
+  // styles (its stylesheet bundler creates two esbuild contexts and disposes one), so this copy carries a CSS
+  // comment to keep the two texts different.
   styles: [`
+    /* read-more-text */
     div.collapsed {
       overflow: hidden;
     }
