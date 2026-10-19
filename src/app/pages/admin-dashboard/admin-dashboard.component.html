@@ -7,17 +7,17 @@
       <div>
         <div class="menu_section uk-margin-medium-top">
           <ul>
-            <li [ngClass]="{'current_section': path === 'providers'}">
+            <li [class.current_section]="path === 'providers'">
               <a class="uk-flex uk-flex-middle text-decoration-none" [routerLink]="['providers']">
                 <span class="material-icons uk-margin-small-right">real_estate_agent</span>All Providers
               </a>
             </li>
-            <li [ngClass]="{'current_section': path === 'services'}">
+            <li [class.current_section]="path === 'services'">
               <a class="uk-flex uk-flex-middle text-decoration-none" [routerLink]="['services']">
                 <span class="material-icons uk-margin-small-right">grid_view</span>All Services
               </a>
             </li>
-            <li [ngClass]="{'current_section': path === 'datasources'}">
+            <li [class.current_section]="path === 'datasources'">
               <a class="uk-flex uk-flex-middle text-decoration-none" [routerLink]="['datasources']">
                 <span class="material-icons uk-margin-small-right">grid_view</span>All Datasource Subprofiles
               </a>

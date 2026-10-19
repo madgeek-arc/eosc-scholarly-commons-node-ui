@@ -32,7 +32,7 @@ export class ProviderService {
     return url;
   }
 
-  createNewServiceProvider(newProvider: any, providerId?: string) {
+  createNewServiceProvider(newProvider: any) {
     return this.http.post(this.base + '/providers', newProvider, this.options);
   }
 
@@ -47,7 +47,7 @@ export class ProviderService {
     return this.http.put<Provider>(this.base + `/providers/${providerId}`, updatedFields, this.options);
   }
 
-  updateAndPublishPendingProvider(updatedFields: any, providerId?: string): Observable<Provider> {
+  updateAndPublishPendingProvider(updatedFields: any): Observable<Provider> {
     return this.http.put<Provider>(this.base + '/pendingProvider/transform/active', updatedFields, this.options);
   }
 

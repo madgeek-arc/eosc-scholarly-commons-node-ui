@@ -59,7 +59,7 @@
             </li>
           }
           @for (i of pages; track i) {
-            <li [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
+            <li [class.uk-active]="i === currentPage" [class.uk-animation-fade]="i === currentPage">
               <a (click)="goToPage(i - 1)">{{i}}</a>
             </li>
           }
@@ -173,7 +173,7 @@
           </li>
         }
         @for (i of pages; track i) {
-          <li [ngClass]="i === currentPage ? 'uk-active uk-animation-fade': ''">
+          <li [class.uk-active]="i === currentPage" [class.uk-animation-fade]="i === currentPage">
             <a (click)="goToPage(i-1)">{{i}}</a>
           </li>
         }

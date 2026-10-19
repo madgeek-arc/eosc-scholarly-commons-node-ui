@@ -1,14 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {UserInfo} from '../../entities/userInfo';
-import {UntypedFormBuilder, UntypedFormControl, Validators} from '@angular/forms';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, Validators} from '@angular/forms';
 
 
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: 'admin-dashboard.component.html',
-  standalone: false
+  imports: [ReactiveFormsModule, RouterLink, RouterOutlet],
 })
 
 export class AdminDashboardComponent implements OnInit {

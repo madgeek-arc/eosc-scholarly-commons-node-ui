@@ -1,5 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {DatePipe} from '@angular/common';
+import {Component, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Paging} from '../../../entities/paging';
 import {Bundle, Datasource, ProviderBundle, Service, Vocabulary} from '../../../entities/eic-model';
 import {FacetValue} from '../../../entities/facet';
@@ -12,7 +15,7 @@ declare let UIkit: any;
 @Component({
   selector: 'app-admin-all-providers-dashboard',
   templateUrl: 'all-providers.component.html',
-  standalone: false
+  imports: [DatePipe, FormsModule, NgSelectModule, RouterLink],
 })
 
 export class AllProvidersDashboardComponent implements OnInit {

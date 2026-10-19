@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, inject, input, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Content, PageContent} from '../../entities/page-content';
 import {HelpContentService} from '../../services/help-content.service';
@@ -7,13 +7,13 @@ import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-help-content',
   template: `
-    @if (contents && contents.length>0) {
-      @for (content of contents; track content) {
+    @if (contents()?.length) {
+      @for (content of contents(); track content) {
         <div [innerHTML]="content.content" class="uk-margin-medium-bottom"></div>
       }
     }
     `,
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HelpContentComponent implements OnInit {
   _helpContentService = inject(HelpContentService);
@@ -22,7 +22,7 @@ export class HelpContentComponent implements OnInit {
 
   readonly position = input<string>(undefined);
 
-  contents: Content[];
+  readonly contents = signal<Content[] | undefined>(undefined);
   errorMessage: string = null;
 
   ngOnInit() {
@@ -34,11 +34,11 @@ export class HelpContentComponent implements OnInit {
   }
 
   shiftThroughContent(pageContent: PageContent) {
-    this.contents = pageContent.content[this.position()];
+    this.contents.set(pageContent.content[this.position()]);
   }
 
   isPresent() {
-    return (this.contents && this.contents.length > 0);
+    return !!this.contents()?.length;
   }
 
   handleError(error) {
@@ -49,14 +49,14 @@ export class HelpContentComponent implements OnInit {
 @Component({
   selector: 'app-aside-help-content',
   template: `
-    @if (contents && contents.length>0) {
-      @for (content of contents; track content) {
+    @if (contents()?.length) {
+      @for (content of contents(); track content) {
         <div [innerHTML]="content.content"
         class="uk-card uk-card-body uk-card-default sidemenu uk-margin-bottom"></div>
       }
     }
     `,
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AsideHelpContentComponent extends HelpContentComponent {
 }
