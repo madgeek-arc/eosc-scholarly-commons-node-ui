@@ -31,6 +31,10 @@ jobs:
       - name: Lint
         run: npm run lint:ci
 
+      # Runs every *.spec.ts under src/ with Vitest in Node (jsdom), so the job needs no browser.
+      - name: Test
+        run: npm test
+
       # The budgets in angular.json fail this step when the initial bundle grows past the limit.
       - name: Build
         run: npm run build:prod

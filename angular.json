@@ -141,6 +141,15 @@
             "buildTarget": "resource-catalogue-ui:build"
           }
         },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "resource-catalogue-ui:build",
+            "tsConfig": "src/tsconfig.spec.json",
+            "runner": "vitest",
+            "runnerConfig": "vitest-base.config.ts"
+          }
+        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
