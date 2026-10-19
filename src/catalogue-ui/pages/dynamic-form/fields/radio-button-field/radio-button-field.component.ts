@@ -44,7 +44,7 @@ export class RadioButtonFieldComponent implements OnInit {
       // console.log(this.fieldData.name);
       this.form.get(this.fieldData.form.dependsOn.name).valueChanges.subscribe(value => {
         this.enableDisableField(value, this.fieldData.form.dependsOn.value);
-      }, error => {console.log(error);});
+      }, error => {console.error(error);});
     }
   }
 
