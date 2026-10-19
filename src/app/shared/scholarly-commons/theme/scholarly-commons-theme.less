@@ -20,6 +20,15 @@
 @sc-radius-card: 20px;
 @sc-radius-pill: 999px;
 
+// UIkit override attempted: UIkit sets `outline: none` on :focus for its accordion title, icon and close buttons, nav
+// and subnav links and form inputs, and only shifts a colour or background, which a keyboard user cannot reliably see;
+// it has no focus-ring utility class. This is the one ring (brand teal, 4.3:1 against white) for the controls that lose
+// theirs: apply it under :focus-visible, or :focus-within on a wrapper that draws the border of an input.
+.sc-focus-ring() {
+  outline: 2px solid @sc-teal;
+  outline-offset: 2px;
+}
+
 // UIkit override attempted: UIkit's .uk-button has no pill (fully rounded) variant and no
 // brand teal fill, so the shape/color has to be supplied here rather than via a UIkit class.
 .sc-pill-button(@bg: @sc-teal, @fg: #fff) {
@@ -60,6 +69,10 @@
     padding: 7px 16px;
     font-size: 14px;
     border-radius: @sc-radius-pill;
+
+    &:focus-visible {
+      .sc-focus-ring();
+    }
   }
 }
 

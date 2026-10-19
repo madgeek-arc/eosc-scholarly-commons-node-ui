@@ -54,6 +54,14 @@
   }
 }
 
+// The hamburger and the drawer's close button and links lose the browser's focus outline to UIkit; the shared mixin
+// carries the "UIkit override attempted" note.
+.sc-top-menu__toggle:focus-visible,
+.sc-top-menu__drawer .uk-offcanvas-close:focus-visible,
+.sc-top-menu__drawer .uk-nav a:focus-visible {
+  .sc-focus-ring();
+}
+
 .sc-top-menu__join {
   .sc-pill-button();
   padding: 8px 20px;

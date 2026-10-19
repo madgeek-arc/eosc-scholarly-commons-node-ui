@@ -32,10 +32,10 @@ declare const UIkit: { offcanvas(selector: string): { hide(): void } };
             </a>
           }
         </nav>
-        <button type="button" class="uk-icon-button uk-hidden@l" uk-icon="icon: menu; ratio: 1.2"
+        <button type="button" class="uk-icon-button uk-hidden@l sc-top-menu__toggle" uk-icon="icon: menu; ratio: 1.2"
                 uk-toggle="target: #sc-menu-offcanvas" aria-label="Open menu"></button>
       </div>
-      <div id="sc-menu-offcanvas" uk-offcanvas="overlay: true; flip: true">
+      <div id="sc-menu-offcanvas" class="sc-top-menu__drawer" uk-offcanvas="overlay: true; flip: true">
         <div class="uk-offcanvas-bar">
           <button type="button" class="uk-offcanvas-close" uk-close aria-label="Close menu"></button>
           <nav aria-label="Main">

@@ -119,6 +119,12 @@ button.sc-task-card {
   border: 1px solid @sc-border;
   border-radius: @sc-radius-pill;
   padding: 6px 6px 6px 8px;
+
+  // The input inside has no outline of its own (see below), so the ring goes around the whole pill. The shared
+  // mixin carries the "UIkit override attempted" note.
+  &:focus-within {
+    .sc-focus-ring();
+  }
 }
 
 .sc-search__input {
@@ -129,6 +135,7 @@ button.sc-task-card {
   font-family: inherit;
   color: @sc-ink;
   border: none;
+  // Focus is shown on .sc-search__input-row (:focus-within) instead.
   outline: none;
   background: transparent;
 
@@ -427,6 +434,11 @@ button.sc-task-card {
     align-items: baseline;
     justify-content: space-between;
     margin-bottom: 16px;
+  }
+
+  // The phone accordion's title; the shared mixin carries the "UIkit override attempted" note.
+  &__accordion-title:focus-visible {
+    .sc-focus-ring();
   }
 
   // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
