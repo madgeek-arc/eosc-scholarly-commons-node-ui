@@ -1,10 +1,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "downlevelIteration": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    // TypeScript 6 turns strict on by default; the flags below are switched on one by one instead.
+    "strict": false,
+    // CKEditor 42's type declarations import CSS files, which TypeScript 6 would otherwise flag.
+    "noUncheckedSideEffectImports": false,
     "declaration": false,
     "module": "es2020",
     "moduleResolution": "bundler",

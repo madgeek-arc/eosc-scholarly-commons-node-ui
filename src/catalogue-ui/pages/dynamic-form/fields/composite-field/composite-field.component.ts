@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {Field, HandleBitSet, UiVocabulary} from '../../../../domain/dynamic-form-model';
 import {UntypedFormArray, FormControl, UntypedFormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {FormControlService} from '../../../../services/form-control.service';
@@ -6,6 +6,7 @@ import {FormControlService} from '../../../../services/form-control.service';
 @Component({
   selector: 'app-composite-field',
   templateUrl: './composite-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

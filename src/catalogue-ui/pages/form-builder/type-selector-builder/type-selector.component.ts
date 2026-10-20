@@ -2,7 +2,8 @@ import {
   Component,
   Input,
   OnChanges, OnInit,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {TypeInfo} from '../../../domain/dynamic-form-model';
 
@@ -10,6 +11,7 @@ import {TypeInfo} from '../../../domain/dynamic-form-model';
 @Component({
   selector: 'app-type-selector',
   templateUrl: 'type-selector.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

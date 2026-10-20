@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {FormControlService} from '../../../../services/form-control.service';
@@ -7,6 +7,7 @@ import {FormControlService} from '../../../../services/form-control.service';
   selector: 'app-number-field',
   templateUrl: './number-field.component.html',
   styles: ['.clear-style { height: 0 !important;}'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

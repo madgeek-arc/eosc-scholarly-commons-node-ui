@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {LandingPageService} from '../../../services/landing-page.service';
 import {Subscriber} from 'rxjs';
@@ -8,6 +8,7 @@ import {Subscriber} from 'rxjs';
   selector: 'app-dataset',
   templateUrl: 'dataset-landing-page.component.html',
   providers: [LandingPageService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

@@ -1,4 +1,4 @@
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {provideRouter} from '@angular/router';
@@ -16,7 +16,7 @@ describe('ResourceService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting(), ResourceService],
+      providers: [provideRouter([]), provideHttpClient(withXhr()), provideHttpClientTesting(), ResourceService],
     });
     service = TestBed.inject(ResourceService);
     backend = TestBed.inject(HttpTestingController);

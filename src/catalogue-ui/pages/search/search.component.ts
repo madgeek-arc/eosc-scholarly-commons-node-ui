@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
@@ -13,6 +13,7 @@ import {SearchService} from '../../services/search.service';
   templateUrl: './search.component.html',
   providers: [SearchService],
   // styleUrls: ['../../../lib/pages/search/search.component.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {FormControlService} from '../../../../services/form-control.service';
@@ -9,6 +9,7 @@ import {ActivatedRoute} from '@angular/router';
   selector: 'app-vocabulary-field',
   templateUrl: './vocabulary-field.component.html',
   styleUrls: ['./vocabulary-field.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

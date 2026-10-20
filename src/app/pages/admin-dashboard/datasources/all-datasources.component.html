@@ -109,13 +109,13 @@
                   <div class="uk-margin-small-top">
                     <p>
                       <span class="uk-text-italic uk-text-muted uk-margin-small-right">Updated:</span>
-                      <span>{{datasourceBundle.metadata?.modifiedAt | date}}</span>
+                      <span>{{$safeNavigationMigration(datasourceBundle.metadata?.modifiedAt) | date}}</span>
                       <!--                <span class="uk-margin-small-right uk-margin-small-left">.</span>-->
                       @if (datasourceBundle.metadata?.registeredAt !== '0') {
                         <span>
                           <span class="uk-margin-small-right uk-margin-small-left" style="display: inline-block; font-size: 17px; color: #000000;">•</span>
                           <span class="uk-text-italic uk-text-muted uk-margin-small-right">Created:</span>
-                          <span>{{ datasourceBundle.metadata?.registeredAt | date}}</span>
+                          <span>{{ $safeNavigationMigration(datasourceBundle.metadata?.registeredAt) | date}}</span>
                         </span>
                       }
                     </p>

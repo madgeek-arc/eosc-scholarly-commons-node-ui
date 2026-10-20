@@ -9,5 +9,13 @@
     "**/*.spec.ts",
     "environments/environment.prod.ts",
     "environments/environment.beta.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

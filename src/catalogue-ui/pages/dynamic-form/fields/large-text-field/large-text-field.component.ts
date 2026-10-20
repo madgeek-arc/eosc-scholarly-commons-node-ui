@@ -1,10 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, FormGroupDirective} from '@angular/forms';
 import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-large-text-field',
   templateUrl: './large-text-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

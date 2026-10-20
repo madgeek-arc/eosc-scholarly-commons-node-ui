@@ -3,7 +3,7 @@ import {Router, TitleStrategy} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import * as Sentry from '@sentry/angular';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
@@ -73,7 +73,7 @@ import {PageTitleStrategy} from './services/page-title.strategy';
       deps: [Sentry.TraceService],
       multi: true,
     },
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     // Sets the document title and meta tags from the `title` of the route on screen.
     {provide: TitleStrategy, useExisting: PageTitleStrategy},
     // Creates TrackingService, which starts Matomo and Sentry if consent was given on an earlier visit.

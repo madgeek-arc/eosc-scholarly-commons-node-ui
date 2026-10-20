@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {UserInfo} from '../../entities/userInfo';
@@ -8,6 +8,7 @@ import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl, Validators}
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: 'admin-dashboard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, RouterLink, RouterOutlet],
 })
 

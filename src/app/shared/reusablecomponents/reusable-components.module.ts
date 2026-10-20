@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {HelpContentService} from '../../services/help-content.service';
 import {AsideHelpContentComponent, HelpContentComponent} from './help-content.component';
 import {ReadMoreComponent, ReadMoreTextComponent} from './read-more.component';
-import {provideHttpClient, withInterceptorsFromDi, withJsonpSupport} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi, withJsonpSupport, withXhr} from '@angular/common/http';
 
 @NgModule({
     imports: [
@@ -19,7 +19,7 @@ import {provideHttpClient, withInterceptorsFromDi, withJsonpSupport} from '@angu
     ],
     providers: [
         HelpContentService,
-        provideHttpClient(withInterceptorsFromDi(), withJsonpSupport())
+        provideHttpClient(withXhr(), withInterceptorsFromDi(), withJsonpSupport())
     ]
 })
 export class ReusableComponentsModule {
