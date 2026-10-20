@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Field} from '../../../domain/dynamic-form-model';
-import {ClassicEditor} from '../../../domain/ckeditor-classic-editor';
 
 @Component({
   selector: 'app-field-builder',
@@ -15,7 +14,6 @@ export class FieldBuilderComponent implements OnInit {
   showDescription = false;
   showSuggestion = false;
 
-  public editor = ClassicEditor;
 
   ngOnInit() {
   }

@@ -7,7 +7,7 @@ import {SideMenuComponent} from './side-menu/side-menu.component';
 import {FieldBuilderComponent} from './field-builder/field-builder.component';
 import {SectionBuilderComponent} from './section-builder/section-builder.component';
 import {ChapterBuilderComponent} from './chapter-builder/chapter-builder.component';
-import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {RichTextEditorComponent} from '../../shared/rich-text-editor/rich-text-editor.component';
 import {TypeSelectorComponent} from './type-selector-builder/type-selector.component';
 
 @NgModule({
@@ -23,7 +23,7 @@ import {TypeSelectorComponent} from './type-selector-builder/type-selector.compo
     CommonModule,
     NgSelectModule,
     FormsModule,
-    CKEditorModule
+    RichTextEditorComponent
   ],
 })
 

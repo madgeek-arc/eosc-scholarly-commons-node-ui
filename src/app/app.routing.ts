@@ -5,7 +5,7 @@ import { ForbiddenPageComponent } from './shared/forbidden-page/forbidden-page.c
 import { NotFoundPageComponent } from './shared/not-found-page/not-found-page.component';
 import { IFRAME_PAGE_ROUTES } from './pages/scholarly-commons/iframe-page/iframe-pages.routes';
 
-// The dynamic form pulls in catalogue-ui, CKEditor and the date picker: keep them out of the main bundle.
+// The dynamic form pulls in catalogue-ui, the rich text editor and the date picker: keep them out of the main bundle.
 // Unused while the form routes are switched off; kept so they can be re-enabled with `loadComponent: loadFormsComponent`.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const loadFormsComponent = () => import('./pages/forms/forms.component').then(m => m.FormsComponent);

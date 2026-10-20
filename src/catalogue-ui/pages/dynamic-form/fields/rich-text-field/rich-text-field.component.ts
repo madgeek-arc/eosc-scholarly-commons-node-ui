@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirective} from '@angular/forms';
 import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
-import {ClassicEditor} from '../../../../domain/ckeditor-classic-editor';
 import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
@@ -24,7 +23,6 @@ export class RichTextFieldComponent implements OnInit {
   form!: UntypedFormGroup;
   hideField: boolean = null;
 
-  public editor = ClassicEditor;
 
   constructor(private rootFormGroup: FormGroupDirective, private formControlService: FormControlService) {
   }

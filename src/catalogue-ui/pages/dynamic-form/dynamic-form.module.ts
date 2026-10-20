@@ -17,7 +17,7 @@ import {SurveyComponent} from './survey.component';
 import {NumberFieldComponent} from './fields/number-field/number-field.component';
 import {ReusableComponentsModule} from '../../shared/reusable-components/reusable-components.module';
 import {RichTextFieldComponent} from './fields/rich-text-field/rich-text-field.component';
-import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {RichTextEditorComponent} from '../../shared/rich-text-editor/rich-text-editor.component';
 import {ChooseOneComponent} from './fields/choose-one-composite/choose-one.component';
 import {SharedModule} from '../../shared/shared.module';
 
@@ -45,7 +45,7 @@ import {SharedModule} from '../../shared/shared.module';
     NgSelectModule,
     DpDatePickerModule,
     ReusableComponentsModule,
-    CKEditorModule,
+    RichTextEditorComponent,
     SharedModule,
   ],
   exports: [
