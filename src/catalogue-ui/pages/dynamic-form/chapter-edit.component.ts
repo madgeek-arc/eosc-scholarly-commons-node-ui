@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
 import {FormControlService} from '../../services/form-control.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UntypedFormArray, UntypedFormBuilder} from '@angular/forms';
@@ -11,6 +11,7 @@ import UIkit from 'uikit';
   selector: 'app-chapter-edit',
   templateUrl: './chapter.component.html',
   providers: [FormControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ChapterEditComponent implements OnChanges{

@@ -1,5 +1,5 @@
 import {DatePipe} from '@angular/common';
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, OnInit, inject, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
@@ -14,6 +14,7 @@ declare let UIkit: any;
 @Component({
   selector: 'app-admin-all-datasources-dashboard',
   templateUrl: 'all-datasources.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DatePipe, FormsModule, NgSelectModule, RouterLink],
 })
 

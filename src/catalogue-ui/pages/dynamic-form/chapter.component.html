@@ -125,7 +125,7 @@
                                   <li>
                                     @for (fieldsData of group.fields; track fieldsData) {
                                       <div
-                                        [ngClass]="{'uk-card uk-card-body uk-card-default uk-margin-medium-bottom': fieldsData.form.display?.visible}">
+                                        [ngClass]="{'uk-card uk-card-body uk-card-default uk-margin-medium-bottom': $safeNavigationMigration(fieldsData.form.display?.visible)}">
                                         <app-field [editMode]="editMode" [fieldData]="fieldsData" [form]="form"
                                           [subVocabularies]="subVocabularies" [vocabularies]="vocabularies"
                                           [readonly]="readonly" (hasChanges)="unsavedChangesPrompt($event)">

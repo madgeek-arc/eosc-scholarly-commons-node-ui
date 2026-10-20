@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Section} from '../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-form-builder',
   templateUrl: 'form-builder.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

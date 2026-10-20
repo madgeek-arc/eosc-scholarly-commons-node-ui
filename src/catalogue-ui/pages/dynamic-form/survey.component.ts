@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormArray, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {FormControlService} from '../../services/form-control.service';
@@ -17,6 +17,7 @@ const seedRandom = require('seedrandom');
   selector: 'app-survey',
   templateUrl: 'survey.component.html',
   providers: [FormControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirective} from '@angular/forms';
 import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 import {ClassicEditor} from '../../../../domain/ckeditor-classic-editor';
@@ -7,6 +7,7 @@ import {FormControlService} from '../../../../services/form-control.service';
 @Component({
   selector: 'app-rich-text-field',
   templateUrl: './rich-text-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

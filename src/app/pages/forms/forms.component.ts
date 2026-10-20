@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, viewChild } from '@angular/core';
+import { Component, OnInit, inject, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Model} from '../../../catalogue-ui/domain/dynamic-form-model';
 import {FormControlService} from '../../../catalogue-ui/services/form-control.service';
@@ -14,6 +14,7 @@ import {CatalogueUiModule} from '../../../catalogue-ui/catalogue-ui.module';
   selector: 'app-form',
   templateUrl: 'forms.component.html',
   imports: [CatalogueUiModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [FormControlService]
 })
 

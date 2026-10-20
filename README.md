@@ -1,10 +1,10 @@
 # EOSC Scholarly Commons UI
 
-Angular 21 front end for the EOSC Node Scholarly Commons service catalogue (npm package `resource-catalogue-ui`).
+Angular 22 front end for the EOSC Node Scholarly Commons service catalogue (npm package `resource-catalogue-ui`).
 
 ## Requirements
 
-Node 22 (see `.nvmrc`); Angular 21 needs Node 20.19 or newer.
+Node 22.22.3 or newer (see `.nvmrc`, which tracks the latest 22); Angular 22 needs Node 22.22.3, 24.15 or newer, and TypeScript 6.
 
 ## Commands
 
@@ -24,7 +24,7 @@ The GitHub workflow in `.github/workflows/ci.yml` runs on every pull request and
 2. **Build:** `npm run build:prod`. The budgets in `angular.json` (initial bundle 1.8 MB warning, 2.1 MB error) fail the build when the bundle grows.
 3. **Audit:** `npm audit --audit-level=critical` prints every finding and fails on critical ones only.
 
-TypeScript runs with `alwaysStrict`, `noImplicitThis`, `useUnknownInCatchVariables`, `strictFunctionTypes`, `strictBindCallApply`, `noFallthroughCasesInSwitch`, `noImplicitOverride` and `noImplicitReturns`. `noImplicitAny` and `strictNullChecks` are not on yet. Angular's `strictTemplates` is on, so the build fails on template type errors (for example a wrongly typed input binding or a misspelled member); its null checks only take effect once `strictNullChecks` is on.
+TypeScript runs with `alwaysStrict`, `noImplicitThis`, `useUnknownInCatchVariables`, `strictFunctionTypes`, `strictBindCallApply`, `noFallthroughCasesInSwitch`, `noImplicitOverride` and `noImplicitReturns`. `noImplicitAny` and `strictNullChecks` are not on yet, and `strict` itself is set to `false` because TypeScript 6 would otherwise switch every strict flag on at once. Angular's `strictTemplates` is on, so the build fails on template type errors (for example a wrongly typed input binding or a misspelled member); its null checks only take effect once `strictNullChecks` is on.
 
 ## Docker
 

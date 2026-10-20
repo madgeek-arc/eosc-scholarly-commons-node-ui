@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Field} from '../../../domain/dynamic-form-model';
 import {ClassicEditor} from '../../../domain/ckeditor-classic-editor';
 
 @Component({
   selector: 'app-field-builder',
   templateUrl: './field-builder.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 

@@ -9,7 +9,8 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 @Component({
@@ -27,6 +28,7 @@ import {
       overflow: hidden;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ReadMoreComponent implements AfterContentInit {
@@ -75,6 +77,7 @@ export class ReadMoreComponent implements AfterContentInit {
       overflow: hidden;
     }
   `],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ReadMoreTextComponent extends ReadMoreComponent implements OnChanges, AfterViewInit {

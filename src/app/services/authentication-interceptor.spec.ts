@@ -1,4 +1,4 @@
-import {HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse, provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {Router, provideRouter} from '@angular/router';
@@ -29,7 +29,7 @@ describe('AuthenticationInterceptor', () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([]),
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
         {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
       ],
