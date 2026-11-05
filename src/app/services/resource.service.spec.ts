@@ -4,7 +4,6 @@ import {TestBed} from '@angular/core/testing';
 import {provideRouter} from '@angular/router';
 import {beforeEach, describe, expect, it} from 'vitest';
 import {environment} from '../../environments/environment';
-import {Service} from '../entities/eic-model';
 import {Paging} from '../entities/paging';
 import {ResourceService} from './resource.service';
 
@@ -22,41 +21,41 @@ describe('ResourceService', () => {
     backend = TestBed.inject(HttpTestingController);
   });
 
-  describe('searchWithDatasource', () => {
-    it('asks the catalogue for active resources and sends every value of a repeated filter', () => {
-      service.searchWithDatasource([
+  describe('searchServices', () => {
+    it('asks the services endpoint and sends every value of a repeated filter', () => {
+      service.searchServices([
         {key: 'quantity', values: ['9']},
         {key: 'from', values: ['18']},
         {key: 'portfolios', values: ['portfolios-publish', 'portfolios-assess']},
       ]).subscribe();
 
-      const request = backend.expectOne((r) => r.url === `${BASE}/catalogue-resources?active=true`);
+      const request = backend.expectOne((r) => r.url === `${BASE}/oa/services`);
       expect(request.request.method).toBe('GET');
       expect(request.request.params.get('quantity')).toBe('9');
       expect(request.request.params.get('from')).toBe('18');
       expect(request.request.params.getAll('portfolios')).toEqual(['portfolios-publish', 'portfolios-assess']);
     });
 
-    it('sends a query with spaces and reserved characters as one value', () => {
-      service.searchWithDatasource([{key: 'query', values: ['data & code=1 #2']}]).subscribe();
+    it('sends a keyword with spaces and reserved characters as one value', () => {
+      service.searchServices([{key: 'keyword', values: ['data & code=1 #2']}]).subscribe();
 
-      const request = backend.expectOne((r) => r.url === `${BASE}/catalogue-resources?active=true`);
-      expect(request.request.params.getAll('query')).toEqual(['data & code=1 #2']);
+      const request = backend.expectOne((r) => r.url === `${BASE}/oa/services`);
+      expect(request.request.params.getAll('keyword')).toEqual(['data & code=1 #2']);
       // `&` and `#` are escaped, so they cannot start another parameter or a fragment; `=` is legal inside a value.
-      expect(request.request.urlWithParams).toBe(`${BASE}/catalogue-resources?active=true&query=data%20%26%20code=1%20%232`);
+      expect(request.request.urlWithParams).toBe(`${BASE}/oa/services?keyword=data%20%26%20code=1%20%232`);
     });
 
-    it('works with no parameters at all', () => {
-      service.searchWithDatasource([]).subscribe();
-      backend.expectOne(`${BASE}/catalogue-resources?active=true`);
+    it('sends nothing it was not given: no active flag, no sort, no order', () => {
+      service.searchServices([]).subscribe();
+      expect(backend.expectOne(`${BASE}/oa/services`).request.params.keys()).toEqual([]);
     });
 
     it('hands the response to the caller', () => {
       let received: Paging<unknown> | undefined;
-      service.searchWithDatasource([]).subscribe((paging) => (received = paging));
+      service.searchServices([]).subscribe((paging) => (received = paging));
 
       const body = {from: 0, to: 9, total: 1, results: [{id: 'a'}], facets: []};
-      backend.expectOne(`${BASE}/catalogue-resources?active=true`).flush(body);
+      backend.expectOne(`${BASE}/oa/services`).flush(body);
       expect(received).toEqual(body);
     });
   });
@@ -89,22 +88,19 @@ describe('ResourceService', () => {
   });
 
   describe('single resources', () => {
-    it('reads a service or datasource by id, with credentials', () => {
-      service.getServiceOrDatasource('abc').subscribe();
-      expect(backend.expectOne(`${BASE}/catalogue-resources/abc`).request.withCredentials).toBe(true);
+    it('reads a service by its PID, with credentials, and keeps the slash as a path separator', () => {
+      service.getServiceByPid('21.T15999/a1PgrS').subscribe();
+      expect(backend.expectOne(`${BASE}/oa/services/21.T15999/a1PgrS`).request.withCredentials).toBe(true);
+    });
+
+    it('encodes each part of the PID but not the separator between them', () => {
+      service.getServiceByPid('21.T15999/a b#c').subscribe();
+      backend.expectOne(`${BASE}/oa/services/21.T15999/a%20b%23c`);
     });
 
     it('reads the vocabularies the UI maps ids with', () => {
       service.getUiVocabularies().subscribe();
       expect(backend.expectOne(`${BASE}/vocabularies/mappings`).request.method).toBe('GET');
-    });
-
-    it('reads several services in one request, joined by commas', () => {
-      let received: Service[] | undefined;
-      service.getServicesByIdArray(['a', 'b', 'c']).subscribe((services) => (received = services));
-
-      backend.expectOne(`${BASE}/services/ids/a,b,c`).flush([{id: 'a'}]);
-      expect(received).toEqual([{id: 'a'}]);
     });
   });
 });

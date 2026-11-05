@@ -1,7 +1,7 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {ChangeDetectionStrategy, Component, computed, effect, inject} from '@angular/core';
 import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router, RouterLink} from '@angular/router';
 import {EMPTY, Observable, forkJoin, of} from 'rxjs';
 import {catchError, map, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import {PageMetaService} from '../../../services/page-meta.service';
@@ -32,6 +32,9 @@ const FAILED: DetailState = {loading: false, error: true, detail: null, related:
 
 const RELATED_LIMIT = 3;
 
+// The route carries the two parts of the service's PID ("prefix/suffix", e.g. 21.T15999/a1PgrS).
+const pidOf = (params: ParamMap): string => `${params.get('prefix') ?? ''}/${params.get('suffix') ?? ''}`;
+
 @Component({
   selector: 'app-sc-service-detail',
   standalone: true,
@@ -46,9 +49,9 @@ export class ScServiceDetailComponent {
   private readonly resources = inject(ResourceService);
   private readonly pageMeta = inject(PageMetaService);
 
-  private readonly serviceId = toSignal(
-    this.route.paramMap.pipe(map((params) => params.get('id') ?? '')),
-    {initialValue: this.route.snapshot.paramMap.get('id') ?? ''},
+  private readonly servicePid = toSignal(
+    this.route.paramMap.pipe(map(pidOf)),
+    {initialValue: pidOf(this.route.snapshot.paramMap)},
   );
 
   // Fetched once and replayed for every service this component instance shows (related-service links reuse the
@@ -61,7 +64,7 @@ export class ScServiceDetailComponent {
 
   // switchMap drops the in-flight load when the route id changes.
   private readonly state = toSignal(
-    toObservable(this.serviceId).pipe(switchMap((id) => this.load(id))),
+    toObservable(this.servicePid).pipe(switchMap((pid) => this.load(pid))),
     {initialValue: LOADING},
   );
 
@@ -106,16 +109,24 @@ export class ScServiceDetailComponent {
     return !!detail && (!!detail.termsOfUse || !!detail.privacyPolicy || !!detail.accessPolicy);
   });
 
-  private load(id: string): Observable<DetailState> {
-    return forkJoin([this.resources.getServiceOrDatasource(id), this.labels$]).pipe(
+  private load(pid: string): Observable<DetailState> {
+    return forkJoin([this.resources.getServiceByPid(pid), this.labels$]).pipe(
       switchMap(([resource, label]) => {
         const detail = toServiceDetailView(resource, label);
-        const relatedIds = (resource.relatedResources ?? []).filter((related) => related && related !== resource.id);
-        const related$: Observable<RelatedService[]> = relatedIds.length
-          ? this.resources.getServicesByIdArray(relatedIds).pipe(
-              map((services) => services.slice(0, RELATED_LIMIT).map(toRelatedService)),
-              catchError(() => of([] as RelatedService[])),
-            )
+        // A related service is looked up by its PID ("prefix/suffix"); an id without a slash cannot be one, so it
+        // is skipped without a request. A related service that cannot be read is left out, not shown as a failure.
+        const relatedPids = (resource.relatedResources ?? [])
+          .filter((related) => related && related !== resource.id && related.includes('/'))
+          .slice(0, RELATED_LIMIT);
+        const related$: Observable<RelatedService[]> = relatedPids.length
+          ? forkJoin(
+              relatedPids.map((related) =>
+                this.resources.getServiceByPid(related).pipe(
+                  map(toRelatedService),
+                  catchError(() => of(null)),
+                ),
+              ),
+            ).pipe(map((services) => services.filter((service): service is RelatedService => service !== null)))
           : of([]);
         return related$.pipe(map((related): DetailState => ({loading: false, error: false, detail, related})));
       }),

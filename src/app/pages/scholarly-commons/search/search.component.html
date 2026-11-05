@@ -129,7 +129,7 @@
                 </div>
                 <div>
                   <h3 class="sc-result-card__name">
-                    <a [routerLink]="['/discover/service', result.id]">{{ result.name }}</a>
+                    <a [routerLink]="result.link">{{ result.name }}</a>
                   </h3>
                   @if (result.tagline) {
                     <div class="sc-result-card__tagline">{{ result.tagline }}</div>
@@ -149,7 +149,7 @@
                 <div class="sc-result-card__footer">
                   <span class="sc-result-card__provider">{{ result.provider }}</span>
                   <div class="sc-result-card__actions">
-                    <a [routerLink]="['/discover/service', result.id]" class="sc-result-card__go">Details</a>
+                    <a [routerLink]="result.link" class="sc-result-card__go">Details</a>
                   </div>
                 </div>
               </article>

@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {ORDER_REQUIRED, accentFor} from '../service-display';
 import {
   VocabularyLookup,
@@ -47,7 +47,7 @@ describe('toServiceDetailView', () => {
     abbreviation: 'DSV',
     tagline: 'Keeps data safe',
     description: '<p>The full description.</p>',
-    resourceOrganisation: 'org-1',
+    resourceOwner: 'owner-1',
     targetUsers: ['tu-1', 'tu-2', 'tu-3', 'tu-4', ''],
     languageAvailabilities: ['en', 'el'],
     accessModes: ['am-1'],
@@ -97,6 +97,11 @@ describe('toServiceDetailView', () => {
     });
   });
 
+  it('leaves the provider out when the vocabulary does not know the owner, instead of showing a PID', () => {
+    const unknown: VocabularyLookup = (_type, id) => id;
+    expect(toServiceDetailView(full, unknown).provider).toBe('');
+  });
+
   it('prefers the pitch over the description, as plain text', () => {
     expect(view.description).toBe('The pitch.');
     const noPitch = toServiceDetailView(resource({id: 'a', name: 'A', description: '<p>Only <b>this</b>.</p>'}), echo);
@@ -104,7 +109,7 @@ describe('toServiceDetailView', () => {
   });
 
   it('looks each field up in its own vocabulary type', () => {
-    expect(view.provider).toBe('resourceProviders:org-1');
+    expect(view.provider).toBe('resourceProviders:owner-1');
     expect(view.categories).toEqual(['Portfolios:p-1', 'Portfolios:p-2']);
     expect(view.category).toBe('Portfolios:p-1');
     expect(view.languages).toEqual(['Language:en', 'Language:el']);
@@ -218,18 +223,14 @@ describe('toServiceDetailView', () => {
       tags: [],
     });
   });
-
-  it('reads datasources the same way', () => {
-    const datasource = {id: 'ds-1', name: 'Some Datasource'} as unknown as Datasource;
-    expect(toServiceDetailView(datasource, echo)).toMatchObject({id: 'ds-1', name: 'Some Datasource'});
-  });
 });
 
 describe('toRelatedService', () => {
   it('keeps the fields a related-service card shows', () => {
-    const related = resource({id: 'svc-3', name: 'Review Desk', tagline: 'Reviews', logo: 'https://example.org/l.png'});
+    const related = resource({id: '21.T1/svc-3', name: 'Review Desk', tagline: 'Reviews', logo: 'https://example.org/l.png'});
     expect(toRelatedService(related)).toEqual({
-      id: 'svc-3',
+      id: '21.T1/svc-3',
+      link: ['/discover/service', '21.T1', 'svc-3'],
       name: 'Review Desk',
       tagline: 'Reviews',
       logo: 'https://example.org/l.png',

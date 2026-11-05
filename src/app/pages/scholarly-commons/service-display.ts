@@ -12,7 +12,7 @@ export function displayLabel(field: string, value: string, apiLabel: string): st
       const level = /^trl-(\d+)/.exec(value)?.[1];
       return level ? `TRL ${level}` : apiLabel;
     }
-    case 'order_type':
+    case 'orderType':
       if (value === ORDER_FULLY_OPEN) {
         return 'Fully open';
       }
@@ -20,6 +20,13 @@ export function displayLabel(field: string, value: string, apiLabel: string): st
     default:
       return apiLabel;
   }
+}
+
+// Route segments of a service's page. A service id is a PID ("prefix/suffix", e.g. 21.T15999/a1PgrS) and the backend
+// only accepts the slash as a path separator, so the two parts are separate route segments, never one encoded one.
+export function serviceLink(id: string): string[] {
+  const slash = id.indexOf('/');
+  return slash < 0 ? ['/discover/service', id] : ['/discover/service', id.slice(0, slash), id.slice(slash + 1)];
 }
 
 // Descriptions arrive as HTML. DOMParser builds an inert document (no scripts run, no resources load),

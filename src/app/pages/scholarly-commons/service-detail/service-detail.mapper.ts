@@ -1,4 +1,4 @@
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {
   accentFor,
   displayLabel,
@@ -6,6 +6,7 @@ import {
   initialsOf,
   logoOf,
   safeUrl,
+  serviceLink,
   summarizeList,
 } from '../service-display';
 
@@ -30,6 +31,8 @@ export interface ServiceResource {
 
 export interface RelatedService {
   id: string;
+  // Route segments of the service page (its id is a PID, whose slash is a path separator).
+  link: string[];
   name: string;
   tagline: string;
   logo: string | null;
@@ -121,13 +124,16 @@ const EXTRA_RESOURCE_FIELDS: ResourceField[] = [
   {key: 'roadmap', title: 'Roadmap', description: 'What is planned for the next releases'},
 ];
 
-export function toServiceDetailView(resource: Service | Datasource, label: VocabularyLookup): ServiceDetailView {
+export function toServiceDetailView(resource: Service, label: VocabularyLookup): ServiceDetailView {
   const extras = (resource.extras ?? {}) as DetailExtras;
   const portfolios = (extras.portfolios ?? []).filter(Boolean).map((id) => label('Portfolios', id));
   const targetUsers = (resource.targetUsers ?? []).filter(Boolean).map((id) => label('Target user', id));
   const languages = (resource.languageAvailabilities ?? []).filter(Boolean).map((code) => label('Language', code));
   const trlLevel = /^trl-(\d+)/.exec(resource.trl ?? '')?.[1];
   const top = resource as unknown as Record<string, unknown>;
+  // The owner is a PID. The vocabulary may not know it (its ids end in "00" for now), and the lookup then gives the id
+  // back: a raw PID is not shown.
+  const ownerName = resource.resourceOwner ? label('resourceProviders', resource.resourceOwner) : '';
 
   return {
     id: resource.id,
@@ -138,13 +144,13 @@ export function toServiceDetailView(resource: Service | Datasource, label: Vocab
     logo: logoOf(resource.logo),
     tagline: resource.tagline ?? '',
     description: htmlToText(extras.pitch || resource.description || ''),
-    provider: resource.resourceOrganisation ? label('resourceProviders', resource.resourceOrganisation) : '',
+    provider: ownerName && ownerName !== resource.resourceOwner ? ownerName : '',
     category: portfolios[0] ?? '',
     categories: portfolios,
     targetUsers,
     targetUsersSummary: summarizeList(targetUsers),
     order: resource.orderType
-      ? displayLabel('order_type', resource.orderType, label('Order type', resource.orderType))
+      ? displayLabel('orderType', resource.orderType, label('Order type', resource.orderType))
       : '',
     trl: trlLevel ? Number(trlLevel) : null,
     languages,
@@ -176,6 +182,7 @@ export function toServiceDetailView(resource: Service | Datasource, label: Vocab
 export function toRelatedService(resource: Service): RelatedService {
   return {
     id: resource.id,
+    link: serviceLink(resource.id),
     name: resource.name,
     tagline: resource.tagline ?? '',
     logo: logoOf(resource.logo),
