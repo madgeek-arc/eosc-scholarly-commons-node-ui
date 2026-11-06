@@ -16,10 +16,10 @@ import {ScSearchComponent} from './search.component';
 
 const resource = (fields: Record<string, unknown>) => fields as unknown as Service;
 
-const facet = (field: string, values: [value: string, label: string][]): Facet => ({
+const facet = (field: string, values: [value: string, label: string, count?: number][]): Facet => ({
   field,
   label: field,
-  values: values.map(([value, label]) => ({value, label, count: 1, isChecked: false})),
+  values: values.map(([value, label, count]) => ({value, label, count: count ?? 1, isChecked: false})),
 });
 
 const FACETS: Facet[] = [
@@ -310,6 +310,58 @@ describe('ScSearchComponent', () => {
 
       expect(labels).toContain('Fully open');
       expect(labels).not.toContain('Fully open access');
+    });
+
+    describe('the order of the values', () => {
+      const labelsOfGroup = (group: string) => {
+        const element = all('.sc-refine__group').find(
+          (candidate) => candidate.querySelector('.sc-refine__group-label')?.textContent?.trim() === group,
+        );
+        return [...(element?.querySelectorAll('.sc-refine__item') ?? [])].map((label) => label.textContent?.trim());
+      };
+
+      beforeEach(() => {
+        answer = () =>
+          of(
+            page({
+              facets: [
+                facet('portfolios', [
+                  ['portfolios-a', 'Beta', 2],
+                  ['portfolios-b', 'Zero', 0],
+                  ['portfolios-c', 'Gamma', 5],
+                  ['portfolios-d', 'Alpha', 2],
+                  ['portfolios-e', 'Delta', 3],
+                ]),
+                facet('resourceProviders', [
+                  ['owner-1', 'Small Lab', 1],
+                  ['owner-2', 'Big Lab', 9],
+                ]),
+              ],
+            }),
+          );
+      });
+
+      it('puts the values with the most services first, the empty ones last, and equal counts by label', async () => {
+        await open('/discover');
+
+        // Beta and Alpha both have 2 and arrive as Beta, Alpha.
+        expect(labelsOfGroup('Category')).toEqual(['Gamma', 'Delta', 'Alpha', 'Beta', 'Zero']);
+      });
+
+      it('sorts every group on its own and keeps the groups where they were', async () => {
+        await open('/discover');
+
+        expect(labelsOfGroup('Provider')).toEqual(['Big Lab', 'Small Lab']);
+        // The list is rendered twice, in the sidebar and in the phone drawer.
+        const headings = all('.sc-refine__group-label').map((label) => label.textContent?.trim());
+        expect([...new Set(headings)]).toEqual(['Category', 'Provider']);
+      });
+
+      it('leaves a picked value where its count puts it', async () => {
+        await open('/discover?portfolios=portfolios-b');
+
+        expect(labelsOfGroup('Category')).toEqual(['Gamma', 'Delta', 'Alpha', 'Beta', 'Zero']);
+      });
     });
 
     it('adds a value to the URL when it is picked, keeping the rest', async () => {

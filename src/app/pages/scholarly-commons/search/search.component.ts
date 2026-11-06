@@ -188,11 +188,11 @@ export class ScSearchComponent {
         id,
         label,
         apiField,
-        items: values.map((entry) => ({
-          value: entry.value,
-          label: displayLabel(apiField, entry.value, entry.label),
-          active: active.includes(entry.value),
-        })),
+        // Most services first; equal counts go by label, so the order does not depend on how the API lists them.
+        items: values
+          .map((entry) => ({entry, label: displayLabel(apiField, entry.value, entry.label)}))
+          .sort((a, b) => b.entry.count - a.entry.count || a.label.localeCompare(b.label))
+          .map(({entry, label}) => ({value: entry.value, label, active: active.includes(entry.value)})),
       };
     }).filter((group) => group.items.length > 0);
   });
