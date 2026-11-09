@@ -130,16 +130,15 @@ h1, h2, h3 {
     flex-wrap: wrap;
   }
 
-  // UIkit override attempted: this repo's legacy theme.css sets its own h1/h2/h3 font-size at a
-  // @media (min-width:960px) breakpoint (e.g. ".uk-h1,h1{font-size:44px}") that keeps winning over
-  // this component's scoped heading rules regardless of selector specificity — !important pins
-  // this design's own heading scale against that legacy cascade.
+  // UIkit override attempted: UIkit's h1 and its heading classes (`uk-h1`, `uk-heading-*`) come in UIkit's own fixed
+  // sizes, none of which is this hero's name size, and setting @base-h1-font-size in the theme would resize every h1
+  // in the app. The name sets its own size (and a smaller one on phones).
   &__name {
-    font-size: 38px !important;
+    font-size: 38px;
     line-height: 1.05;
 
     @media (max-width: 640px) {
-      font-size: 28px !important;
+      font-size: 28px;
     }
   }
 
@@ -246,15 +245,13 @@ h1, h2, h3 {
     padding: 22px 24px;
   }
 
-  // UIkit override attempted: this repo's legacy theme.css sets its own h1/h2/h3 font-size at a
-  // @media (min-width:960px) breakpoint that keeps winning over this h2/h3's font-size regardless
-  // of selector specificity — !important pins this design's own heading scale against that cascade.
+  // UIkit override attempted: same as .sc-hero__name; UIkit's h2/h3 sizes don't match this design's scale.
   &__title {
-    font-size: 20px !important;
+    font-size: 20px;
     margin-bottom: 16px;
 
     &--small {
-      font-size: 15.5px !important;
+      font-size: 15.5px;
       margin-bottom: 14px;
     }
   }
@@ -272,9 +269,9 @@ h1, h2, h3 {
   padding: 18px 20px;
   background: @sc-bg;
 
-  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-hero__name above.
+  // UIkit override attempted: same as .sc-hero__name; UIkit's heading sizes don't match this design's scale.
   &__title {
-    font-size: 15px !important;
+    font-size: 15px;
     margin-bottom: 5px;
   }
 
@@ -311,9 +308,9 @@ h1, h2, h3 {
     color: @sc-teal;
   }
 
-  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-hero__name above.
+  // UIkit override attempted: same as .sc-hero__name; UIkit's heading sizes don't match this design's scale.
   &__title {
-    font-size: 15px !important;
+    font-size: 15px;
   }
 
   &__desc {
@@ -359,9 +356,9 @@ h1, h2, h3 {
     padding: 16px 18px;
   }
 
-  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-hero__name above.
+  // UIkit override attempted: same as .sc-hero__name; UIkit's heading sizes don't match this design's scale.
   &__title {
-    font-size: 15px !important;
+    font-size: 15px;
     margin-bottom: 4px;
   }
 
