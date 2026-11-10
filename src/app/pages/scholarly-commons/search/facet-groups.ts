@@ -5,7 +5,7 @@ export type FacetGroupId = 'category' | 'resourceProviders' | 'targetUsers' | 't
 export interface FacetGroupConfig {
   id: FacetGroupId;
   label: string;
-  // Facet `field` returned by GET /oa/services. The same name is used as the URL query-param key
+  // Facet `field` returned by GET /eosc/services. The same name is used as the URL query-param key
   // and as the request param key, which is how the API filters on it.
   apiField: string;
 }
@@ -19,8 +19,8 @@ export const CATEGORY_FIELD = 'portfolios';
 
 export const ORDER_FIELD = 'orderType';
 
-// The Provider filter uses the `resourceProviders` facet: its values are provider ids (such as 21.T15999/6JwfsN00, the
-// ids in each service's `resourceProviders`) and its labels are the providers' names.
+// The Provider filter uses the `resourceProviders` facet: its values are provider ids (such as `openaire`, the ids in
+// each service's `resourceProviders`) and its labels are the providers' names.
 export const PROVIDER_FIELD = 'resourceProviders';
 
 export const FACET_GROUPS: FacetGroupConfig[] = [

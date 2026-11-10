@@ -18,16 +18,16 @@ class BlankComponent {}
 const resource = (fields: Record<string, unknown>) => fields as unknown as Service;
 
 const VOCABULARIES = {
-  resourceProviders: [{id: 'owner-1', name: 'Acme Research'}],
+  resourceProviders: [{id: 'org-1', name: 'Acme Research'}],
   Language: [{id: 'en', name: 'English'}],
   Portfolios: [{id: 'p-1', name: 'Publish'}],
 };
 
 const DETAIL = resource({
-  id: '21.T1/svc-1',
+  id: 'svc-1',
   name: 'Data Safe Vault',
   tagline: 'Keeps data safe',
-  resourceOwner: 'owner-1',
+  resourceOrganisation: 'org-1',
   languageAvailabilities: ['en'],
   orderType: ORDER_REQUIRED,
   trl: 'trl-7',
@@ -39,7 +39,7 @@ const DETAIL = resource({
 describe('ScServiceDetailComponent', () => {
   let harness: RouterTestingHarness;
   let router: Router;
-  const getServiceByPid = vi.fn<(pid: string) => Observable<Service>>();
+  const getServiceById = vi.fn<(id: string) => Observable<Service>>();
   const getUiVocabularies = vi.fn<() => Observable<unknown>>();
 
   const root = () => harness.routeNativeElement as HTMLElement;
@@ -55,15 +55,15 @@ describe('ScServiceDetailComponent', () => {
   };
 
   beforeEach(async () => {
-    getServiceByPid.mockReset().mockReturnValue(of(DETAIL));
+    getServiceById.mockReset().mockReturnValue(of(DETAIL));
     getUiVocabularies.mockReset().mockReturnValue(of(VOCABULARIES));
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
-          {path: 'discover/service/:prefix/:suffix', component: ScServiceDetailComponent},
+          {path: 'discover/service/:id', component: ScServiceDetailComponent},
           {path: 'notFound', component: BlankComponent},
         ]),
-        {provide: ResourceService, useValue: {getServiceByPid, getUiVocabularies}},
+        {provide: ResourceService, useValue: {getServiceById, getUiVocabularies}},
       ],
     });
     router = TestBed.inject(Router);
@@ -71,9 +71,9 @@ describe('ScServiceDetailComponent', () => {
   });
 
   it('loads the service of the URL and shows it, with ids resolved through the vocabularies', async () => {
-    await open('/discover/service/21.T1/svc-1');
+    await open('/discover/service/svc-1');
 
-    expect(getServiceByPid).toHaveBeenCalledWith('21.T1/svc-1');
+    expect(getServiceById).toHaveBeenCalledWith('svc-1');
     expect(text('h1')).toBe('Data Safe Vault');
     expect(text('.sc-hero__tagline')).toBe('Keeps data safe');
     expect(text('.sc-hero__description')).toBe('The pitch.');
@@ -83,7 +83,7 @@ describe('ScServiceDetailComponent', () => {
   });
 
   it('lists the facts that have a value in "At a glance", and leaves out the empty ones', async () => {
-    await open('/discover/service/21.T1/svc-1');
+    await open('/discover/service/svc-1');
 
     const facts = [...root().querySelectorAll('.sc-facts__row')].map((row) => [
       row.querySelector('.sc-facts__label')?.textContent?.trim(),
@@ -98,7 +98,7 @@ describe('ScServiceDetailComponent', () => {
   });
 
   it('links only to web addresses', async () => {
-    await open('/discover/service/21.T1/svc-1');
+    await open('/discover/service/svc-1');
 
     const hrefs = [...root().querySelectorAll('a[target="_blank"]')].map((link) => link.getAttribute('href'));
     expect(hrefs).toContain('https://example.org');
@@ -108,67 +108,59 @@ describe('ScServiceDetailComponent', () => {
   });
 
   it('shows a spinner until the service has loaded', async () => {
-    getServiceByPid.mockReturnValue(new Subject<Service>());
-    await open('/discover/service/21.T1/svc-1');
+    getServiceById.mockReturnValue(new Subject<Service>());
+    await open('/discover/service/svc-1');
 
     expect(root().querySelector('[role="status"]')).not.toBeNull();
     expect(root().querySelector('h1')).toBeNull();
   });
 
   it('names the page after the service once it has loaded', async () => {
-    await open('/discover/service/21.T1/svc-1');
+    await open('/discover/service/svc-1');
 
     expect(TestBed.inject(Title).getTitle()).toBe(`Data Safe Vault | ${SITE_NAME}`);
     expect(document.head.querySelector('meta[name="description"]')?.getAttribute('content')).toBe('Keeps data safe');
   });
 
   describe('related services', () => {
-    const related = (pid: string) => resource({id: pid, name: `Service ${pid}`, tagline: `About ${pid}`});
-    // The service itself comes back for its own PID; every other PID is a related service.
+    const related = (id: string) => resource({id, name: `Service ${id}`, tagline: `About ${id}`});
+    // The service itself comes back for its own id; every other id is a related service.
     const serve = (relatedResources: string[], fail: string[] = []) =>
-      getServiceByPid.mockImplementation((pid) =>
-        fail.includes(pid)
+      getServiceById.mockImplementation((id) =>
+        fail.includes(id)
           ? throwError(() => new HttpErrorResponse({status: 404}))
-          : of(pid === DETAIL.id ? resource({...DETAIL, relatedResources}) : related(pid)),
+          : of(id === DETAIL.id ? resource({...DETAIL, relatedResources}) : related(id)),
       );
 
-    it('shows up to three, each looked up by its PID, without the service itself, blanks or ids that are not PIDs', async () => {
-      serve(['21.T1/svc-1', '21.T1/r1', '', 'legacy.id', '21.T1/r2', '21.T1/r3', '21.T1/r4']);
-      await open('/discover/service/21.T1/svc-1');
+    it('shows up to three, each looked up by its id, without the service itself or blanks', async () => {
+      serve(['svc-1', 'r1', '', 'r2', 'r3', 'r4']);
+      await open('/discover/service/svc-1');
 
-      expect(getServiceByPid.mock.calls.map(([pid]) => pid)).toEqual(['21.T1/svc-1', '21.T1/r1', '21.T1/r2', '21.T1/r3']);
+      expect(getServiceById.mock.calls.map(([id]) => id)).toEqual(['svc-1', 'r1', 'r2', 'r3']);
       const names = [...root().querySelectorAll('.sc-related__name')].map((name) => name.textContent?.trim());
-      expect(names).toEqual(['Service 21.T1/r1', 'Service 21.T1/r2', 'Service 21.T1/r3']);
-      expect(root().querySelector('.sc-related')?.getAttribute('href')).toBe('/discover/service/21.T1/r1');
+      expect(names).toEqual(['Service r1', 'Service r2', 'Service r3']);
+      expect(root().querySelector('.sc-related')?.getAttribute('href')).toBe('/discover/service/r1');
     });
 
     it('makes no request when there are none to load', async () => {
-      await open('/discover/service/21.T1/svc-1');
+      await open('/discover/service/svc-1');
 
-      expect(getServiceByPid).toHaveBeenCalledTimes(1);
-      expect(root().querySelector('.sc-related')).toBeNull();
-    });
-
-    it('does not ask for related ids that cannot be PIDs', async () => {
-      serve(['openaire.explore', 'openaire.provide']);
-      await open('/discover/service/21.T1/svc-1');
-
-      expect(getServiceByPid).toHaveBeenCalledTimes(1);
+      expect(getServiceById).toHaveBeenCalledTimes(1);
       expect(root().querySelector('.sc-related')).toBeNull();
     });
 
     it('leaves out a related service that cannot be loaded and shows the others', async () => {
-      serve(['21.T1/r1', '21.T1/r2'], ['21.T1/r1']);
-      await open('/discover/service/21.T1/svc-1');
+      serve(['r1', 'r2'], ['r1']);
+      await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe('Data Safe Vault');
       const names = [...root().querySelectorAll('.sc-related__name')].map((name) => name.textContent?.trim());
-      expect(names).toEqual(['Service 21.T1/r2']);
+      expect(names).toEqual(['Service r2']);
     });
 
     it('shows the service without them when none can be loaded', async () => {
-      serve(['21.T1/r1'], ['21.T1/r1']);
-      await open('/discover/service/21.T1/svc-1');
+      serve(['r1'], ['r1']);
+      await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe('Data Safe Vault');
       expect(root().querySelector('.sc-related')).toBeNull();
@@ -176,36 +168,35 @@ describe('ScServiceDetailComponent', () => {
   });
 
   describe('when something fails', () => {
-    it('falls back to the ids when the vocabularies cannot be loaded, except for the provider', async () => {
+    it('falls back to the ids when the vocabularies cannot be loaded', async () => {
       getUiVocabularies.mockReturnValue(throwError(new Error('down')));
-      await open('/discover/service/21.T1/svc-1');
+      await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe('Data Safe Vault');
       expect(text('.sc-detail__breadcrumb')).toContain('p-1');
-      // The owner is a PID; without its name there is no provider to show, and the PID itself is not.
-      expect(root().querySelector('.sc-provider__name')).toBeNull();
+      expect(text('.sc-provider__name')).toBe('org-1');
     });
 
     it('offers a way back when the service cannot be loaded', async () => {
-      getServiceByPid.mockReturnValue(throwError(new HttpErrorResponse({status: 500})));
-      await open('/discover/service/21.T1/svc-1');
+      getServiceById.mockReturnValue(throwError(new HttpErrorResponse({status: 500})));
+      await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe("We couldn't load this service");
       expect(root().querySelector('a[href="/discover"]')).not.toBeNull();
-      expect(router.url).toBe('/discover/service/21.T1/svc-1');
+      expect(router.url).toBe('/discover/service/svc-1');
     });
 
     it('also offers a way back when the connection itself fails', async () => {
-      getServiceByPid.mockReturnValue(throwError(new HttpErrorResponse({status: 0})));
-      await open('/discover/service/21.T1/svc-1');
+      getServiceById.mockReturnValue(throwError(new HttpErrorResponse({status: 0})));
+      await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe("We couldn't load this service");
     });
 
     it('leaves for the not-found page, replacing the history entry, when the service does not exist', async () => {
-      getServiceByPid.mockReturnValue(throwError(new HttpErrorResponse({status: 404})));
+      getServiceById.mockReturnValue(throwError(new HttpErrorResponse({status: 404})));
       const navigate = vi.spyOn(router, 'navigate');
-      await open('/discover/service/21.T1/nope');
+      await open('/discover/service/nope');
 
       expect(navigate).toHaveBeenCalledWith(['/notFound'], {replaceUrl: true});
       expect(router.url).toBe('/notFound');
@@ -214,13 +205,13 @@ describe('ScServiceDetailComponent', () => {
 
   describe('moving from one service to another', () => {
     it('loads the new service, and loads the vocabularies only once', async () => {
-      getServiceByPid.mockImplementation((pid) => of(resource({...DETAIL, id: pid, name: `Service ${pid}`})));
-      await open('/discover/service/21.T1/a');
-      expect(text('h1')).toBe('Service 21.T1/a');
+      getServiceById.mockImplementation((id) => of(resource({...DETAIL, id, name: `Service ${id}`})));
+      await open('/discover/service/a');
+      expect(text('h1')).toBe('Service a');
 
-      await open('/discover/service/21.T1/b');
-      expect(text('h1')).toBe('Service 21.T1/b');
-      expect(getServiceByPid).toHaveBeenCalledTimes(2);
+      await open('/discover/service/b');
+      expect(text('h1')).toBe('Service b');
+      expect(getServiceById).toHaveBeenCalledTimes(2);
       expect(getUiVocabularies).toHaveBeenCalledTimes(1);
     });
   });

@@ -6,7 +6,6 @@ import {
   initialsOf,
   logoOf,
   safeUrl,
-  serviceLink,
   summarizeList,
 } from '../service-display';
 
@@ -31,8 +30,6 @@ export interface ServiceResource {
 
 export interface RelatedService {
   id: string;
-  // Route segments of the service page (its id is a PID, whose slash is a path separator).
-  link: string[];
   name: string;
   tagline: string;
   logo: string | null;
@@ -131,9 +128,6 @@ export function toServiceDetailView(resource: Service, label: VocabularyLookup):
   const languages = (resource.languageAvailabilities ?? []).filter(Boolean).map((code) => label('Language', code));
   const trlLevel = /^trl-(\d+)/.exec(resource.trl ?? '')?.[1];
   const top = resource as unknown as Record<string, unknown>;
-  // The owner is a PID. The vocabulary may not know it (its ids end in "00" for now), and the lookup then gives the id
-  // back: a raw PID is not shown.
-  const ownerName = resource.resourceOwner ? label('resourceProviders', resource.resourceOwner) : '';
 
   return {
     id: resource.id,
@@ -144,7 +138,7 @@ export function toServiceDetailView(resource: Service, label: VocabularyLookup):
     logo: logoOf(resource.logo),
     tagline: resource.tagline ?? '',
     description: htmlToText(extras.pitch || resource.description || ''),
-    provider: ownerName && ownerName !== resource.resourceOwner ? ownerName : '',
+    provider: resource.resourceOrganisation ? label('resourceProviders', resource.resourceOrganisation) : '',
     category: portfolios[0] ?? '',
     categories: portfolios,
     targetUsers,
@@ -182,7 +176,6 @@ export function toServiceDetailView(resource: Service, label: VocabularyLookup):
 export function toRelatedService(resource: Service): RelatedService {
   return {
     id: resource.id,
-    link: serviceLink(resource.id),
     name: resource.name,
     tagline: resource.tagline ?? '',
     logo: logoOf(resource.logo),

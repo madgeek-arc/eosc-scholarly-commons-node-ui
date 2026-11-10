@@ -191,7 +191,6 @@ export class Service implements Identifiable {
   abbreviation: string;
   name: string;
   resourceOrganisation: string;
-  resourceOwner: string; // PID of the owning provider, as served by GET /oa/services
   resourceProviders: string[];
   webpage: URL;
   description: string;

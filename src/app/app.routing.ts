@@ -42,8 +42,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    // A service id is a PID ("prefix/suffix"), so its two parts are two route segments.
-    path: 'discover/service/:prefix/:suffix',
+    path: 'discover/service/:id',
     // Replaced by the service name once it has loaded (see ScServiceDetailComponent).
     title: 'Service',
     loadComponent: () => import('./pages/scholarly-commons/service-detail/service-detail.component').then(m => m.ScServiceDetailComponent),

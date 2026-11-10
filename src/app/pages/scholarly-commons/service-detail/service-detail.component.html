@@ -138,7 +138,7 @@
               <h2 class="sc-panel__title">Related services</h2>
               <div class="sc-related-grid">
                 @for (related of relatedServices(); track related.id) {
-                  <a [routerLink]="related.link" class="sc-related">
+                  <a [routerLink]="['/discover/service', related.id]" class="sc-related">
                     @if (related.logo) {
                       <!-- eslint-disable-next-line @angular-eslint/template/prefer-ngsrc -- API-supplied image of unknown size -->
                       <img [src]="related.logo" [alt]="related.name" class="sc-related__logo" />

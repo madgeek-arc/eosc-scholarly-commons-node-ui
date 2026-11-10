@@ -9,7 +9,7 @@ export const environment = {
   MATOMO_SITE: -1,
   FAQ_ENDPOINT: 'https://dl105.madgik.di.uoa.gr/faq/api',
   // API_ENDPOINT: '/eic-registry', // to change the end point go to proxy.conf.json file
-  API_ENDPOINT: '/openaire', // to change the end point go to proxy.conf.json file
+  API_ENDPOINT: '/api', // to change the end point go to proxy.conf.json file
   // Public address of the Joomla site behind the iframe pages (no trailing slash). Keep in line with the proxy target
   // (proxy.conf.json, PROXY_PAGES_ENDPOINT in docker-compose.yml).
   JOOMLA_SITE_ORIGIN: 'https://innovation.openaire.eu',

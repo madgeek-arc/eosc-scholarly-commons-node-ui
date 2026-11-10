@@ -12,8 +12,8 @@ const facet = (field: string, values: [string, string][]): Facet =>
 
 describe('buildFacetLabels', () => {
   it('maps `${field}:${value}` to the facet label', () => {
-    const labels = buildFacetLabels([facet('resourceProviders', [['owner-1', 'Owner One']])]);
-    expect(labels.get('resourceProviders:owner-1')).toBe('Owner One');
+    const labels = buildFacetLabels([facet('resourceProviders', [['org-1', 'Org One']])]);
+    expect(labels.get('resourceProviders:org-1')).toBe('Org One');
   });
 
   it('keeps only the facet fields the page uses', () => {
@@ -42,7 +42,7 @@ describe('buildFacetLabels', () => {
 
 describe('toServiceCard', () => {
   const labels: FacetLabels = new Map([
-    ['resourceProviders:owner-1', 'Owner One'],
+    ['resourceProviders:org-1', 'Org One'],
     ['portfolios:p-1', 'Publish'],
     ['targetUsers:tu-1', 'Researchers'],
     [`orderType:${ORDER_FULLY_OPEN}`, 'Fully open'],
@@ -50,11 +50,11 @@ describe('toServiceCard', () => {
   ]);
 
   const full = resource({
-    id: '21.T1/svc-1',
+    id: 'svc-1',
     name: 'Open Archive Hub',
     tagline: 'Archive anything',
     description: '<p>The description. It has two sentences.</p>',
-    resourceOwner: 'owner-1',
+    resourceOrganisation: 'org-1',
     targetUsers: ['tu-1', 'tu-2'],
     orderType: ORDER_FULLY_OPEN,
     logo: 'https://example.org/logo.png',
@@ -63,26 +63,24 @@ describe('toServiceCard', () => {
 
   it('maps every field of a complete service', () => {
     expect(toServiceCard(full, labels)).toEqual({
-      id: '21.T1/svc-1',
-      link: ['/discover/service', '21.T1', 'svc-1'],
+      id: 'svc-1',
       name: 'Open Archive Hub',
       initials: 'Oa',
-      provider: 'Owner One',
+      provider: 'Org One',
       tagline: 'Archive anything',
       shortDescription: 'The pitch.',
       category: 'Publish',
       targetUsers: ['Researchers', 'tu-2'],
       order: 'Fully open',
       isOpen: true,
-      accent: accentFor('21.T1/svc-1'),
+      accent: accentFor('svc-1'),
       logo: 'https://example.org/logo.png',
     });
   });
 
-  it('falls back to the raw value when the facet has no label for it, except for the provider', () => {
+  it('falls back to the raw value when the facet has no label for it', () => {
     const card = toServiceCard(full, new Map());
-    // The owner is a PID: with no label there is nothing readable to show, and the PID itself is not.
-    expect(card.provider).toBe('');
+    expect(card.provider).toBe('org-1');
     expect(card.category).toBe('p-1');
     expect(card.targetUsers).toEqual(['tu-1', 'tu-2']);
     expect(card.order).toBe(ORDER_FULLY_OPEN);
@@ -105,7 +103,6 @@ describe('toServiceCard', () => {
   it('gives empty defaults to a service with only an id and a name', () => {
     expect(toServiceCard(resource({id: 'svc-2', name: 'Bare'}), labels)).toEqual({
       id: 'svc-2',
-      link: ['/discover/service', 'svc-2'],
       name: 'Bare',
       initials: 'Ba',
       provider: '',

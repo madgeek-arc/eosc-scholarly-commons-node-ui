@@ -27,7 +27,7 @@ const FACETS: Facet[] = [
     ['portfolios-publish', 'Publish'],
     ['portfolios-assess', 'Assess'],
   ]),
-  facet('resourceProviders', [['owner-1', 'Acme Research']]),
+  facet('resourceProviders', [['org-1', 'Acme Research']]),
   facet('orderType', [
     [ORDER_FULLY_OPEN, 'Fully open access'],
     [ORDER_REQUIRED, 'Order required'],
@@ -36,15 +36,15 @@ const FACETS: Facet[] = [
 
 const SERVICES = [
   resource({
-    id: '21.T1/svc-1',
+    id: 'svc-1',
     name: 'Data Safe Vault',
     tagline: 'Keeps data safe',
-    resourceOwner: 'owner-1',
+    resourceOrganisation: 'org-1',
     orderType: ORDER_FULLY_OPEN,
     targetUsers: [],
     extras: {pitch: '<p>Stores datasets for the long term. More text.</p>', portfolios: ['portfolios-publish']},
   }),
-  resource({id: '21.T1/svc-2', name: 'Review Desk', resourceOwner: 'owner-1', orderType: ORDER_REQUIRED, targetUsers: [], extras: {}}),
+  resource({id: 'svc-2', name: 'Review Desk', resourceOrganisation: 'org-1', orderType: ORDER_REQUIRED, targetUsers: [], extras: {}}),
 ];
 
 const page = (overrides: Partial<Paging<Service>> = {}): Paging<Service> => ({
@@ -168,7 +168,7 @@ describe('ScSearchComponent', () => {
 
       const cards = all<HTMLElement>('article.sc-result-card');
       expect(cards).toHaveLength(2);
-      expect(cards[0].querySelector('h3 a')?.getAttribute('href')).toBe('/discover/service/21.T1/svc-1');
+      expect(cards[0].querySelector('h3 a')?.getAttribute('href')).toBe('/discover/service/svc-1');
       expect(cards[0].textContent).toContain('Data Safe Vault');
       expect(cards[0].textContent).toContain('Keeps data safe');
       expect(cards[0].textContent).toContain('Stores datasets for the long term.');
@@ -333,8 +333,8 @@ describe('ScSearchComponent', () => {
                   ['portfolios-e', 'Delta', 3],
                 ]),
                 facet('resourceProviders', [
-                  ['owner-1', 'Small Lab', 1],
-                  ['owner-2', 'Big Lab', 9],
+                  ['org-1', 'Small Lab', 1],
+                  ['org-2', 'Big Lab', 9],
                 ]),
               ],
             }),

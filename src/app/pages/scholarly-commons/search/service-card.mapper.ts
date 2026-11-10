@@ -1,13 +1,11 @@
 import {Service} from '../../../entities/eic-model';
 import {Facet} from '../../../entities/facet';
-import {ORDER_FULLY_OPEN, accentFor, displayLabel, htmlToText, initialsOf, logoOf, serviceLink} from '../service-display';
+import {ORDER_FULLY_OPEN, accentFor, displayLabel, htmlToText, initialsOf, logoOf} from '../service-display';
 import {FACET_GROUPS, PROVIDER_FIELD} from './facet-groups';
 
-// View model for one result card, mapped from a `Service` of GET /oa/services.
+// View model for one result card, mapped from a `Service` of GET /eosc/services.
 export interface ServiceCard {
   id: string;
-  // Route segments of the service page (its id is a PID, whose slash is a path separator).
-  link: string[];
   name: string;
   initials: string;
   provider: string;
@@ -55,11 +53,9 @@ export function toServiceCard(resource: Service, labels: FacetLabels): ServiceCa
 
   return {
     id: resource.id,
-    link: serviceLink(resource.id),
     name: resource.name,
     initials: initialsOf(resource.name),
-    // The owner is a PID, so without a label from the facet there is nothing readable to show (not the PID itself).
-    provider: resource.resourceOwner ? (labels.get(labelKey(PROVIDER_FIELD, resource.resourceOwner)) ?? '') : '',
+    provider: resource.resourceOrganisation ? labelOf(PROVIDER_FIELD, resource.resourceOrganisation) : '',
     tagline: resource.tagline ?? '',
     shortDescription: firstSentence(description),
     category: category ? labelOf('portfolios', category) : '',
