@@ -1,24 +1,41 @@
 @import '../theme/scholarly-commons-theme.less';
 
+// UIkit override attempted: UIkit has no footer component and the layout here is uk-container + uk-grid + uk-list;
+// only the page-bottom surface (white background, top rule, vertical padding, body colour) has no UIkit class.
 .sc-footer {
   background: #fff;
   border-top: 1px solid @sc-border;
+  padding: 64px 0 56px;
   font-family: @sc-font-body;
+  font-size: 15px;
+  color: #3b3e5a;
 }
 
-// Only the vertical padding is set here: the sides come from uk-container (15px, 32px from 640px, 40px from 960px).
-.sc-footer__bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 28px;
-  padding-bottom: 28px;
+// UIkit override attempted: uk-text-bold and uk-text-uppercase cover weight and case, but UIkit has no utility for the
+// small letter-spaced label or the dark teal (#1f6b74, a contrast-safe shade of the brand teal on white) used for the
+// column headings; the body font is set because the theme gives h4 its own heading family.
+.sc-footer__heading {
+  margin: 6px 0 14px;
+  font-family: @sc-font-body;
   font-size: 13px;
-  color: @sc-faint;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #1f6b74;
 }
 
-.sc-footer__links {
-  gap: 18px;
+// UIkit override attempted: uk-text-small is 12px and uk-text-meta is grey; the intro copy needs 15px in the body
+// colour with a capped line length, which neither provides.
+.sc-footer__about {
+  max-width: 340px;
+  margin: 18px 0 20px;
+  line-height: 1.6;
+}
+
+// UIkit override attempted: uk-link-reset keeps the link in the body colour without an underline, but its hover state
+// stays the same colour, and uk-link-muted/uk-link-text would switch the hover to UIkit's grey/black instead of the
+// brand red, so the hover colour and underline are set here.
+.sc-footer__link:hover {
+  color: #b03a50;
+  text-decoration: underline;
 }
