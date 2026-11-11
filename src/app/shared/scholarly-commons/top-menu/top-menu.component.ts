@@ -56,6 +56,7 @@ declare const UIkit: { offcanvas(selector: string): { hide(): void } };
 export class ScTopMenuComponent {
   // Paths of the iframe pages live in pages/scholarly-commons/iframe-page/iframe-pages.routes.ts
   protected readonly links = [
+    {label: 'About', path: '/about'},
     {label: 'Services', path: '/discover'},
     {label: 'How to start', path: '/how-to-start'},
     {label: 'Use Cases', path: '/use-cases'},

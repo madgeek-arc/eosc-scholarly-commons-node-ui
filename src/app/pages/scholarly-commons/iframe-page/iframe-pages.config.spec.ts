@@ -21,6 +21,12 @@ describe('joomlaPathFor', () => {
   it('points at the article of the page', () => {
     expect(joomlaPathFor({path: 'x', title: 'X', articleId: 25})).toBe('/?option=com_content&view=article&id=25');
   });
+
+  it('adds the menu item when the page has one', () => {
+    expect(joomlaPathFor({path: 'x', title: 'X', articleId: 25, itemId: 193})).toBe(
+      '/?option=com_content&view=article&id=25&Itemid=193',
+    );
+  });
 });
 
 describe('routeForJoomlaPath', () => {
