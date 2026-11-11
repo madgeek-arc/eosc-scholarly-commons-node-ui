@@ -7,6 +7,12 @@ export interface IframePage {
   /** Article id on innovation.openaire.eu (`?option=com_content&view=article&id=N`). */
   articleId: number;
   /**
+   * Id of the Joomla menu item the page belongs to (`Itemid`). Joomla picks the template style, and so
+   * the theme, from the menu item, so without it the default style is used. Omit it for a page that has
+   * no menu item of its own.
+   */
+  itemId?: number;
+  /**
    * SEF paths other articles use to link to this one. Only list aliases that were checked to
    * serve the same article: /news.html, /home.html and /about.html are older, different pages,
    * and /training.html and /terms-and-policies.html do not exist.
@@ -15,18 +21,23 @@ export interface IframePage {
 }
 
 export const IFRAME_PAGES: IframePage[] = [
-  {path: 'home', title: 'Home', articleId: 23},
-  {path: 'how-to-start', title: 'How to start', articleId: 25, aliases: ['/how-to-start.html']},
-  {path: 'use-cases', title: 'Use Cases', articleId: 26, aliases: ['/use-cases.html']},
-  {path: 'news', title: 'News', articleId: 27},
-  {path: 'training', title: 'Training', articleId: 28},
-  {path: 'terms-and-policies', title: 'Terms & Policies', articleId: 29},
-  {path: 'join', title: 'Join', articleId: 32},
+  {path: 'home', title: 'Home', articleId: 23, itemId: 192},
+  {path: 'about', title: 'About', articleId: 41, itemId: 306},
+  {path: 'how-to-start', title: 'How to start', articleId: 25, itemId: 193, aliases: ['/how-to-start.html']},
+  {path: 'use-cases', title: 'Use Cases', articleId: 26, itemId: 194, aliases: ['/use-cases.html']},
+  {path: 'news', title: 'News', articleId: 27, itemId: 195},
+  {path: 'training', title: 'Training', articleId: 28, itemId: 196},
+  {path: 'terms-and-policies', title: 'Terms & Policies', articleId: 29, itemId: 197},
+  {path: 'join', title: 'Join', articleId: 32, itemId: 198},
 ];
 
-/** Root-relative Joomla path of a page's article; `tmpl=yootheme` is added when building the iframe URL. */
+/**
+ * Root-relative Joomla path of a page's article, with its menu item when it has one (that is what
+ * selects the theme); `tmpl=yootheme` is added when building the iframe URL.
+ */
 export function joomlaPathFor(page: IframePage): string {
-  return `/?option=com_content&view=article&id=${page.articleId}`;
+  const itemId = page.itemId === undefined ? '' : `&Itemid=${page.itemId}`;
+  return `/?option=com_content&view=article&id=${page.articleId}${itemId}`;
 }
 
 /**
