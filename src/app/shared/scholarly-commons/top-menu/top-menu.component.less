@@ -31,6 +31,25 @@
   display: block;
 }
 
+// UIkit override attempted: uk-visible@l and uk-hidden@l switch at 1200px, and UIkit only has breakpoints at 640, 960,
+// 1200 and 1600px (@breakpoint-* variables, which would move every uk-*@l class on the site). The eight links and the
+// Login button need about 1330px next to the logo, scrollbar included (measured: the links wrap at 1325px and fit at
+// 1330px), so the header switches between the inline menu and the drawer button at 1340px, with a little to spare.
+// `!important` as in UIkit, to beat uk-flex's display.
+@sc-top-menu-breakpoint: 1340px;
+
+.sc-top-menu__desktop {
+  @media (max-width: (@sc-top-menu-breakpoint - 1px)) {
+    display: none !important;
+  }
+}
+
+.sc-top-menu__mobile {
+  @media (min-width: @sc-top-menu-breakpoint) {
+    display: none !important;
+  }
+}
+
 .sc-top-menu__nav {
   gap: 22px;
   font-size: 16px;
@@ -56,15 +75,33 @@
 
 // The hamburger and the drawer's close button and links lose the browser's focus outline to UIkit; the shared mixin
 // carries the "UIkit override attempted" note.
+// The login button, the account button and the account dropdown's links lose the outline the same way.
 .sc-top-menu__toggle:focus-visible,
+.sc-top-menu__login:focus-visible,
+.sc-top-menu__account-trigger:focus-visible,
+.sc-top-menu__account .uk-dropdown-nav a:focus-visible,
 .sc-top-menu__drawer .uk-offcanvas-close:focus-visible,
 .sc-top-menu__drawer .uk-nav a:focus-visible {
   .sc-focus-ring();
 }
 
-.sc-top-menu__join {
+// The shared mixin carries the "UIkit override attempted" note: uk-button has no brand-teal pill variant.
+.sc-top-menu__login {
   .sc-pill-button();
-  padding: 8px 20px;
-  text-decoration: none;
-  font-size: 14px;
+}
+
+// UIkit override attempted: uk-text-truncate cuts a long name with an ellipsis, but UIkit has no max-width utility
+// (uk-width-* sets a fixed width), and the name must only shrink when it is long, not reserve space when it is short.
+// Below 1450px the name is hidden and only the user icon shows, so a long name cannot make the links wrap (the
+// breakpoint is not one of UIkit's 1200 and 1600px; the dropdown and the button's title still carry the name).
+@sc-top-menu-name-breakpoint: 1450px;
+
+.sc-top-menu__account-name {
+  display: inline-block;
+  max-width: 9rem;
+  vertical-align: middle;
+
+  @media (max-width: (@sc-top-menu-name-breakpoint - 1px)) {
+    display: none;
+  }
 }

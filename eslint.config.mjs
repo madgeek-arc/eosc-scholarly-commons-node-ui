@@ -77,7 +77,7 @@ export default defineConfig([
       'src/app/shared/scholarly-commons/**/*.ts',
       'src/app/shared/forbidden-page/*.ts',
       'src/app/shared/not-found-page/*.ts',
-      'src/app/services/authentication.service.ts',
+      'src/app/services/user-session.service.ts',
       'src/app/services/authentication-interceptor.ts',
       'src/app/services/auth.guard.ts',
       'src/app/services/resource.service.ts',

@@ -18,7 +18,6 @@ import {environment} from '../environments/environment';
 import {DataSharingService} from './services/data-sharing.service';
 import {AuthenticationInterceptor} from './services/authentication-interceptor';
 import {ServiceWorkerModule} from '@angular/service-worker';
-import {UserService} from './services/user.service';
 import {TrackingService} from './services/tracking.service';
 import {PageTitleStrategy} from './services/page-title.strategy';
 
@@ -53,7 +52,6 @@ import {PageTitleStrategy} from './services/page-title.strategy';
     },
     ComparisonService,
     ResourceService,
-    UserService,
     ProviderService,
     DataSharingService,
     DatePipe,

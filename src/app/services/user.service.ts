@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import {environment} from '../../environments/environment';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {UserInfo} from '../entities/userInfo';
-import {Provider} from '../entities/eic-model';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserInfo } from '../entities/userInfo';
+import { Provider } from '../entities/eic-model';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class UserService {
   private http = inject(HttpClient);
 

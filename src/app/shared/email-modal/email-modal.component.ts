@@ -3,7 +3,6 @@ import {ReactiveFormsModule, UntypedFormBuilder, Validators} from '@angular/form
 import {NavigationService} from '../../services/navigation.service';
 import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from '../../services/resource.service';
-import {AuthenticationService} from '../../services/authentication.service';
 import {ComparisonService} from '../../services/comparison.service';
 import {EmailService} from '../../services/email.service';
 
@@ -21,7 +20,6 @@ export class EmailModalComponent {
   router = inject(NavigationService);
   route = inject(ActivatedRoute);
   resourceService = inject(ResourceService);
-  authenticationService = inject(AuthenticationService);
   comparisonService = inject(ComparisonService);
   navigationService = inject(NavigationService);
   emailService = inject(EmailService);
