@@ -29,7 +29,7 @@ describe('ResourceService', () => {
         {key: 'portfolios', values: ['portfolios-publish', 'portfolios-assess']},
       ]).subscribe();
 
-      const request = backend.expectOne((r) => r.url === `${BASE}/eosc/services`);
+      const request = backend.expectOne((r) => r.url === `${BASE}/node/services`);
       expect(request.request.method).toBe('GET');
       expect(request.request.params.get('quantity')).toBe('9');
       expect(request.request.params.get('from')).toBe('18');
@@ -39,15 +39,15 @@ describe('ResourceService', () => {
     it('sends a keyword with spaces and reserved characters as one value', () => {
       service.searchServices([{key: 'keyword', values: ['data & code=1 #2']}]).subscribe();
 
-      const request = backend.expectOne((r) => r.url === `${BASE}/eosc/services`);
+      const request = backend.expectOne((r) => r.url === `${BASE}/node/services`);
       expect(request.request.params.getAll('keyword')).toEqual(['data & code=1 #2']);
       // `&` and `#` are escaped, so they cannot start another parameter or a fragment; `=` is legal inside a value.
-      expect(request.request.urlWithParams).toBe(`${BASE}/eosc/services?keyword=data%20%26%20code=1%20%232`);
+      expect(request.request.urlWithParams).toBe(`${BASE}/node/services?keyword=data%20%26%20code=1%20%232`);
     });
 
     it('sends nothing it was not given: no active flag, no sort, no order', () => {
       service.searchServices([]).subscribe();
-      expect(backend.expectOne(`${BASE}/eosc/services`).request.params.keys()).toEqual([]);
+      expect(backend.expectOne(`${BASE}/node/services`).request.params.keys()).toEqual([]);
     });
 
     it('hands the response to the caller', () => {
@@ -55,7 +55,7 @@ describe('ResourceService', () => {
       service.searchServices([]).subscribe((paging) => (received = paging));
 
       const body = {from: 0, to: 9, total: 1, results: [{id: 'a'}], facets: []};
-      backend.expectOne(`${BASE}/eosc/services`).flush(body);
+      backend.expectOne(`${BASE}/node/services`).flush(body);
       expect(received).toEqual(body);
     });
   });
@@ -90,12 +90,12 @@ describe('ResourceService', () => {
   describe('single resources', () => {
     it('reads a service by its id, with credentials', () => {
       service.getServiceById('openaire.graph').subscribe();
-      expect(backend.expectOne(`${BASE}/eosc/services/openaire.graph`).request.withCredentials).toBe(true);
+      expect(backend.expectOne(`${BASE}/node/services/openaire.graph`).request.withCredentials).toBe(true);
     });
 
     it('encodes the id as one path segment', () => {
       service.getServiceById('a b#c/d').subscribe();
-      backend.expectOne(`${BASE}/eosc/services/a%20b%23c%2Fd`);
+      backend.expectOne(`${BASE}/node/services/a%20b%23c%2Fd`);
     });
 
     it('reads the vocabularies the UI maps ids with', () => {

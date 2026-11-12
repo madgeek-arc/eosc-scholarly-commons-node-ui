@@ -5,7 +5,7 @@ export type FacetGroupId = 'category' | 'resourceProviders' | 'targetUsers' | 't
 export interface FacetGroupConfig {
   id: FacetGroupId;
   label: string;
-  // Facet `field` returned by GET /eosc/services. The same name is used as the URL query-param key
+  // Facet `field` returned by GET /node/services. The same name is used as the URL query-param key
   // and as the request param key, which is how the API filters on it.
   apiField: string;
 }

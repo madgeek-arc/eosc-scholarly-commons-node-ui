@@ -3,7 +3,7 @@ import {Facet} from '../../../entities/facet';
 import {ORDER_FULLY_OPEN, accentFor, displayLabel, htmlToText, initialsOf, logoOf} from '../service-display';
 import {FACET_GROUPS, PROVIDER_FIELD} from './facet-groups';
 
-// View model for one result card, mapped from a `Service` of GET /eosc/services.
+// View model for one result card, mapped from a `Service` of GET /node/services.
 export interface ServiceCard {
   id: string;
   name: string;

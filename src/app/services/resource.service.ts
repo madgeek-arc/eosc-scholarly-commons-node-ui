@@ -41,9 +41,9 @@ export class ResourceService {
     }
   }
 
-  /** Reads one published Service by its id (GET /eosc/services/{id}, for example openaire.graph). */
+  /** Reads one published Service by its id (GET /node/services/{id}, for example openaire.graph). */
   getServiceById(id: string) {
-    return this.http.get<Service>(`${this.base}/eosc/services/${encodeURIComponent(id)}`, this.options);
+    return this.http.get<Service>(`${this.base}/node/services/${encodeURIComponent(id)}`, this.options);
   }
 
   search(urlParameters: URLParameter[]) {
@@ -81,7 +81,7 @@ export class ResourceService {
   }
 
   /**
-   * Searches the published Services (GET /eosc/services). The backend treats every parameter it does not know as a
+   * Searches the published Services (GET /node/services). The backend treats every parameter it does not know as a
    * filter, so only its own names may be sent: `keyword` for the text, `from` and `quantity` for the page, and the
    * facet fields (`portfolios`, `trl`, `orderType`, ...) for filters.
    */
@@ -92,7 +92,7 @@ export class ResourceService {
         searchQuery = searchQuery.append(urlParameter.key, value);
       }
     }
-    return this.http.get<Paging<Service>>(this.base + '/eosc/services', {params: searchQuery});
+    return this.http.get<Paging<Service>>(this.base + '/node/services', {params: searchQuery});
   }
 
   getServicesSnippetByUserContentAndPortfolioType(userType: string, portfolioType?: string) {
