@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
-import {AuthenticationService} from './services/authentication.service';
 import {ScTopMenuComponent} from './shared/scholarly-commons/top-menu/top-menu.component';
 import {ScFooterComponent} from './shared/scholarly-commons/footer/footer.component';
 import {ScConsentBannerComponent} from './shared/scholarly-commons/consent/consent-banner.component';
@@ -15,11 +14,6 @@ import {ScConsentBannerComponent} from './shared/scholarly-commons/consent/conse
 export class AppComponent implements OnInit {
 
   private readonly router = inject(Router);
-  private readonly auth = inject(AuthenticationService);
-
-  constructor() {
-    this.auth.redirect();
-  }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {

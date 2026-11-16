@@ -1,10 +1,9 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {AuthenticationService} from './authentication.service';
-import {environment} from '../../environments/environment';
-import {Provider, Service, ServiceHistory, Vocabulary, Type, Datasource, Bundle} from '../entities/eic-model';
-import {Paging,} from '../entities/paging';
-import {URLParameter} from '../entities/url-parameter';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Bundle, Datasource, Provider, Service, ServiceHistory, Type, Vocabulary } from '../entities/eic-model';
+import { Paging, } from '../entities/paging';
+import { URLParameter } from '../entities/url-parameter';
 
 
 @Injectable()
@@ -14,7 +13,6 @@ export class ResourceService {
   private options = {withCredentials: true};
 
   readonly http = inject(HttpClient);
-  readonly authenticationService = inject(AuthenticationService);
 
   static removeNulls(obj) {
     const isArray = obj instanceof Array;
@@ -41,8 +39,9 @@ export class ResourceService {
     }
   }
 
-  getServiceOrDatasource(resourceId: string) { //todo: get rid of this
-    return this.http.get<Service | Datasource>(this.base + `/catalogue-resources/${resourceId}`, this.options);
+  /** Reads one published Service by its id (GET /node/services/{id}, for example openaire.graph). */
+  getServiceById(id: string) {
+    return this.http.get<Service>(`${this.base}/node/services/${encodeURIComponent(id)}`, this.options);
   }
 
   search(urlParameters: URLParameter[]) {
@@ -79,14 +78,19 @@ export class ResourceService {
     return this.http.get(this.base + `/catalogue-resources/${id}/resourceType`);
   }
 
-  searchWithDatasource(urlParameters: URLParameter[]) {
+  /**
+   * Searches the published Services (GET /node/services). The backend treats every parameter it does not know as a
+   * filter, so only its own names may be sent: `keyword` for the text, `from` and `quantity` for the page, and the
+   * facet fields (`portfolios`, `trl`, `orderType`, ...) for filters.
+   */
+  searchServices(urlParameters: URLParameter[]) {
     let searchQuery = new HttpParams();
     for (const urlParameter of urlParameters) {
       for (const value of urlParameter.values) {
         searchQuery = searchQuery.append(urlParameter.key, value);
       }
     }
-    return this.http.get<Paging<Service | Datasource>>(this.base + `/catalogue-resources?active=true`, {params: searchQuery});
+    return this.http.get<Paging<Service>>(this.base + '/node/services', {params: searchQuery});
   }
 
   getServicesSnippetByUserContentAndPortfolioType(userType: string, portfolioType?: string) {
@@ -119,10 +123,6 @@ export class ResourceService {
     } else {
       return this.http.get<Paging<Service>>(this.base + `/services`);
     }
-  }
-
-  getServicesByIdArray(idArray: string[]) {
-    return this.http.get<Service[]>(this.base + `/services/ids/${idArray.toString()}`);
   }
 
   getResourcesGroupedByField(field: string, active?: boolean) {

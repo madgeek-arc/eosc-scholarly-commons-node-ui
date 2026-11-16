@@ -58,14 +58,22 @@ describe('AuthenticationInterceptor', () => {
     expect(sessionStorage.getItem('kept')).toBe('yes');
   });
 
-  it('forgets the session data on a 401 from the user-info call, and the caller still gets the error', () => {
-    sessionStorage.setItem('redirectUrl', '/news');
+  it('keeps the session data on a 401 from the user-info call, which every anonymous visit gets', () => {
+    sessionStorage.setItem('compareServices', '["a","b"]');
     const seen = get('/api/user/info');
     backend.expectOne('/api/user/info').flush('no', {status: 401, statusText: 'Unauthorized'});
 
-    expect(sessionStorage.length).toBe(0);
+    expect(sessionStorage.getItem('compareServices')).toBe('["a","b"]');
     expect(seen.error?.status).toBe(401);
     expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('does not leave the page on a 403 from the user-info call, and the caller still gets the error', () => {
+    const seen = get('/api/user/info');
+    backend.expectOne('/api/user/info').flush('no', {status: 403, statusText: 'Forbidden'});
+
+    expect(navigate).not.toHaveBeenCalled();
+    expect(seen.error?.status).toBe(403);
   });
 
   it('leaves the session data alone on a 401 from any other call', () => {

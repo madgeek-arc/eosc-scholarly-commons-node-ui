@@ -10,7 +10,7 @@ export const environment = {
   STATS_ENDPOINT: 'https://providers.eosc-portal.eu/stats-api/',
   API_TOKEN_ENDPOINT: '',
   AAI_LOGIN: '/oauth2/authorization/openaire',
-  AAI_LOGOUT: 'https://aai.openaire.eu/proxy/saml2/idp/SingleLogoutService.php?ReturnTo=',
+  AAI_LOGOUT: '/logout',
   projectName: 'OpenAIRE Catalogue',
   projectMail: 'example@oac.eu',
   serviceORresource: 'Resource',

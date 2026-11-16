@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {ORDER_REQUIRED, accentFor} from '../service-display';
 import {
   VocabularyLookup,
@@ -217,11 +217,6 @@ describe('toServiceDetailView', () => {
       resources: [],
       tags: [],
     });
-  });
-
-  it('reads datasources the same way', () => {
-    const datasource = {id: 'ds-1', name: 'Some Datasource'} as unknown as Datasource;
-    expect(toServiceDetailView(datasource, echo)).toMatchObject({id: 'ds-1', name: 'Some Datasource'});
   });
 });
 

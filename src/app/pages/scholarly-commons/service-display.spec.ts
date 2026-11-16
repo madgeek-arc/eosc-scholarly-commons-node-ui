@@ -23,12 +23,12 @@ describe('displayLabel', () => {
   });
 
   it('uses short forms for the two order types the design names', () => {
-    expect(displayLabel('order_type', ORDER_FULLY_OPEN, 'Fully open access')).toBe('Fully open');
-    expect(displayLabel('order_type', ORDER_REQUIRED, 'Order required by the provider')).toBe('Order required');
+    expect(displayLabel('orderType', ORDER_FULLY_OPEN, 'Fully open access')).toBe('Fully open');
+    expect(displayLabel('orderType', ORDER_REQUIRED, 'Order required by the provider')).toBe('Order required');
   });
 
   it('keeps the API label for any other order type', () => {
-    expect(displayLabel('order_type', ORDER_OPEN_ACCESS, 'Open access')).toBe('Open access');
+    expect(displayLabel('orderType', ORDER_OPEN_ACCESS, 'Open access')).toBe('Open access');
   });
 
   it('keeps the API label for every other field', () => {

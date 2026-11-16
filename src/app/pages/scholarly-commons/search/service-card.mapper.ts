@@ -1,9 +1,9 @@
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {Facet} from '../../../entities/facet';
 import {ORDER_FULLY_OPEN, accentFor, displayLabel, htmlToText, initialsOf, logoOf} from '../service-display';
-import {FACET_GROUPS} from './facet-groups';
+import {FACET_GROUPS, PROVIDER_FIELD} from './facet-groups';
 
-// View model for one result card, mapped from a catalogue-resources `Service | Datasource`.
+// View model for one result card, mapped from a `Service` of GET /node/services.
 export interface ServiceCard {
   id: string;
   name: string;
@@ -45,7 +45,7 @@ export function buildFacetLabels(facets: Facet[] | null | undefined): FacetLabel
   return labels;
 }
 
-export function toServiceCard(resource: Service | Datasource, labels: FacetLabels): ServiceCard {
+export function toServiceCard(resource: Service, labels: FacetLabels): ServiceCard {
   const extras = (resource.extras ?? {}) as ServiceExtras;
   const labelOf = (field: string, value: string) => labels.get(labelKey(field, value)) ?? value;
   const category = extras.portfolios?.[0];
@@ -55,12 +55,12 @@ export function toServiceCard(resource: Service | Datasource, labels: FacetLabel
     id: resource.id,
     name: resource.name,
     initials: initialsOf(resource.name),
-    provider: resource.resourceOrganisation ? labelOf('resource_organisation', resource.resourceOrganisation) : '',
+    provider: resource.resourceOrganisation ? labelOf(PROVIDER_FIELD, resource.resourceOrganisation) : '',
     tagline: resource.tagline ?? '',
     shortDescription: firstSentence(description),
     category: category ? labelOf('portfolios', category) : '',
-    targetUsers: (resource.targetUsers ?? []).map((value) => labelOf('target_users', value)),
-    order: resource.orderType ? labelOf('order_type', resource.orderType) : '',
+    targetUsers: (resource.targetUsers ?? []).map((value) => labelOf('targetUsers', value)),
+    order: resource.orderType ? labelOf('orderType', resource.orderType) : '',
     isOpen: resource.orderType === ORDER_FULLY_OPEN,
     accent: accentFor(resource.id),
     logo: logoOf(resource.logo),

@@ -6,7 +6,7 @@ import {Router, provideRouter} from '@angular/router';
 import {RouterTestingHarness} from '@angular/router/testing';
 import {Observable, Subject, of, throwError} from 'rxjs';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {ResourceService} from '../../../services/resource.service';
 import {SITE_NAME} from '../../../services/page-meta.service';
 import {ORDER_REQUIRED} from '../service-display';
@@ -15,7 +15,7 @@ import {ScServiceDetailComponent} from './service-detail.component';
 @Component({template: '', changeDetection: ChangeDetectionStrategy.OnPush})
 class BlankComponent {}
 
-const resource = (fields: Record<string, unknown>) => fields as unknown as Service & Datasource;
+const resource = (fields: Record<string, unknown>) => fields as unknown as Service;
 
 const VOCABULARIES = {
   resourceProviders: [{id: 'org-1', name: 'Acme Research'}],
@@ -39,9 +39,8 @@ const DETAIL = resource({
 describe('ScServiceDetailComponent', () => {
   let harness: RouterTestingHarness;
   let router: Router;
-  const getServiceOrDatasource = vi.fn<(id: string) => Observable<Service | Datasource>>();
+  const getServiceById = vi.fn<(id: string) => Observable<Service>>();
   const getUiVocabularies = vi.fn<() => Observable<unknown>>();
-  const getServicesByIdArray = vi.fn<(ids: string[]) => Observable<Service[]>>();
 
   const root = () => harness.routeNativeElement as HTMLElement;
   const text = (selector: string) => root().querySelector(selector)?.textContent?.replace(/\s+/g, ' ').trim();
@@ -56,16 +55,15 @@ describe('ScServiceDetailComponent', () => {
   };
 
   beforeEach(async () => {
-    getServiceOrDatasource.mockReset().mockReturnValue(of(DETAIL));
+    getServiceById.mockReset().mockReturnValue(of(DETAIL));
     getUiVocabularies.mockReset().mockReturnValue(of(VOCABULARIES));
-    getServicesByIdArray.mockReset().mockReturnValue(of([]));
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
           {path: 'discover/service/:id', component: ScServiceDetailComponent},
           {path: 'notFound', component: BlankComponent},
         ]),
-        {provide: ResourceService, useValue: {getServiceOrDatasource, getUiVocabularies, getServicesByIdArray}},
+        {provide: ResourceService, useValue: {getServiceById, getUiVocabularies}},
       ],
     });
     router = TestBed.inject(Router);
@@ -75,7 +73,7 @@ describe('ScServiceDetailComponent', () => {
   it('loads the service of the URL and shows it, with ids resolved through the vocabularies', async () => {
     await open('/discover/service/svc-1');
 
-    expect(getServiceOrDatasource).toHaveBeenCalledWith('svc-1');
+    expect(getServiceById).toHaveBeenCalledWith('svc-1');
     expect(text('h1')).toBe('Data Safe Vault');
     expect(text('.sc-hero__tagline')).toBe('Keeps data safe');
     expect(text('.sc-hero__description')).toBe('The pitch.');
@@ -110,7 +108,7 @@ describe('ScServiceDetailComponent', () => {
   });
 
   it('shows a spinner until the service has loaded', async () => {
-    getServiceOrDatasource.mockReturnValue(new Subject<Service>());
+    getServiceById.mockReturnValue(new Subject<Service>());
     await open('/discover/service/svc-1');
 
     expect(root().querySelector('[role="status"]')).not.toBeNull();
@@ -126,14 +124,19 @@ describe('ScServiceDetailComponent', () => {
 
   describe('related services', () => {
     const related = (id: string) => resource({id, name: `Service ${id}`, tagline: `About ${id}`});
+    // The service itself comes back for its own id; every other id is a related service.
+    const serve = (relatedResources: string[], fail: string[] = []) =>
+      getServiceById.mockImplementation((id) =>
+        fail.includes(id)
+          ? throwError(() => new HttpErrorResponse({status: 404}))
+          : of(id === DETAIL.id ? resource({...DETAIL, relatedResources}) : related(id)),
+      );
 
-    it('shows up to three, loaded in one request, without the service itself or blanks', async () => {
-      getServiceOrDatasource.mockReturnValue(of(resource({...DETAIL, relatedResources: ['svc-1', 'r1', '', 'r2', 'r3', 'r4']})));
-      getServicesByIdArray.mockReturnValue(of(['r1', 'r2', 'r3', 'r4'].map(related)));
+    it('shows up to three, each looked up by its id, without the service itself or blanks', async () => {
+      serve(['svc-1', 'r1', '', 'r2', 'r3', 'r4']);
       await open('/discover/service/svc-1');
 
-      expect(getServicesByIdArray).toHaveBeenCalledTimes(1);
-      expect(getServicesByIdArray).toHaveBeenCalledWith(['r1', 'r2', 'r3', 'r4']);
+      expect(getServiceById.mock.calls.map(([id]) => id)).toEqual(['svc-1', 'r1', 'r2', 'r3']);
       const names = [...root().querySelectorAll('.sc-related__name')].map((name) => name.textContent?.trim());
       expect(names).toEqual(['Service r1', 'Service r2', 'Service r3']);
       expect(root().querySelector('.sc-related')?.getAttribute('href')).toBe('/discover/service/r1');
@@ -142,13 +145,21 @@ describe('ScServiceDetailComponent', () => {
     it('makes no request when there are none to load', async () => {
       await open('/discover/service/svc-1');
 
-      expect(getServicesByIdArray).not.toHaveBeenCalled();
+      expect(getServiceById).toHaveBeenCalledTimes(1);
       expect(root().querySelector('.sc-related')).toBeNull();
     });
 
-    it('shows the service without them when they cannot be loaded', async () => {
-      getServiceOrDatasource.mockReturnValue(of(resource({...DETAIL, relatedResources: ['r1']})));
-      getServicesByIdArray.mockReturnValue(throwError(new Error('down')));
+    it('leaves out a related service that cannot be loaded and shows the others', async () => {
+      serve(['r1', 'r2'], ['r1']);
+      await open('/discover/service/svc-1');
+
+      expect(text('h1')).toBe('Data Safe Vault');
+      const names = [...root().querySelectorAll('.sc-related__name')].map((name) => name.textContent?.trim());
+      expect(names).toEqual(['Service r2']);
+    });
+
+    it('shows the service without them when none can be loaded', async () => {
+      serve(['r1'], ['r1']);
       await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe('Data Safe Vault');
@@ -162,11 +173,12 @@ describe('ScServiceDetailComponent', () => {
       await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe('Data Safe Vault');
+      expect(text('.sc-detail__breadcrumb')).toContain('p-1');
       expect(text('.sc-provider__name')).toBe('org-1');
     });
 
     it('offers a way back when the service cannot be loaded', async () => {
-      getServiceOrDatasource.mockReturnValue(throwError(new HttpErrorResponse({status: 500})));
+      getServiceById.mockReturnValue(throwError(new HttpErrorResponse({status: 500})));
       await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe("We couldn't load this service");
@@ -175,14 +187,14 @@ describe('ScServiceDetailComponent', () => {
     });
 
     it('also offers a way back when the connection itself fails', async () => {
-      getServiceOrDatasource.mockReturnValue(throwError(new HttpErrorResponse({status: 0})));
+      getServiceById.mockReturnValue(throwError(new HttpErrorResponse({status: 0})));
       await open('/discover/service/svc-1');
 
       expect(text('h1')).toBe("We couldn't load this service");
     });
 
     it('leaves for the not-found page, replacing the history entry, when the service does not exist', async () => {
-      getServiceOrDatasource.mockReturnValue(throwError(new HttpErrorResponse({status: 404})));
+      getServiceById.mockReturnValue(throwError(new HttpErrorResponse({status: 404})));
       const navigate = vi.spyOn(router, 'navigate');
       await open('/discover/service/nope');
 
@@ -193,13 +205,13 @@ describe('ScServiceDetailComponent', () => {
 
   describe('moving from one service to another', () => {
     it('loads the new service, and loads the vocabularies only once', async () => {
-      getServiceOrDatasource.mockImplementation((id) => of(resource({...DETAIL, id, name: `Service ${id}`})));
+      getServiceById.mockImplementation((id) => of(resource({...DETAIL, id, name: `Service ${id}`})));
       await open('/discover/service/a');
       expect(text('h1')).toBe('Service a');
 
       await open('/discover/service/b');
       expect(text('h1')).toBe('Service b');
-      expect(getServiceOrDatasource).toHaveBeenCalledTimes(2);
+      expect(getServiceById).toHaveBeenCalledTimes(2);
       expect(getUiVocabularies).toHaveBeenCalledTimes(1);
     });
   });

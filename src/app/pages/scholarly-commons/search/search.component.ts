@@ -5,7 +5,7 @@ import {takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-int
 import {ActivatedRoute, NavigationEnd, Params, Router, RouterLink} from '@angular/router';
 import {of} from 'rxjs';
 import {catchError, debounceTime, filter, map, scan, startWith, switchMap} from 'rxjs/operators';
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {Paging} from '../../../entities/paging';
 import {URLParameter} from '../../../entities/url-parameter';
 import {ResourceService} from '../../../services/resource.service';
@@ -48,7 +48,7 @@ interface PagerView {
 interface SearchState {
   loading: boolean;
   error: boolean;
-  paging: Paging<Service | Datasource> | null;
+  paging: Paging<Service> | null;
   // Total of the unfiltered catalogue; only updated by responses to requests that had no query/facets.
   catalogueTotal: number | null;
 }
@@ -99,7 +99,8 @@ export class ScSearchComponent {
       {key: 'from', values: [String(this.from())]},
     ];
     if (this.query()) {
-      params.push({key: 'query', values: [this.query()]});
+      // The page URL says `query`; the API calls it `keyword` (and treats an unknown name as a filter that matches nothing).
+      params.push({key: 'keyword', values: [this.query()]});
     }
     for (const {apiField} of FACET_GROUPS) {
       const values = this.selected().get(apiField);
@@ -115,7 +116,7 @@ export class ScSearchComponent {
     toObservable(this.requestParams).pipe(
       switchMap((params) => {
         const filtered = isFiltered(params);
-        return this.resources.searchWithDatasource(params).pipe(
+        return this.resources.searchServices(params).pipe(
           map((paging) => ({
             loading: false,
             error: false,
@@ -187,11 +188,11 @@ export class ScSearchComponent {
         id,
         label,
         apiField,
-        items: values.map((entry) => ({
-          value: entry.value,
-          label: displayLabel(apiField, entry.value, entry.label),
-          active: active.includes(entry.value),
-        })),
+        // Most services first; equal counts go by label, so the order does not depend on how the API lists them.
+        items: values
+          .map((entry) => ({entry, label: displayLabel(apiField, entry.value, entry.label)}))
+          .sort((a, b) => b.entry.count - a.entry.count || a.label.localeCompare(b.label))
+          .map(({entry, label}) => ({value: entry.value, label, active: active.includes(entry.value)})),
       };
     }).filter((group) => group.items.length > 0);
   });

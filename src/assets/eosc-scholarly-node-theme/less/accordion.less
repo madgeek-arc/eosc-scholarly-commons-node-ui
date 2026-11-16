@@ -1,4 +1,4 @@
-// UIkit's base accordion draws no open/closed indicator; that icon comes from its theme layer. The "Refine" accordion
-// on the search page needs it to look expandable, so UIkit's own accordion theme is imported unchanged (a plus
-// that turns into a minus, coloured with @global-color).
+// Since UIkit 3.25 the accordion is unstyled until the list carries `uk-accordion-default`, and the open/closed
+// indicator is a `uk-accordion-icon` element inside the title rather than CSS. The "Refine" accordion on the search
+// page uses both, so UIkit's own accordion theme is imported unchanged (the icon is coloured with @global-color).
 @import "uikit/src/less/theme/accordion.less";

@@ -4,7 +4,7 @@ import {provideRouter, Router} from '@angular/router';
 import {RouterTestingHarness} from '@angular/router/testing';
 import {Observable, Subject, of, throwError} from 'rxjs';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {Facet} from '../../../entities/facet';
 import {Paging} from '../../../entities/paging';
 import {URLParameter} from '../../../entities/url-parameter';
@@ -14,14 +14,12 @@ import {TASK_SHORTCUTS} from '../services-data';
 import {PAGE_SIZE} from './facet-groups';
 import {ScSearchComponent} from './search.component';
 
-type Result = Service | Datasource;
+const resource = (fields: Record<string, unknown>) => fields as unknown as Service;
 
-const resource = (fields: Record<string, unknown>) => fields as unknown as Result;
-
-const facet = (field: string, values: [value: string, label: string][]): Facet => ({
+const facet = (field: string, values: [value: string, label: string, count?: number][]): Facet => ({
   field,
   label: field,
-  values: values.map(([value, label]) => ({value, label, count: 1, isChecked: false})),
+  values: values.map(([value, label, count]) => ({value, label, count: count ?? 1, isChecked: false})),
 });
 
 const FACETS: Facet[] = [
@@ -29,8 +27,8 @@ const FACETS: Facet[] = [
     ['portfolios-publish', 'Publish'],
     ['portfolios-assess', 'Assess'],
   ]),
-  facet('resource_organisation', [['org-1', 'Acme Research']]),
-  facet('order_type', [
+  facet('resourceProviders', [['org-1', 'Acme Research']]),
+  facet('orderType', [
     [ORDER_FULLY_OPEN, 'Fully open access'],
     [ORDER_REQUIRED, 'Order required'],
   ]),
@@ -49,7 +47,7 @@ const SERVICES = [
   resource({id: 'svc-2', name: 'Review Desk', resourceOrganisation: 'org-1', orderType: ORDER_REQUIRED, targetUsers: [], extras: {}}),
 ];
 
-const page = (overrides: Partial<Paging<Result>> = {}): Paging<Result> => ({
+const page = (overrides: Partial<Paging<Service>> = {}): Paging<Service> => ({
   from: 0,
   to: SERVICES.length,
   total: SERVICES.length,
@@ -64,14 +62,14 @@ describe('ScSearchComponent', () => {
   let harness: RouterTestingHarness;
   let router: Router;
   let component: ScSearchComponent;
-  let answer: (params: URLParameter[]) => Observable<Paging<Result>>;
-  const searchWithDatasource = vi.fn((params: URLParameter[]) => answer(params));
+  let answer: (params: URLParameter[]) => Observable<Paging<Service>>;
+  const searchServices = vi.fn((params: URLParameter[]) => answer(params));
   const viewport = {getScrollPosition: vi.fn(() => [0, 120] as [number, number]), scrollToAnchor: vi.fn(), scrollToPosition: vi.fn()};
 
   const root = () => harness.routeNativeElement as HTMLElement;
   const text = (selector: string) => root().querySelector(selector)?.textContent?.replace(/\s+/g, ' ').trim();
   const all = <T extends Element>(selector: string) => [...root().querySelectorAll<T>(selector)];
-  const lastRequest = () => paramsOf(searchWithDatasource.mock.lastCall![0]);
+  const lastRequest = () => paramsOf(searchServices.mock.lastCall![0]);
 
   // Lets the effects, the request and the navigation that follows a click finish.
   const settle = async () => {
@@ -93,13 +91,13 @@ describe('ScSearchComponent', () => {
   const clickFacet = (label: string) => click(all('.sc-refine__item').find((item) => item.textContent?.trim() === label));
 
   beforeEach(async () => {
-    searchWithDatasource.mockClear();
+    searchServices.mockClear();
     Object.values(viewport).forEach((fn) => fn.mockClear());
     answer = () => of(page());
     TestBed.configureTestingModule({
       providers: [
         provideRouter([{path: 'discover', component: ScSearchComponent}]),
-        {provide: ResourceService, useValue: {searchWithDatasource}},
+        {provide: ResourceService, useValue: {searchServices}},
         {provide: ViewportScroller, useValue: viewport},
       ],
     });
@@ -113,7 +111,7 @@ describe('ScSearchComponent', () => {
     it('asks for the first page of everything when the URL has no filters', async () => {
       await open('/discover');
 
-      expect(searchWithDatasource).toHaveBeenCalledTimes(1);
+      expect(searchServices).toHaveBeenCalledTimes(1);
       expect(lastRequest()).toEqual({quantity: [String(PAGE_SIZE)], from: ['0']});
     });
 
@@ -123,10 +121,12 @@ describe('ScSearchComponent', () => {
       expect(lastRequest()).toEqual({
         quantity: [String(PAGE_SIZE)],
         from: ['18'],
-        query: ['data'],
+        keyword: ['data'],
         portfolios: ['portfolios-publish', 'portfolios-assess'],
         trl: ['trl-7'],
       });
+      // The page URL says `query`, the API says `keyword`; sending `query` would be read as a filter that matches nothing.
+      expect(lastRequest()).not.toHaveProperty('query');
     });
 
     it.each([['-5'], ['abc'], ['']])('starts from the first result when `from` is "%s"', async (from) => {
@@ -142,16 +142,16 @@ describe('ScSearchComponent', () => {
     it('asks again when the URL changes, and not before', async () => {
       await open('/discover');
       await settle();
-      expect(searchWithDatasource).toHaveBeenCalledTimes(1);
+      expect(searchServices).toHaveBeenCalledTimes(1);
 
       await open('/discover?query=metadata');
-      expect(searchWithDatasource).toHaveBeenCalledTimes(2);
-      expect(lastRequest().query).toEqual(['metadata']);
+      expect(searchServices).toHaveBeenCalledTimes(2);
+      expect(lastRequest().keyword).toEqual(['metadata']);
     });
 
     it('drops a request that was overtaken by a newer one', async () => {
-      const first = new Subject<Paging<Result>>();
-      answer = (params) => (paramsOf(params)['query'] ? of(page({results: [SERVICES[1]], total: 1})) : first);
+      const first = new Subject<Paging<Service>>();
+      answer = (params) => (paramsOf(params)['keyword'] ? of(page({results: [SERVICES[1]], total: 1})) : first);
 
       await open('/discover');
       await open('/discover?query=review');
@@ -194,7 +194,7 @@ describe('ScSearchComponent', () => {
     });
 
     it('recovers from an error on the next request', async () => {
-      answer = (params) => (paramsOf(params)['query'] ? of(page()) : throwError(new Error('down')));
+      answer = (params) => (paramsOf(params)['keyword'] ? of(page()) : throwError(new Error('down')));
       await open('/discover');
       await open('/discover?query=data');
 
@@ -203,7 +203,7 @@ describe('ScSearchComponent', () => {
     });
 
     it('shows a spinner while the first request is running', async () => {
-      answer = () => new Subject<Paging<Result>>();
+      answer = () => new Subject<Paging<Service>>();
       await open('/discover');
 
       expect(root().querySelector('[role="status"]')).not.toBeNull();
@@ -212,8 +212,8 @@ describe('ScSearchComponent', () => {
     });
 
     it('keeps the previous results on screen while the next request runs', async () => {
-      const next = new Subject<Paging<Result>>();
-      answer = (params) => (paramsOf(params)['query'] ? next : of(page()));
+      const next = new Subject<Paging<Service>>();
+      answer = (params) => (paramsOf(params)['keyword'] ? next : of(page()));
       await open('/discover');
       await open('/discover?query=data');
 
@@ -266,7 +266,7 @@ describe('ScSearchComponent', () => {
     const subtitle = () => text('.sc-search__subtitle') ?? '';
 
     it('is shown once an unfiltered request has answered, and kept while a filtered one runs', async () => {
-      answer = (params) => of(page({total: paramsOf(params)['query'] ? 3 : 120}));
+      answer = (params) => of(page({total: paramsOf(params)['keyword'] ? 3 : 120}));
 
       await open('/discover');
       expect(subtitle()).toContain('120 services from trusted providers');
@@ -312,6 +312,58 @@ describe('ScSearchComponent', () => {
       expect(labels).not.toContain('Fully open access');
     });
 
+    describe('the order of the values', () => {
+      const labelsOfGroup = (group: string) => {
+        const element = all('.sc-refine__group').find(
+          (candidate) => candidate.querySelector('.sc-refine__group-label')?.textContent?.trim() === group,
+        );
+        return [...(element?.querySelectorAll('.sc-refine__item') ?? [])].map((label) => label.textContent?.trim());
+      };
+
+      beforeEach(() => {
+        answer = () =>
+          of(
+            page({
+              facets: [
+                facet('portfolios', [
+                  ['portfolios-a', 'Beta', 2],
+                  ['portfolios-b', 'Zero', 0],
+                  ['portfolios-c', 'Gamma', 5],
+                  ['portfolios-d', 'Alpha', 2],
+                  ['portfolios-e', 'Delta', 3],
+                ]),
+                facet('resourceProviders', [
+                  ['org-1', 'Small Lab', 1],
+                  ['org-2', 'Big Lab', 9],
+                ]),
+              ],
+            }),
+          );
+      });
+
+      it('puts the values with the most services first, the empty ones last, and equal counts by label', async () => {
+        await open('/discover');
+
+        // Beta and Alpha both have 2 and arrive as Beta, Alpha.
+        expect(labelsOfGroup('Category')).toEqual(['Gamma', 'Delta', 'Alpha', 'Beta', 'Zero']);
+      });
+
+      it('sorts every group on its own and keeps the groups where they were', async () => {
+        await open('/discover');
+
+        expect(labelsOfGroup('Provider')).toEqual(['Big Lab', 'Small Lab']);
+        // The list is rendered twice, in the sidebar and in the phone drawer.
+        const headings = all('.sc-refine__group-label').map((label) => label.textContent?.trim());
+        expect([...new Set(headings)]).toEqual(['Category', 'Provider']);
+      });
+
+      it('leaves a picked value where its count puts it', async () => {
+        await open('/discover?portfolios=portfolios-b');
+
+        expect(labelsOfGroup('Category')).toEqual(['Gamma', 'Delta', 'Alpha', 'Beta', 'Zero']);
+      });
+    });
+
     it('adds a value to the URL when it is picked, keeping the rest', async () => {
       await open('/discover?query=data');
       await clickFacet('Publish');
@@ -349,7 +401,7 @@ describe('ScSearchComponent', () => {
     });
 
     it('clears the query and every filter, but nothing else', async () => {
-      await open('/discover?query=data&portfolios=portfolios-publish&trl=trl-7&order_type=order_type-order_required&from=9&keep=me');
+      await open('/discover?query=data&portfolios=portfolios-publish&trl=trl-7&orderType=order_type-order_required&from=9&keep=me');
       await click(all('.sc-refine__clear')[0]);
 
       expect(router.url).toBe('/discover?keep=me');
@@ -388,19 +440,19 @@ describe('ScSearchComponent', () => {
     });
 
     it('lights a group while exactly its order types are picked', async () => {
-      await open(`/discover?order_type=${ORDER_FULLY_OPEN}&order_type=${ORDER_OPEN_ACCESS}`);
+      await open(`/discover?orderType=${ORDER_FULLY_OPEN}&orderType=${ORDER_OPEN_ACCESS}`);
       expect(active()).toEqual(['Open to anyone']);
     });
 
     it('lights nothing after a partial pick made in the Refine panel', async () => {
-      await open(`/discover?order_type=${ORDER_FULLY_OPEN}`);
+      await open(`/discover?orderType=${ORDER_FULLY_OPEN}`);
       expect(active()).toEqual([]);
     });
 
     it('sets all the order types of a group at once, and "All" removes them', async () => {
       await open('/discover');
       await click(all('.sc-search__order-toggle a')[2]);
-      expect(router.url).toBe(`/discover?order_type=${ORDER_REQUIRED}`);
+      expect(router.url).toBe(`/discover?orderType=${ORDER_REQUIRED}`);
       expect(active()).toEqual(['Set up for your organisation']);
 
       await click(all('.sc-search__order-toggle a')[0]);

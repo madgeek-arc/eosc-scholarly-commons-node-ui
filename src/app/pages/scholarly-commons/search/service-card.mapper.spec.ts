@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {Facet} from '../../../entities/facet';
 import {ORDER_FULLY_OPEN, ORDER_OPEN_ACCESS, accentFor} from '../service-display';
 import {FacetLabels, buildFacetLabels, toServiceCard} from './service-card.mapper';
@@ -12,8 +12,8 @@ const facet = (field: string, values: [string, string][]): Facet =>
 
 describe('buildFacetLabels', () => {
   it('maps `${field}:${value}` to the facet label', () => {
-    const labels = buildFacetLabels([facet('resource_organisation', [['org-1', 'Org One']])]);
-    expect(labels.get('resource_organisation:org-1')).toBe('Org One');
+    const labels = buildFacetLabels([facet('resourceProviders', [['org-1', 'Org One']])]);
+    expect(labels.get('resourceProviders:org-1')).toBe('Org One');
   });
 
   it('keeps only the facet fields the page uses', () => {
@@ -27,10 +27,10 @@ describe('buildFacetLabels', () => {
   it('applies the short display forms for TRL and order type', () => {
     const labels = buildFacetLabels([
       facet('trl', [['trl-9', '9 - actual system proven in operational environment']]),
-      facet('order_type', [[ORDER_FULLY_OPEN, 'Fully open access']]),
+      facet('orderType', [[ORDER_FULLY_OPEN, 'Fully open access']]),
     ]);
     expect(labels.get('trl:trl-9')).toBe('TRL 9');
-    expect(labels.get(`order_type:${ORDER_FULLY_OPEN}`)).toBe('Fully open');
+    expect(labels.get(`orderType:${ORDER_FULLY_OPEN}`)).toBe('Fully open');
   });
 
   it('copes with missing facets and facets without values', () => {
@@ -42,11 +42,11 @@ describe('buildFacetLabels', () => {
 
 describe('toServiceCard', () => {
   const labels: FacetLabels = new Map([
-    ['resource_organisation:org-1', 'Org One'],
+    ['resourceProviders:org-1', 'Org One'],
     ['portfolios:p-1', 'Publish'],
-    ['target_users:tu-1', 'Researchers'],
-    [`order_type:${ORDER_FULLY_OPEN}`, 'Fully open'],
-    [`order_type:${ORDER_OPEN_ACCESS}`, 'Open access'],
+    ['targetUsers:tu-1', 'Researchers'],
+    [`orderType:${ORDER_FULLY_OPEN}`, 'Fully open'],
+    [`orderType:${ORDER_OPEN_ACCESS}`, 'Open access'],
   ]);
 
   const full = resource({
@@ -122,10 +122,5 @@ describe('toServiceCard', () => {
     const card = toServiceCard(openAccess, labels);
     expect(card.isOpen).toBe(false);
     expect(card.order).toBe('Open access');
-  });
-
-  it('reads datasources the same way', () => {
-    const datasource = {id: 'ds-1', name: 'Some Datasource', tagline: 'Data'} as unknown as Datasource;
-    expect(toServiceCard(datasource, labels)).toMatchObject({id: 'ds-1', name: 'Some Datasource', tagline: 'Data'});
   });
 });

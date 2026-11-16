@@ -79,18 +79,17 @@ button.sc-task-card {
   min-width: 0;
 }
 
-// UIkit override attempted: this repo's legacy theme.css sets its own h1/h2/h3 font-size
-// at a @media (min-width:960px) breakpoint (e.g. ".uk-h1,h1{font-size:44px}") that keeps
-// winning over this component's scoped heading rules regardless of selector specificity —
-// !important is the reliable way to pin this design's own heading scale against that legacy cascade.
+// UIkit override attempted: UIkit's h1 and its heading classes (`uk-h1`, `uk-heading-*`) come in UIkit's own fixed
+// sizes, none of which is this page's title size, and setting @base-h1-font-size in the theme would resize every h1
+// in the app. The title sets its own size (and a smaller one on phones).
 .sc-search__title {
-  font-size: 48px !important;
+  font-size: 48px;
   line-height: 1.04;
   text-wrap: balance;
   margin-bottom: 14px;
 
   @media (max-width: 640px) {
-    font-size: 32px !important;
+    font-size: 32px;
   }
 }
 
@@ -206,9 +205,9 @@ button.sc-task-card {
     background: @sc-pink;
   }
 
-  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
+  // UIkit override attempted: same as .sc-search__title; UIkit's heading sizes don't match this design's scale.
   &__title {
-    font-size: 16.5px !important;
+    font-size: 16.5px;
     margin-bottom: 5px;
   }
 
@@ -253,10 +252,9 @@ button.sc-task-card {
   margin-bottom: 16px;
 }
 
-// UIkit override attempted: same legacy theme.css h1/h2/h3 media-query rule described at
-// .sc-search__title above also wins over this h2's font-size without !important.
+// UIkit override attempted: same as .sc-search__title; UIkit's h2 size doesn't match this design's scale.
 .sc-search__results-heading {
-  font-size: 21px !important;
+  font-size: 21px;
 }
 
 .sc-search__results-meta {
@@ -403,9 +401,9 @@ button.sc-task-card {
   padding: 44px;
   text-align: center;
 
-  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
+  // UIkit override attempted: same as .sc-search__title; UIkit's heading sizes don't match this design's scale.
   &__title {
-    font-size: 18px !important;
+    font-size: 18px;
     margin-bottom: 6px;
   }
 
@@ -441,9 +439,9 @@ button.sc-task-card {
     .sc-focus-ring();
   }
 
-  // UIkit override attempted: same legacy theme.css h1/h2/h3 rule described at .sc-search__title.
+  // UIkit override attempted: same as .sc-search__title; UIkit's heading sizes don't match this design's scale.
   &__title {
-    font-size: 15.5px !important;
+    font-size: 15.5px;
   }
 
   &__clear {

@@ -4,7 +4,7 @@ Angular 22 front end for the EOSC Node Scholarly Commons service catalogue (npm 
 
 ## Requirements
 
-Node 22.22.3 or newer (see `.nvmrc`, which tracks the latest 22); Angular 22 needs Node 22.22.3, 24.15 or newer, and TypeScript 6.
+Node 24 (see `.nvmrc`; CI and the Dockerfile use it). Angular 22 itself needs Node 22.22.3, 24.15 or newer, and TypeScript 6.
 
 ## Commands
 

@@ -12,7 +12,7 @@ export function displayLabel(field: string, value: string, apiLabel: string): st
       const level = /^trl-(\d+)/.exec(value)?.[1];
       return level ? `TRL ${level}` : apiLabel;
     }
-    case 'order_type':
+    case 'orderType':
       if (value === ORDER_FULLY_OPEN) {
         return 'Fully open';
       }

@@ -1,4 +1,4 @@
-import {Datasource, Service} from '../../../entities/eic-model';
+import {Service} from '../../../entities/eic-model';
 import {
   accentFor,
   displayLabel,
@@ -121,7 +121,7 @@ const EXTRA_RESOURCE_FIELDS: ResourceField[] = [
   {key: 'roadmap', title: 'Roadmap', description: 'What is planned for the next releases'},
 ];
 
-export function toServiceDetailView(resource: Service | Datasource, label: VocabularyLookup): ServiceDetailView {
+export function toServiceDetailView(resource: Service, label: VocabularyLookup): ServiceDetailView {
   const extras = (resource.extras ?? {}) as DetailExtras;
   const portfolios = (extras.portfolios ?? []).filter(Boolean).map((id) => label('Portfolios', id));
   const targetUsers = (resource.targetUsers ?? []).filter(Boolean).map((id) => label('Target user', id));
@@ -144,7 +144,7 @@ export function toServiceDetailView(resource: Service | Datasource, label: Vocab
     targetUsers,
     targetUsersSummary: summarizeList(targetUsers),
     order: resource.orderType
-      ? displayLabel('order_type', resource.orderType, label('Order type', resource.orderType))
+      ? displayLabel('orderType', resource.orderType, label('Order type', resource.orderType))
       : '',
     trl: trlLevel ? Number(trlLevel) : null,
     languages,

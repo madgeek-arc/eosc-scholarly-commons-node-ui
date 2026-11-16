@@ -107,15 +107,23 @@ export class ScServiceDetailComponent {
   });
 
   private load(id: string): Observable<DetailState> {
-    return forkJoin([this.resources.getServiceOrDatasource(id), this.labels$]).pipe(
+    return forkJoin([this.resources.getServiceById(id), this.labels$]).pipe(
       switchMap(([resource, label]) => {
         const detail = toServiceDetailView(resource, label);
-        const relatedIds = (resource.relatedResources ?? []).filter((related) => related && related !== resource.id);
+        // The API has no call that reads several services at once, so each related service is read by its id. One
+        // that cannot be read is left out, not shown as a failure.
+        const relatedIds = (resource.relatedResources ?? [])
+          .filter((related) => related && related !== resource.id)
+          .slice(0, RELATED_LIMIT);
         const related$: Observable<RelatedService[]> = relatedIds.length
-          ? this.resources.getServicesByIdArray(relatedIds).pipe(
-              map((services) => services.slice(0, RELATED_LIMIT).map(toRelatedService)),
-              catchError(() => of([] as RelatedService[])),
-            )
+          ? forkJoin(
+              relatedIds.map((related) =>
+                this.resources.getServiceById(related).pipe(
+                  map(toRelatedService),
+                  catchError(() => of(null)),
+                ),
+              ),
+            ).pipe(map((services) => services.filter((service): service is RelatedService => service !== null)))
           : of([]);
         return related$.pipe(map((related): DetailState => ({loading: false, error: false, detail, related})));
       }),
