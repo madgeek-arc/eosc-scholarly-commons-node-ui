@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
+import { isBehindLogin } from '../../../services/auth.guard';
 import { UserSessionService } from '../../../services/user-session.service';
 
 // UIkit is loaded as a global script (see "scripts" in angular.json).
@@ -66,7 +69,7 @@ declare const UIkit: { offcanvas(selector: string): { hide(): void } };
               <hr class="uk-margin-small">
               <ul class="uk-nav uk-dropdown-nav">
                 <li>
-                  <a [href]="session.logoutUrl" class="uk-flex uk-flex-middle">
+                  <a [href]="logoutUrl()" class="uk-flex uk-flex-middle">
                     <span uk-icon="icon: sign-out" class="uk-margin-small-right"></span>Logout
                   </a>
                 </li>
@@ -102,7 +105,7 @@ declare const UIkit: { offcanvas(selector: string): { hide(): void } };
                 @if (user.email) {
                   <li class="uk-text-meta uk-margin-small-left">{{ user.email }}</li>
                 }
-                <li><a [href]="session.logoutUrl">Logout</a></li>
+                <li><a [href]="logoutUrl()">Logout</a></li>
               } @else if (!session.isLoading()) {
                 <li><button type="button" class="uk-button uk-button-small sc-top-menu__login" (click)="session.login()">Login</button></li>
               }
@@ -116,6 +119,17 @@ declare const UIkit: { offcanvas(selector: string): { hide(): void } };
 })
 export class ScTopMenuComponent {
   protected readonly session = inject(UserSessionService);
+  private readonly router = inject(Router);
+
+  /** Logout brings the user back to the page they are on, or to home when that page needs a login. */
+  protected readonly logoutUrl = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => this.session.logoutUrl(isBehindLogin(this.router.routerState.snapshot.root) ? '/home' : this.router.url)),
+    ),
+    {requireSync: true},
+  );
 
   // Paths of the iframe pages live in pages/scholarly-commons/iframe-page/iframe-pages.routes.ts
   protected readonly links = [

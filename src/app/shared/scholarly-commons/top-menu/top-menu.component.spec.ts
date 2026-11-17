@@ -3,6 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Router, provideRouter} from '@angular/router';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {UserInfo} from '../../../entities/userInfo';
+import {authGuard} from '../../../services/auth.guard';
 import {UserSessionService} from '../../../services/user-session.service';
 import {ScTopMenuComponent} from './top-menu.component';
 
@@ -37,7 +38,8 @@ describe('ScTopMenuComponent', () => {
     isLoading,
     displayName: computed(() => user()?.fullname ?? ''),
     initials,
-    logoutUrl: '/api/logout',
+    isSignedIn: computed(() => user() !== null),
+    logoutUrl: (returnUrl: string) => `/api/logout?redirectUrl=${encodeURIComponent(returnUrl)}`,
     login: vi.fn(),
   };
 
@@ -48,7 +50,8 @@ describe('ScTopMenuComponent', () => {
   const inlineAccount = () => root.querySelector<HTMLElement>('.sc-top-menu__account')!;
   const drawerAccount = () => root.querySelector<HTMLElement>('#sc-menu-offcanvas nav[aria-label="Account"]')!;
   const loginButtons = () => [...root.querySelectorAll<HTMLButtonElement>('button.sc-top-menu__login')];
-  const logoutLinks = () => [...root.querySelectorAll<HTMLAnchorElement>('a[href="/api/logout"]')];
+  const logoutLinks = () => [...root.querySelectorAll<HTMLAnchorElement>('a[href^="/api/logout"]')];
+  const logoutReturns = () => logoutLinks().map((a) => new URL(a.href).searchParams.get('redirectUrl'));
 
   const render = () => {
     fixture.detectChanges();
@@ -63,7 +66,10 @@ describe('ScTopMenuComponent', () => {
     vi.stubGlobal('UIkit', {offcanvas});
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([{path: '**', component: BlankComponent}]),
+        provideRouter([
+          {path: 'private', component: BlankComponent, canActivate: [authGuard]},
+          {path: '**', component: BlankComponent},
+        ]),
         {provide: UserSessionService, useValue: session},
       ],
     });
@@ -188,6 +194,22 @@ describe('ScTopMenuComponent', () => {
       render();
 
       expect(logoutLinks()).toHaveLength(2);
+    });
+
+    it('brings the user back to the page they are on after Logout', async () => {
+      user.set(ADA);
+      await TestBed.inject(Router).navigateByUrl('/news?page=2');
+      render();
+
+      expect(logoutReturns()).toEqual(['/news?page=2', '/news?page=2']);
+    });
+
+    it('sends the user home after Logout from a page that needs a login', async () => {
+      user.set(ADA);
+      await TestBed.inject(Router).navigateByUrl('/private');
+      render();
+
+      expect(logoutReturns()).toEqual(['/home', '/home']);
     });
 
     it('leaves out the email line for a user without an email address', () => {

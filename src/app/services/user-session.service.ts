@@ -21,9 +21,6 @@ export class UserSessionService {
 
   private readonly userInfo = rxResource<UserInfo, void>({stream: () => this.userService.getUserInfo()});
 
-  /** Where the logout link goes. Logging out is a plain navigation to the API, so it is shown as a link, not a button. */
-  readonly logoutUrl = environment.API_ENDPOINT + environment.AAI_LOGOUT;
-
   /** True until the user-info call has answered, either way. */
   readonly isLoading = computed(() => {
     const status = this.userInfo.status();
@@ -64,7 +61,20 @@ export class UserSessionService {
    * The page is always one of this app's own (a path on this site's origin), whatever is passed in.
    */
   login(returnUrl: string = this.router.url): void {
-    const page = window.location.origin + (isAppUrl(returnUrl) ? returnUrl : '/');
-    window.location.href = `${environment.API_ENDPOINT}${environment.AAI_LOGIN}?redirectUrl=${encodeURIComponent(page)}`;
+    window.location.href = `${environment.API_ENDPOINT}${environment.AAI_LOGIN}?redirectUrl=${redirectParam(returnUrl)}`;
   }
+
+  /**
+   * Where the logout link goes: the logout of the API, asked to bring the user back to the given page in the same
+   * `redirectUrl` parameter as {@link login}, with the same rule (a page of this app, else the start page). Logging
+   * out is a plain navigation to the API, so it is shown as a link, not a button.
+   */
+  logoutUrl(returnUrl: string): string {
+    return `${environment.API_ENDPOINT}${environment.AAI_LOGOUT}?redirectUrl=${redirectParam(returnUrl)}`;
+  }
+}
+
+/** The full, encoded address of a page of this app; anything that is not a path in it becomes the start page. */
+function redirectParam(returnUrl: string): string {
+  return encodeURIComponent(window.location.origin + (isAppUrl(returnUrl) ? returnUrl : '/'));
 }

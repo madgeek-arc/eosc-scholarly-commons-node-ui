@@ -4,7 +4,7 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {Router, provideRouter} from '@angular/router';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
-import {authGuard} from './auth.guard';
+import {authGuard, isBehindLogin} from './auth.guard';
 import {UserSessionService} from './user-session.service';
 
 @Component({template: '', changeDetection: ChangeDetectionStrategy.OnPush})
@@ -28,6 +28,16 @@ describe('authGuard', () => {
         provideRouter([
           {path: 'public', component: BlankComponent},
           {path: 'private', component: BlankComponent, canActivate: [authGuard]},
+          {
+            path: 'area',
+            canActivateChild: [authGuard],
+            children: [{path: 'page', component: BlankComponent}],
+          },
+          {
+            path: 'locked',
+            canActivate: [authGuard],
+            children: [{path: 'page', component: BlankComponent}],
+          },
         ]),
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -82,5 +92,34 @@ describe('authGuard', () => {
   it('does not ask for a login on a page without the guard', async () => {
     expect(await router.navigateByUrl('/public')).toBe(true);
     expect(login).not.toHaveBeenCalled();
+  });
+
+  describe('isBehindLogin', () => {
+    const signedIn = (url: string) => {
+      const navigation = router.navigateByUrl(url);
+      answer((request) => request.flush({sub: 'u1', fullname: 'Ada Lovelace'}));
+      return navigation;
+    };
+    const current = () => isBehindLogin(router.routerState.snapshot.root);
+
+    it('is false for a page without the guard', async () => {
+      await signedIn('/public');
+      expect(current()).toBe(false);
+    });
+
+    it('is true for a page with the guard', async () => {
+      await signedIn('/private');
+      expect(current()).toBe(true);
+    });
+
+    it('is true for a page under a parent that guards it', async () => {
+      await signedIn('/locked/page');
+      expect(current()).toBe(true);
+    });
+
+    it('is true for a page under a parent that guards its children', async () => {
+      await signedIn('/area/page');
+      expect(current()).toBe(true);
+    });
   });
 });

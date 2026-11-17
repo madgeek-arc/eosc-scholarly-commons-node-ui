@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { CanActivateFn } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn } from '@angular/router';
 import { filter, map, take } from 'rxjs';
 import { UserSessionService } from './user-session.service';
 
@@ -22,3 +22,17 @@ export const authGuard: CanActivateFn = (route, state) => {
     }),
   );
 };
+
+/**
+ * Whether the page shown from this route down (the route or any of its primary children) is behind
+ * {@link authGuard}. Such a page cannot be shown once the user has logged out, so logging out leaves for home.
+ */
+export function isBehindLogin(root: ActivatedRouteSnapshot): boolean {
+  for (let route: ActivatedRouteSnapshot | null = root; route; route = route.firstChild) {
+    const config = route.routeConfig;
+    if (config?.canActivate?.includes(authGuard) || config?.canActivateChild?.includes(authGuard)) {
+      return true;
+    }
+  }
+  return false;
+}

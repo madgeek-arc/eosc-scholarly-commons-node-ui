@@ -205,8 +205,30 @@ describe('UserSessionService', () => {
   });
 
   describe('logoutUrl', () => {
-    it('is the logout address of the API', async () => {
-      expect((await startAndFail(401)).logoutUrl).toBe(environment.API_ENDPOINT + environment.AAI_LOGOUT);
+    const LOGOUT_URL = environment.API_ENDPOINT + environment.AAI_LOGOUT;
+
+    it('is the logout of the API, asked to return to the given page as a full address, like login', async () => {
+      const service = await startAndAnswer(ADA);
+
+      expect(service.logoutUrl('/news?from=9')).toBe(
+        `${LOGOUT_URL}?redirectUrl=${encodeURIComponent('https://sc.example/news?from=9')}`,
+      );
     });
+
+    it('encodes the address, so its own query and fragment cannot be taken for parameters of the logout', async () => {
+      const sent = new URL((await startAndAnswer(ADA)).logoutUrl('/search?query=a&b=c#top'), 'https://sc.example');
+
+      expect([...sent.searchParams.keys()]).toEqual(['redirectUrl']);
+      expect(sent.searchParams.get('redirectUrl')).toBe('https://sc.example/search?query=a&b=c#top');
+    });
+
+    it.each(['https://evil.example/home', '//evil.example', '/\\evil.example', 'home', ''])(
+      'only ever asks to return to a page of this site: %s becomes the start page',
+      async (url) => {
+        const sent = new URL((await startAndAnswer(ADA)).logoutUrl(url), 'https://sc.example');
+
+        expect(sent.searchParams.get('redirectUrl')).toBe('https://sc.example/');
+      },
+    );
   });
 });
