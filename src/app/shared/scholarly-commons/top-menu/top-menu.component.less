@@ -92,16 +92,19 @@
 
 // UIkit override attempted: uk-text-truncate cuts a long name with an ellipsis, but UIkit has no max-width utility
 // (uk-width-* sets a fixed width), and the name must only shrink when it is long, not reserve space when it is short.
-// Below 1450px the name is hidden and only the user icon shows, so a long name cannot make the links wrap (the
-// breakpoint is not one of UIkit's 1200 and 1600px; the dropdown and the button's title still carry the name).
-@sc-top-menu-name-breakpoint: 1450px;
-
-.sc-top-menu__account-name {
-  display: inline-block;
-  max-width: 9rem;
+// UIkit override attempted: uk-icon-button is the only fixed-size circle in UIkit, but it is an icon slot (muted
+// background, @icon-button-size shared with the hamburger) and not meant for text; uk-border-circle gives the shape,
+// but UIkit has no size or brand-teal background utility. The avatar is a 36px teal circle with white initials, the
+// teal of the Login pill it takes the place of once the user is signed in.
+.sc-top-menu__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: @sc-teal;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
   vertical-align: middle;
-
-  @media (max-width: (@sc-top-menu-name-breakpoint - 1px)) {
-    display: none;
-  }
 }

@@ -44,6 +44,21 @@ export class UserSessionService {
   });
 
   /**
+   * Up to two capital letters for the avatar: the first letters of the first and last words of the name, else the
+   * first letter of the email address, else nothing (the avatar then falls back to a user icon).
+   */
+  readonly initials = computed(() => {
+    const user = this.user();
+    if (user === null) {
+      return '';
+    }
+    const words = (user.fullname?.trim() || `${user.name ?? ''} ${user.surname ?? ''}`).split(/\s+/).filter(Boolean);
+    const sources = words.length > 1 ? [words[0], words[words.length - 1]] : words.length ? words : [user.email ?? ''];
+    // Spread by code point, so a letter outside the Basic Multilingual Plane is not cut in half.
+    return sources.map((word) => [...word][0] ?? '').join('').toLocaleUpperCase();
+  });
+
+  /**
    * Leaves for the login page of the API, and asks it to bring the user back to the page they were on: the full
    * address of that page goes in the `redirectUrl` parameter, because only this app knows where in it the user was.
    * The page is always one of this app's own (a path on this site's origin), whatever is passed in.

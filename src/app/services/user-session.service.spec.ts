@@ -142,6 +142,21 @@ describe('UserSessionService', () => {
     });
   });
 
+  describe('initials', () => {
+    it.each<[string, Partial<UserInfo>, string]>([
+      ['the first and last name', ADA, 'AL'],
+      ['the first and last word of a longer full name', {...ADA, fullname: 'Guido van Rossum'}, 'GR'],
+      ['name and surname without a full name', {...ADA, fullname: ''}, 'AL'],
+      ['one letter for a single name', {...ADA, fullname: undefined, surname: undefined}, 'A'],
+      ['capitals for a name written in lower case', {...ADA, fullname: 'ada lovelace'}, 'AL'],
+      ['letters beyond ASCII', {...ADA, fullname: 'Ελένη Παπαδοπούλου'}, 'ΕΠ'],
+      ['the first letter of the email address when there is no name', {sub: 'u1', email: 'ada@example.org'}, 'A'],
+      ['nothing when the user has no name and no email', {sub: 'u1'}, ''],
+    ])('uses %s', async (_label, user, expected) => {
+      expect((await startAndAnswer(user as UserInfo)).initials()).toBe(expected);
+    });
+  });
+
   describe('login', () => {
     const LOGIN_URL = environment.API_ENDPOINT + environment.AAI_LOGIN;
 

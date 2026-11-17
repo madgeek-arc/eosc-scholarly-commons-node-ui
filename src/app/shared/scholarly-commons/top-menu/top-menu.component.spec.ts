@@ -31,10 +31,12 @@ describe('ScTopMenuComponent', () => {
   // The page-facing state of UserSessionService, which the menu only reads.
   const user = signal<UserInfo | null>(null);
   const isLoading = signal(false);
+  const initials = signal('');
   const session = {
     user,
     isLoading,
     displayName: computed(() => user()?.fullname ?? ''),
+    initials,
     logoutUrl: '/api/logout',
     login: vi.fn(),
   };
@@ -55,6 +57,7 @@ describe('ScTopMenuComponent', () => {
   beforeEach(() => {
     user.set(null);
     isLoading.set(false);
+    initials.set('AL');
     session.login.mockReset();
     // The drawer is controlled by UIkit, which the app loads as a global script.
     vi.stubGlobal('UIkit', {offcanvas});
@@ -146,18 +149,38 @@ describe('ScTopMenuComponent', () => {
       expect(loginButtons()).toEqual([]);
 
       const trigger = inlineAccount().querySelector('.sc-top-menu__account-trigger');
-      expect(trigger?.textContent?.trim()).toBe('Ada Lovelace');
-      // The name is hidden by CSS below 1450px, so the button keeps it as its label and tooltip.
+      // The button shows only the avatar, so the name is its label and tooltip.
+      expect(trigger?.textContent?.trim()).toBe('AL');
       expect(trigger?.getAttribute('aria-label')).toBe('Ada Lovelace');
       expect(trigger?.getAttribute('title')).toBe('Ada Lovelace');
       const dropdown = inlineAccount().querySelector('[uk-dropdown]');
-      expect(dropdown?.querySelector('.uk-nav-header')?.textContent?.trim()).toBe('Ada Lovelace');
-      expect(dropdown?.textContent).toContain('ada@example.org');
+      expect(dropdown?.querySelector('.sc-top-menu__avatar')?.textContent?.trim()).toBe('AL');
+      expect(dropdown?.querySelector('.sc-top-menu__account-name')?.textContent?.trim()).toBe('Ada Lovelace');
+      expect(dropdown?.querySelector('.sc-top-menu__account-email')?.textContent?.trim()).toBe('ada@example.org');
       expect(dropdown?.querySelector('a')?.textContent?.trim()).toBe('Logout');
 
       expect(drawerAccount().textContent).toContain('Ada Lovelace');
       expect(drawerAccount().textContent).toContain('ada@example.org');
       expect(drawerAccount().querySelector('a')?.textContent?.trim()).toBe('Logout');
+    });
+
+    it('shows the initials in a circle, hidden from screen readers since the button carries the name', () => {
+      user.set(ADA);
+      render();
+
+      const avatar = inlineAccount().querySelector('.sc-top-menu__avatar');
+      expect(avatar?.textContent?.trim()).toBe('AL');
+      expect(avatar?.getAttribute('aria-hidden')).toBe('true');
+      expect(inlineAccount().querySelector('[uk-icon="icon: user"]')).toBeNull();
+    });
+
+    it('falls back to the user icon when there are no initials', () => {
+      user.set({...ADA, fullname: '', name: '', surname: '', email: ''});
+      initials.set('');
+      render();
+
+      expect(inlineAccount().querySelector('.sc-top-menu__avatar')).toBeNull();
+      expect(inlineAccount().querySelector('[uk-icon="icon: user"]')).not.toBeNull();
     });
 
     it('links Logout to the logout address of the API, in the menu and in the drawer', () => {
@@ -171,8 +194,8 @@ describe('ScTopMenuComponent', () => {
       user.set({...ADA, email: ''});
       render();
 
-      expect(inlineAccount().querySelector('.uk-text-meta')).toBeNull();
-      expect(inlineAccount().querySelector('.uk-nav-header')?.textContent?.trim()).toBe('Ada Lovelace');
+      expect(inlineAccount().querySelector('.sc-top-menu__account-email')).toBeNull();
+      expect(inlineAccount().querySelector('.sc-top-menu__account-name')?.textContent?.trim()).toBe('Ada Lovelace');
       expect(logoutLinks()).toHaveLength(2);
     });
 

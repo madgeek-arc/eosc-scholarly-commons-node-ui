@@ -37,20 +37,39 @@ declare const UIkit: { offcanvas(selector: string): { hide(): void } };
         <!-- While the user-info call is pending neither branch renders, so "Login" does not flash for a signed-in user. -->
         <div class="sc-top-menu__desktop uk-flex-none sc-top-menu__account">
           @if (session.user(); as user) {
-            <!-- Below 1450px only the icon shows (see the LESS file), so the name is also the button's label and tooltip. -->
+            <!-- The button shows only the avatar, so the name is its label and tooltip. -->
             <button type="button" class="uk-button uk-button-text sc-top-menu__account-trigger"
                     [attr.aria-label]="session.displayName()" [attr.title]="session.displayName()">
-              <span uk-icon="icon: user"></span>
-              <span class="uk-text-truncate sc-top-menu__account-name">{{ session.displayName() }}</span>
+              @if (session.initials(); as initials) {
+                <span class="uk-border-circle uk-text-bold sc-top-menu__avatar" aria-hidden="true">{{ initials }}</span>
+              } @else {
+                <span uk-icon="icon: user"></span>
+              }
             </button>
-            <div uk-dropdown="mode: click; pos: bottom-right">
+            <div class="uk-width-medium uk-background-default uk-box-shadow-medium uk-border-rounded"
+                 uk-dropdown="mode: click; pos: bottom-right; offset: 8">
+              <div class="uk-grid-small uk-flex-middle uk-flex-nowrap" uk-grid>
+                <div class="uk-width-auto">
+                  @if (session.initials(); as initials) {
+                    <span class="uk-border-circle uk-text-bold sc-top-menu__avatar" aria-hidden="true">{{ initials }}</span>
+                  } @else {
+                    <span uk-icon="icon: user; ratio: 1.5"></span>
+                  }
+                </div>
+                <div class="uk-width-expand">
+                  <div class="uk-text-bold uk-text-truncate sc-top-menu__account-name">{{ session.displayName() }}</div>
+                  @if (user.email) {
+                    <div class="uk-text-meta uk-text-truncate sc-top-menu__account-email" [attr.title]="user.email">{{ user.email }}</div>
+                  }
+                </div>
+              </div>
+              <hr class="uk-margin-small">
               <ul class="uk-nav uk-dropdown-nav">
-                <li class="uk-nav-header">{{ session.displayName() }}</li>
-                @if (user.email) {
-                  <li class="uk-text-meta uk-margin-small-bottom">{{ user.email }}</li>
-                }
-                <li class="uk-nav-divider"></li>
-                <li><a [href]="session.logoutUrl">Logout</a></li>
+                <li>
+                  <a [href]="session.logoutUrl" class="uk-flex uk-flex-middle">
+                    <span uk-icon="icon: sign-out" class="uk-margin-small-right"></span>Logout
+                  </a>
+                </li>
               </ul>
             </div>
           } @else if (!session.isLoading()) {
