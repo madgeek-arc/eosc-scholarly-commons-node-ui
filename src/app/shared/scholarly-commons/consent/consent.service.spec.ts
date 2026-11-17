@@ -28,7 +28,7 @@ describe('ConsentService', () => {
 
       expect(consent.analytics()).toBe(false);
       expect(consent.errorMonitoring()).toBe(false);
-      expect(consent.bannerVisible()).toBe(true);
+      expect(consent.hasChoice()).toBe(false);
     });
   });
 
@@ -39,7 +39,7 @@ describe('ConsentService', () => {
 
       expect(consent.analytics()).toBe(true);
       expect(consent.errorMonitoring()).toBe(true);
-      expect(consent.bannerVisible()).toBe(false);
+      expect(consent.hasChoice()).toBe(true);
       expect(stored()).toMatchObject({version: 1, analytics: true, errorMonitoring: true});
       expect(typeof stored().savedAt).toBe('number');
     });
@@ -50,7 +50,7 @@ describe('ConsentService', () => {
 
       expect(consent.analytics()).toBe(false);
       expect(consent.errorMonitoring()).toBe(false);
-      expect(consent.bannerVisible()).toBe(false);
+      expect(consent.hasChoice()).toBe(true);
       expect(stored()).toMatchObject({analytics: false, errorMonitoring: false});
     });
 
@@ -79,7 +79,7 @@ describe('ConsentService', () => {
       const next = new ConsentService();
       expect(next.analytics()).toBe(true);
       expect(next.errorMonitoring()).toBe(false);
-      expect(next.bannerVisible()).toBe(false);
+      expect(next.hasChoice()).toBe(true);
     });
 
     it('keeps a choice that is just under six months old', () => {
@@ -87,7 +87,7 @@ describe('ConsentService', () => {
 
       const consent = new ConsentService();
       expect(consent.analytics()).toBe(true);
-      expect(consent.bannerVisible()).toBe(false);
+      expect(consent.hasChoice()).toBe(true);
     });
 
     it.each([
@@ -103,32 +103,62 @@ describe('ConsentService', () => {
       const consent = new ConsentService();
       expect(consent.analytics()).toBe(false);
       expect(consent.errorMonitoring()).toBe(false);
-      expect(consent.bannerVisible()).toBe(true);
+      expect(consent.hasChoice()).toBe(false);
     });
 
     it('asks again when the stored text is not JSON', () => {
       localStorage.setItem(KEY, '{not json');
-      expect(new ConsentService().bannerVisible()).toBe(true);
+      expect(new ConsentService().hasChoice()).toBe(false);
     });
 
     it('asks again when the stored value is null', () => {
       localStorage.setItem(KEY, 'null');
-      expect(new ConsentService().bannerVisible()).toBe(true);
+      expect(new ConsentService().hasChoice()).toBe(false);
     });
   });
 
   describe('opening the settings again', () => {
-    it('shows the banner without changing the choice, until the next save', () => {
+    it('opens the panel without changing the choice, until the next save', () => {
       const consent = new ConsentService();
       consent.acceptAll();
 
       consent.openSettings();
-      expect(consent.bannerVisible()).toBe(true);
+      expect(consent.settingsOpen()).toBe(true);
       expect(consent.analytics()).toBe(true);
 
       consent.save({analytics: false, errorMonitoring: true});
-      expect(consent.bannerVisible()).toBe(false);
+      expect(consent.settingsOpen()).toBe(false);
       expect(consent.analytics()).toBe(false);
+    });
+
+    it('keeps the choice when the panel is closed without saving', () => {
+      const consent = new ConsentService();
+      consent.rejectAll();
+
+      consent.openSettings();
+      consent.closeSettings();
+
+      expect(consent.settingsOpen()).toBe(false);
+      expect(consent.analytics()).toBe(false);
+    });
+
+    it('can be opened before any choice, leaving the banner up', () => {
+      const consent = new ConsentService();
+
+      consent.openSettings();
+
+      expect(consent.settingsOpen()).toBe(true);
+      expect(consent.hasChoice()).toBe(false);
+    });
+
+    it('tells when the choice was saved', () => {
+      const consent = new ConsentService();
+      expect(consent.savedAt()).toBeNull();
+
+      vi.spyOn(Date, 'now').mockReturnValue(1_700_000_000_000);
+      consent.acceptAll();
+
+      expect(consent.savedAt()).toBe(1_700_000_000_000);
     });
   });
 
@@ -142,7 +172,7 @@ describe('ConsentService', () => {
       consent.acceptAll();
 
       expect(consent.analytics()).toBe(true);
-      expect(consent.bannerVisible()).toBe(false);
+      expect(consent.hasChoice()).toBe(true);
     });
 
     it('treats unreadable storage as no choice yet', () => {
@@ -152,7 +182,7 @@ describe('ConsentService', () => {
 
       const consent = new ConsentService();
       expect(consent.analytics()).toBe(false);
-      expect(consent.bannerVisible()).toBe(true);
+      expect(consent.hasChoice()).toBe(false);
     });
   });
 });

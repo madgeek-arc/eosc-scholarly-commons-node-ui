@@ -1,35 +1,101 @@
-@if (consent.bannerVisible()) {
-  <section class="uk-card uk-card-default uk-card-body uk-position-fixed uk-position-bottom uk-height-max-large uk-overflow-auto sc-consent"
+@if (!consent.hasChoice()) {
+  <section class="uk-position-fixed uk-position-bottom uk-position-small uk-width-large@s sc-consent"
            aria-labelledby="sc-consent-title">
-    <div class="uk-container uk-container-expand">
-      <h2 id="sc-consent-title" class="uk-h4 uk-margin-small-bottom">Cookies and privacy</h2>
-      <p class="uk-margin-small-top">
-        The site stores only what it needs to work (such as your sign-in) without asking. The two options below are
-        off until you switch them on. You can change your mind at any time with "Cookie settings" in the footer.
-        See the <a routerLink="/terms-and-policies">Terms &amp; Policies</a> for details.
-      </p>
-      <div class="uk-margin">
-        <label class="uk-display-block uk-margin-small-bottom">
-          <input class="uk-checkbox" type="checkbox" [checked]="analytics()"
-                 (change)="analytics.set(checked($event))">
-          <strong> Statistics.</strong> Matomo counts visits and page views so the service can be improved
-          (analytics.openaire.eu).
-        </label>
-        <label class="uk-display-block">
-          <input class="uk-checkbox" type="checkbox" [checked]="errorMonitoring()"
-                 (change)="errorMonitoring.set(checked($event))">
-          <strong> Error reports.</strong> Sentry receives details of errors, with a recording of the page around
-          each error, so they can be fixed.
-        </label>
+    <div class="uk-card uk-card-default uk-box-shadow-medium">
+      <div class="uk-card-body">
+        <h2 id="sc-consent-title" class="uk-h4 uk-margin-small-bottom">We use cookies</h2>
+        <p class="uk-text-small uk-margin-remove">
+          The site uses the cookies it needs to work, such as your sign-in. Statistics and error reports are switched
+          on only if you accept them. Read more in our <a routerLink="/cookie-policy">Cookie policy</a>.
+        </p>
       </div>
-      <div class="uk-flex uk-flex-wrap uk-flex-middle">
-        <button type="button" class="uk-button uk-button-default uk-margin-small-right uk-margin-small-bottom"
-                (click)="consent.rejectAll()">Reject all</button>
-        <button type="button" class="uk-button uk-button-default uk-margin-small-right uk-margin-small-bottom"
-                (click)="consent.acceptAll()">Accept all</button>
-        <button type="button" class="uk-button uk-button-primary uk-margin-small-bottom"
-                (click)="save()">Save my choices</button>
+      <div class="uk-card-footer">
+        <div class="uk-grid-small uk-child-width-1-1 uk-child-width-expand@s" uk-grid>
+          <div>
+            <button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-1"
+                    (click)="consent.openSettings()">Settings</button>
+          </div>
+          <div>
+            <button type="button" class="uk-button uk-button-primary uk-button-small uk-width-1-1"
+                    (click)="consent.rejectAll()">Reject all</button>
+          </div>
+          <div>
+            <button type="button" class="uk-button uk-button-primary uk-button-small uk-width-1-1"
+                    (click)="consent.acceptAll()">Accept all</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+} @else {
+  <button type="button" class="uk-icon-button uk-button-primary uk-position-fixed uk-position-bottom-left uk-margin-left uk-margin-bottom sc-consent-toggle"
+          title="Cookie settings" aria-label="Cookie settings" aria-controls="sc-consent-panel"
+          [attr.aria-expanded]="consent.settingsOpen()" (click)="consent.openSettings()">
+    <span class="material-icons-outlined" aria-hidden="true">cookie</span>
+  </button>
 }
+
+<div #panel id="sc-consent-panel" class="sc-consent-panel" uk-offcanvas="flip: true; overlay: true"
+     aria-labelledby="sc-consent-panel-title" (hidden)="onHidden($event)">
+  <div class="uk-offcanvas-bar uk-flex uk-flex-column">
+    <button type="button" class="uk-offcanvas-close" uk-close aria-label="Close cookie settings"></button>
+
+    <h2 id="sc-consent-panel-title" class="uk-h4 uk-margin-remove-bottom">Cookie preferences</h2>
+    <p class="uk-text-small uk-margin-small-top">
+      We use cookies to make the site work and, if you allow it, to understand how it is used and to fix errors.
+      You can switch each optional category on or off at any time.
+    </p>
+
+    <div class="uk-flex-1 uk-overflow-auto">
+      @for (category of categories; track category.id) {
+        <div class="uk-background-muted uk-padding-small uk-border-rounded uk-margin-small-bottom">
+          <label class="uk-flex uk-flex-between uk-flex-middle uk-text-bold">
+            {{ category.title }}
+            <input class="uk-checkbox" type="checkbox" [checked]="isChecked(category.id)"
+                   [disabled]="category.id === 'necessary'" (change)="toggle(category.id, $event)">
+          </label>
+          <p class="uk-text-small uk-margin-small-top uk-margin-remove-bottom">{{ category.description }}</p>
+          <details class="uk-margin-small-top">
+            <summary class="uk-text-small">View cookies</summary>
+            @for (cookie of category.cookies; track cookie.name) {
+              <table class="uk-table uk-table-small uk-table-striped uk-text-small">
+                <tbody>
+                  <tr><th scope="row">Name</th><td>{{ cookie.name }}</td></tr>
+                  <tr><th scope="row">Description</th><td>{{ cookie.description }}</td></tr>
+                  <tr><th scope="row">Provider</th><td>{{ cookie.provider }}</td></tr>
+                  <tr><th scope="row">Expiration</th><td>{{ cookie.expiration }}</td></tr>
+                </tbody>
+              </table>
+            }
+          </details>
+        </div>
+      }
+
+      <p class="uk-text-small uk-margin-small-top">
+        How we handle cookies is described in detail in our
+        <a routerLink="/cookie-policy" (click)="consent.closeSettings()">Cookie policy</a>.
+      </p>
+      @if (consent.savedAt(); as savedAt) {
+        <p class="uk-text-small uk-margin-small-top">
+          Consent saved on <span class="uk-text-bold">{{ savedAt | date: 'dd-MM-yyyy HH:mm' }}</span>
+        </p>
+      }
+    </div>
+
+    <!-- The bar is 350px wide: three buttons in one row would wrap their labels. -->
+    <div class="uk-grid-small uk-margin-top" uk-grid>
+      <div class="uk-width-1-2">
+        <button type="button" class="uk-button uk-button-primary uk-button-small uk-width-1-1"
+                (click)="consent.rejectAll()">Reject all</button>
+      </div>
+      <div class="uk-width-1-2">
+        <button type="button" class="uk-button uk-button-primary uk-button-small uk-width-1-1"
+                (click)="consent.acceptAll()">Accept all</button>
+      </div>
+      <div class="uk-width-1-1">
+        <button type="button" class="uk-button uk-button-default uk-button-small uk-width-1-1"
+                (click)="save()">Save settings</button>
+      </div>
+    </div>
+  </div>
+</div>

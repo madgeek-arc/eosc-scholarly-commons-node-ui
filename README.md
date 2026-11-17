@@ -49,7 +49,7 @@ Avoid the Joomla host, `.html` aliases and `?option=com_content&view=article&id=
 
 ## Privacy and consent
 
-Nothing optional runs before the visitor agrees. `ConsentService` (`src/app/shared/scholarly-commons/consent`) keeps their choices in `localStorage` (`sc-consent`) for six months; the banner asks on the first visit and again from "Cookie settings" in the footer. `TrackingService` (`src/app/services`) starts the optional services when the matching choice is true:
+Nothing optional runs before the visitor agrees. `ConsentService` (`src/app/shared/scholarly-commons/consent`) keeps their choices in `localStorage` (`sc-consent`) for six months; the banner asks on the first visit, and the round cookie button in the bottom-left corner opens the settings panel after that. The panel's list of cookies is in `consent-cookies.ts`; update it when a cookie is added or removed. `TrackingService` (`src/app/services`) starts the optional services when the matching choice is true:
 
 | Choice | Service | Started by |
 | --- | --- | --- |

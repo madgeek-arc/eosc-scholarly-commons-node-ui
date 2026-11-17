@@ -1,7 +1,6 @@
 import {NgOptimizedImage} from '@angular/common';
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {ConsentService} from '../consent/consent.service';
 
 @Component({
   selector: 'app-sc-footer',
@@ -11,11 +10,4 @@ import {ConsentService} from '../consent/consent.service';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.less',
 })
-export class ScFooterComponent {
-  private readonly consent = inject(ConsentService);
-
-  protected openCookieSettings(event: Event): void {
-    event.preventDefault();
-    this.consent.openSettings();
-  }
-}
+export class ScFooterComponent {}

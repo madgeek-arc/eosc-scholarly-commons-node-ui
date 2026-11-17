@@ -26,12 +26,16 @@ const MAX_AGE_MS = 180 * 24 * 60 * 60 * 1000;
 @Injectable({providedIn: 'root'})
 export class ConsentService {
   private readonly stored = signal<StoredConsent | null>(readStoredConsent());
-  private readonly reopened = signal(false);
+  private readonly panelOpen = signal(false);
 
   readonly analytics = computed(() => this.stored()?.analytics ?? false);
   readonly errorMonitoring = computed(() => this.stored()?.errorMonitoring ?? false);
-  /** True until the visitor has chosen, and again whenever they open the settings from the footer. */
-  readonly bannerVisible = computed(() => this.stored() === null || this.reopened());
+  /** False until the visitor has chosen (or once the choice is too old): the banner shows until then. */
+  readonly hasChoice = computed(() => this.stored() !== null);
+  /** When the current choice was saved (ms since the epoch), or null before there is one. */
+  readonly savedAt = computed(() => this.stored()?.savedAt ?? null);
+  /** Whether the cookie settings panel is open (from the banner's Settings or the floating cookie button). */
+  readonly settingsOpen = this.panelOpen.asReadonly();
 
   acceptAll(): void {
     this.save({analytics: true, errorMonitoring: true});
@@ -49,11 +53,15 @@ export class ConsentService {
       // Storage is blocked (private window, site data off): the choice then lasts until the page is closed.
     }
     this.stored.set(record);
-    this.reopened.set(false);
+    this.panelOpen.set(false);
   }
 
   openSettings(): void {
-    this.reopened.set(true);
+    this.panelOpen.set(true);
+  }
+
+  closeSettings(): void {
+    this.panelOpen.set(false);
   }
 }
 
