@@ -37,6 +37,7 @@ describe('routeForJoomlaPath', () => {
     ['extra query parameters', '/?option=com_content&view=article&id=32&Itemid=101&tmpl=yootheme', 'join'],
     ['a listed alias', '/how-to-start.html', 'how-to-start'],
     ['another listed alias', '/use-cases.html', 'use-cases'],
+    ['an article without a menu item', '/?option=com_content&view=article&id=44', 'cookie-policy'],
   ])('maps %s to the menu route', (_label, path, route) => {
     expect(routeForJoomlaPath(path)).toBe(route);
   });

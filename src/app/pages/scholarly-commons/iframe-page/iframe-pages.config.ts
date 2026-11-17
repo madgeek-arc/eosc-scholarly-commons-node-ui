@@ -29,6 +29,9 @@ export const IFRAME_PAGES: IframePage[] = [
   {path: 'training', title: 'Training', articleId: 28, itemId: 196},
   {path: 'terms-and-policies', title: 'Terms & Policies', articleId: 29, itemId: 197},
   {path: 'join', title: 'Join', articleId: 32, itemId: 198},
+  // No Joomla menu item, and linked only from the footer, so not in ScTopMenuComponent.links either.
+  {path: 'contact', title: 'Contact', articleId: 38},
+  {path: 'cookie-policy', title: 'Cookie policy', articleId: 44},
 ];
 
 /**

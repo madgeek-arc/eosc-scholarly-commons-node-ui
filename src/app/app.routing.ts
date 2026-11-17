@@ -16,7 +16,8 @@ const appRoutes: Routes = [
     redirectTo: '/home',
     pathMatch: 'full'
   },
-  // home, how-to-start, use-cases, news, training, terms-and-policies: Joomla pages in an iframe
+  // home, about, how-to-start, use-cases, news, training, terms-and-policies, join, contact, cookie-policy:
+  // Joomla pages in an iframe
   ...IFRAME_PAGE_ROUTES,
   // {
   //   path: 'form',
