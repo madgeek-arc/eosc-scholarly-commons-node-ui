@@ -66,11 +66,45 @@ export function joomlaSiteUrl(path: string, fragment?: string | null): string {
   if (url.origin !== JOOMLA_SITE_ORIGIN) {
     throw new Error(`Not a path on ${JOOMLA_SITE_ORIGIN}: ${path}`);
   }
-  if (url.searchParams.has('tmpl')) {
-    url.searchParams.delete('tmpl');
-  }
+  dropTmpl(url);
   url.hash = fragment ?? '';
   return url.toString();
+}
+
+/**
+ * A validated Joomla path without its `tmpl` parameter, for a `?path=` deep link: `joomlaFrameSrc()` adds
+ * `tmpl=yootheme` back when loading it, so the app's URL stays shorter and the same for every link form.
+ */
+export function withoutTmpl(path: string): string {
+  // The base is only needed to parse a root-relative path.
+  const url = new URL(path, 'http://joomla.invalid');
+  return dropTmpl(url) ? url.pathname + url.search : path;
+}
+
+/**
+ * A validated Joomla path with the given menu item (`Itemid`) when it has none. Joomla picks the template
+ * style, and so the theme, from the menu item, so a page loaded in place gets the theme of the page around it.
+ */
+export function withItemId(path: string, itemId: number | undefined): string {
+  if (itemId === undefined) {
+    return path;
+  }
+  // The base is only needed to parse a root-relative path.
+  const url = new URL(path, 'http://joomla.invalid');
+  if (url.searchParams.has('Itemid')) {
+    return path;
+  }
+  url.searchParams.set('Itemid', String(itemId));
+  return url.pathname + url.search;
+}
+
+/** Removes `tmpl` from the URL; the query string is only re-serialised when there is something to drop. */
+function dropTmpl(url: URL): boolean {
+  if (!url.searchParams.has('tmpl')) {
+    return false;
+  }
+  url.searchParams.delete('tmpl');
+  return true;
 }
 
 /** Builds the proxied, chrome-free (`tmpl=yootheme`) iframe URL for an already validated Joomla path. */

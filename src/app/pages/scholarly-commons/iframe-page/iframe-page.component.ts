@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component, ElementRef, NgZone, computed, effect, inject, viewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, NgZone, computed, effect, inject, signal, viewChild} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {map} from 'rxjs/operators';
-import {appRouteSegments, isAppPath, routeForJoomlaPath} from './iframe-pages.config';
-import {JOOMLA_SITE_ORIGIN, joomlaFrameSrc, joomlaSiteUrl, toJoomlaFragment, toJoomlaPath} from './joomla-path';
+import {PageMetaService} from '../../../services/page-meta.service';
+import {appRouteSegments, isAppPath, isArticlePath, routeForJoomlaPath} from './iframe-pages.config';
+import {JOOMLA_SITE_ORIGIN, joomlaFrameSrc, joomlaSiteUrl, toJoomlaFragment, toJoomlaPath, withItemId, withoutTmpl} from './joomla-path';
 
 /** Downloads rather than pages: always opened in a new tab. */
 const FILE_LINK = /\.(pdf|zip|docx?|xlsx?|pptx?|csv|png|jpe?g|gif|svg|webp)$/i;
@@ -21,7 +22,10 @@ type LinkTarget =
  * `/pages` proxy. Because the iframe is same-origin, its links are handled here, with nothing to
  * install on the Joomla side. What a link does depends on what it points at:
  *  - one of the menu pages, or one of the app's own routes: the app navigates there;
- *  - any other page of the Joomla site, other websites and files: a new tab.
+ *  - any other page of the Joomla site: a new tab, except for articles on pages with `openJoomlaPagesInPlace`
+ *    (News), which load in the iframe and its path goes into a shareable `?path=` of the current route (with the
+ *    current page's `Itemid` when it has none, so it keeps the same theme);
+ *  - other websites and files: a new tab.
  *
  * Link convention for Joomla content: link to a page of the app with the app's own root-relative path,
  * without a host, `.html` alias or `?option=` query: `/discover`, `/join`, `/how-to-start#esc-researcher`.
@@ -42,7 +46,7 @@ type LinkTarget =
         #frame
         class="uk-display-block uk-width-1-1"
         uk-height-viewport="offset-top: true"
-        [title]="title"
+        [title]="frameTitle()"
         [src]="initialSrc"
         (load)="onFrameLoad()"
       ></iframe>
@@ -54,6 +58,7 @@ export class IframePageComponent {
   private readonly router = inject(Router);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly zone = inject(NgZone);
+  private readonly pageMeta = inject(PageMetaService);
   private readonly origin = window.location.origin;
   private readonly appSegments = appRouteSegments(this.router.config);
 
@@ -72,7 +77,10 @@ export class IframePageComponent {
     return path ? joomlaFrameSrc(path, this.origin, toJoomlaFragment(this.requestedFragment())) : null;
   });
 
-  protected readonly title: string = this.routeData()['title'] ?? 'Embedded page';
+  private readonly routeTitle: string = this.routeData()['title'] ?? 'Embedded page';
+
+  /** Title of the iframe for assistive technology: the route's, or the title of a `?path=` page once it has loaded. */
+  protected readonly frameTitle = signal(this.routeTitle);
 
   // The `src` attribute is bound once. Changing it later would push an entry onto the joint session
   // history (back would then step through the iframe before the Angular URL), so later changes go
@@ -101,9 +109,26 @@ export class IframePageComponent {
     if (!frameDocument) {
       return;
     }
+    this.syncTitle(frameDocument);
     this.rewriteAppLinks(frameDocument);
     // Capture phase: runs before the page's own handlers and before the browser follows the link.
     frameDocument.addEventListener('click', this.onLinkClick, true);
+  }
+
+  /**
+   * A `?path=` page (e.g. a News article opened in place) is not the page the route's title names, so the
+   * iframe and the browser tab take the title of the loaded page instead. The route's own page keeps the
+   * route's title, which PageTitleStrategy has already applied, and the next navigation resets the tab title.
+   */
+  private syncTitle(frameDocument: Document): void {
+    const pageTitle = frameDocument.title.trim();
+    const showsOtherPage = toJoomlaPath(this.requestedPath(), this.origin) !== null;
+    if (showsOtherPage && pageTitle) {
+      this.frameTitle.set(pageTitle);
+      this.pageMeta.set(pageTitle);
+    } else {
+      this.frameTitle.set(this.routeTitle);
+    }
   }
 
   /**
@@ -196,6 +221,14 @@ export class IframePageComponent {
     }
     if (isAppPath(path, this.appSegments)) {
       return {kind: 'app', url: path + suffix};
+    }
+    if (this.routeData()['openJoomlaPagesInPlace'] && isArticlePath(path)) {
+      // A deep link into this route: the link gets the app's address (status bar, copy, new tab) and a
+      // click changes `?path=`, which the `target` effect loads into the iframe with location.replace().
+      // Without a menu item of its own the page would get Joomla's default theme, so it takes this page's.
+      const inPlacePath = withItemId(withoutTmpl(path), this.routeData()['itemId']);
+      const tree = this.router.createUrlTree([], {relativeTo: this.route, queryParams: {path: inPlacePath}, fragment});
+      return {kind: 'app', url: this.router.serializeUrl(tree)};
     }
     return {kind: 'joomla', path, fragment};
   }

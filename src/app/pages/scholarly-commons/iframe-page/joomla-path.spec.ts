@@ -6,6 +6,8 @@ import {
   joomlaSiteUrl,
   toJoomlaFragment,
   toJoomlaPath,
+  withItemId,
+  withoutTmpl,
 } from './joomla-path';
 
 const ORIGIN = 'https://app.example.org';
@@ -125,5 +127,41 @@ describe('joomlaSiteUrl', () => {
     ['a longer host name', '.evil.example/news'],
   ])('throws instead of pointing at another host with %s', (_label, path) => {
     expect(() => joomlaSiteUrl(path)).toThrow(/Not a path on/);
+  });
+});
+
+describe('withItemId', () => {
+  it('adds the menu item when the path has none', () => {
+    expect(withItemId('/?option=com_content&view=article&id=43', 195)).toBe(
+      '/?option=com_content&view=article&id=43&Itemid=195'
+    );
+    expect(withItemId('/news', 195)).toBe('/news?Itemid=195');
+  });
+
+  it('keeps the menu item the path already has', () => {
+    const path = '/?option=com_content&view=article&id=43&Itemid=200';
+    expect(withItemId(path, 195)).toBe(path);
+  });
+
+  it('leaves the path as it is without a menu item to add', () => {
+    expect(withItemId('/?option=com_content&view=article&id=43', undefined)).toBe('/?option=com_content&view=article&id=43');
+  });
+});
+
+describe('withoutTmpl', () => {
+  it('drops the template and keeps the other parameters in order', () => {
+    expect(withoutTmpl('/?option=com_content&tmpl=yootheme&view=article&id=43')).toBe(
+      '/?option=com_content&view=article&id=43'
+    );
+  });
+
+  it('leaves a path without a template exactly as it is', () => {
+    expect(withoutTmpl('/?option=com_content&view=article&id=25:how-to-start')).toBe(
+      '/?option=com_content&view=article&id=25:how-to-start'
+    );
+  });
+
+  it('leaves no empty query behind', () => {
+    expect(withoutTmpl('/news?tmpl=yootheme')).toBe('/news');
   });
 });

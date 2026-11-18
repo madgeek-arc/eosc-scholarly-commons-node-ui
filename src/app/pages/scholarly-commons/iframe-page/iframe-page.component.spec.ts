@@ -1,15 +1,20 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
+import {Title} from '@angular/platform-browser';
 import {Router, provideRouter} from '@angular/router';
 import {RouterTestingHarness} from '@angular/router/testing';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {IframePageComponent} from './iframe-page.component';
 import {JOOMLA_SITE_ORIGIN} from './joomla-path';
+import {SITE_NAME} from '../../../services/page-meta.service';
 
 @Component({template: '', changeDetection: ChangeDetectionStrategy.OnPush})
 class BlankComponent {}
 
 const JOIN = '/?option=com_content&view=article&id=32';
+const NEWS = '/?option=com_content&view=article&id=27';
+const ARTICLE = '/?option=com_content&view=article&id=43';
+const ARTICLE_DEEP_LINK = `/news-page?path=${encodeURIComponent(`${ARTICLE}&Itemid=195`)}#intro`;
 const OWN = window.location.origin;
 
 describe('IframePageComponent', () => {
@@ -30,10 +35,10 @@ describe('IframePageComponent', () => {
   };
 
   // Puts a page in the frame, the way the Joomla page would arrive, and runs the component's load handler.
-  const load = (html: string) => {
+  const load = (html: string, title = '') => {
     // The base lets root-relative links resolve against the app, as they do in the real, proxied page.
     doc().open();
-    doc().write(`<!doctype html><html><head><base href="${OWN}/"></head><body>${html}</body></html>`);
+    doc().write(`<!doctype html><html><head><base href="${OWN}/"><title>${title}</title></head><body>${html}</body></html>`);
     doc().close();
     frame()!.dispatchEvent(new Event('load'));
   };
@@ -55,6 +60,7 @@ describe('IframePageComponent', () => {
       providers: [
         provideRouter([
           {path: 'join', component: IframePageComponent, data: {joomlaPath: JOIN, title: 'Join'}},
+          {path: 'news-page', component: IframePageComponent, data: {joomlaPath: NEWS, title: 'News', itemId: 195, openJoomlaPagesInPlace: true}},
           {path: 'no-page', component: IframePageComponent},
           {path: 'discover', component: BlankComponent},
           {path: 'how-to-start', component: BlankComponent},
@@ -96,6 +102,41 @@ describe('IframePageComponent', () => {
       await open(`/join#${encodeURIComponent('x" onload="alert(1)')}`);
 
       expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=32&tmpl=yootheme');
+    });
+
+    it('shows the page of a News ?path= deep link, as its links create it', async () => {
+      await open(ARTICLE_DEEP_LINK);
+
+      expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=43&Itemid=195&tmpl=yootheme#intro');
+    });
+
+    describe('title', () => {
+      it('takes the title of a ?path= page once it has loaded, for the frame and the browser tab', async () => {
+        await open(ARTICLE_DEEP_LINK);
+        load('<p>article</p>', ' Node Kick-off ');
+        harness.detectChanges();
+
+        expect(frame()?.getAttribute('title')).toBe('Node Kick-off');
+        expect(TestBed.inject(Title).getTitle()).toBe(`Node Kick-off | ${SITE_NAME}`);
+      });
+
+      it("keeps the route's title for the route's own page", async () => {
+        await open('/join');
+        const tabTitle = TestBed.inject(Title).getTitle();
+        load('<p>join</p>', 'Join us on Joomla');
+        harness.detectChanges();
+
+        expect(frame()?.getAttribute('title')).toBe('Join');
+        expect(TestBed.inject(Title).getTitle()).toBe(tabTitle);
+      });
+
+      it("keeps the route's title when the ?path= page has none", async () => {
+        await open(ARTICLE_DEEP_LINK);
+        load('<p>article</p>');
+        harness.detectChanges();
+
+        expect(frame()?.getAttribute('title')).toBe('News');
+      });
     });
 
     it('shows no frame when the route has no page', async () => {
@@ -236,6 +277,54 @@ describe('IframePageComponent', () => {
 
         expect(navigateByUrl).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('on a page that opens other Joomla pages in place (News)', () => {
+    beforeEach(() => open('/news-page'));
+
+    it('gives a link to another Joomla page a ?path= deep link of the current route, with its menu item and without the chrome-free parameter', () => {
+      load(`<a id="l" href="${JOOMLA_SITE_ORIGIN}/?option=com_content&view=article&id=43&tmpl=yootheme#intro">article</a>`);
+
+      expect(link('#l').getAttribute('href')).toBe(ARTICLE_DEEP_LINK);
+    });
+
+    it('keeps the menu item a link already has', () => {
+      load(`<a id="l" href="${ARTICLE}&Itemid=200">article</a>`);
+
+      expect(link('#l').getAttribute('href')).toBe(`/news-page?path=${encodeURIComponent(`${ARTICLE}&Itemid=200`)}`);
+    });
+
+    it('loads that page in the frame on click, through the app URL', () => {
+      load(`<a id="l" href="${ARTICLE}&tmpl=yootheme#intro">article</a>`);
+
+      expect(click('#l')).toBe(true);
+      expect(navigateByUrl).toHaveBeenCalledWith(ARTICLE_DEEP_LINK);
+    });
+
+    it.each([
+      ['a login page', '/?option=com_users&view=login'],
+      ['a category list', '/?option=com_content&view=category&id=8'],
+      ['a SEF page', '/some-page.html'],
+    ])('still opens %s, which is no article, on the real site in a new tab', (_label, path) => {
+      load(`<a id="l" href="${path}">page</a>`);
+
+      expect(click('#l')).toBe(false);
+      expect(link('#l').href).toBe(`${JOOMLA_SITE_ORIGIN}${path}`);
+      expect(link('#l').target).toBe('_blank');
+      expect(navigateByUrl).not.toHaveBeenCalled();
+    });
+
+    it('still sends menu pages to their route and other sites to a new tab', () => {
+      load(`
+        <a id="menu" href="/?option=com_content&view=article&id=32">join</a>
+        <a id="out" href="https://example.org/page">out</a>
+      `);
+
+      expect(link('#menu').getAttribute('href')).toBe('/join');
+      expect(click('#out')).toBe(false);
+      expect(link('#out').target).toBe('_blank');
+      expect(navigateByUrl).not.toHaveBeenCalled();
     });
   });
 });
