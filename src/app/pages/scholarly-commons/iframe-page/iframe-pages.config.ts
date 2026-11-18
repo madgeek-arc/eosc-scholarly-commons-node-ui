@@ -21,6 +21,7 @@ export interface IframePage {
   /**
    * Other pages of the Joomla site linked from this page (e.g. the articles listed on News) load in the
    * iframe, with a shareable `?path=` deep link in the app's URL, instead of opening the real site in a new tab.
+   * A linked page without an `Itemid` gets this page's `itemId`, so it shows with the same theme.
    */
   openJoomlaPagesInPlace?: boolean;
 }

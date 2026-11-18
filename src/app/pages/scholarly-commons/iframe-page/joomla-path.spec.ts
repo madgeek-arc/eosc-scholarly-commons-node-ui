@@ -6,6 +6,7 @@ import {
   joomlaSiteUrl,
   toJoomlaFragment,
   toJoomlaPath,
+  withItemId,
 } from './joomla-path';
 
 const ORIGIN = 'https://app.example.org';
@@ -125,5 +126,23 @@ describe('joomlaSiteUrl', () => {
     ['a longer host name', '.evil.example/news'],
   ])('throws instead of pointing at another host with %s', (_label, path) => {
     expect(() => joomlaSiteUrl(path)).toThrow(/Not a path on/);
+  });
+});
+
+describe('withItemId', () => {
+  it('adds the menu item when the path has none', () => {
+    expect(withItemId('/?option=com_content&view=article&id=43', 195)).toBe(
+      '/?option=com_content&view=article&id=43&Itemid=195'
+    );
+    expect(withItemId('/news', 195)).toBe('/news?Itemid=195');
+  });
+
+  it('keeps the menu item the path already has', () => {
+    const path = '/?option=com_content&view=article&id=43&Itemid=200';
+    expect(withItemId(path, 195)).toBe(path);
+  });
+
+  it('leaves the path as it is without a menu item to add', () => {
+    expect(withItemId('/?option=com_content&view=article&id=43', undefined)).toBe('/?option=com_content&view=article&id=43');
   });
 });

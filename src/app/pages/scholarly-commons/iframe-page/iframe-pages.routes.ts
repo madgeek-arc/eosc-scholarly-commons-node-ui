@@ -9,6 +9,7 @@ export const IFRAME_PAGE_ROUTES: Routes = IFRAME_PAGES.map(page => ({
     joomlaPath: joomlaPathFor(page),
     title: page.title,
     breadcrumb: page.title,
+    itemId: page.itemId,
     openJoomlaPagesInPlace: page.openJoomlaPagesInPlace ?? false,
   },
 }));

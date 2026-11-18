@@ -12,7 +12,7 @@ class BlankComponent {}
 const JOIN = '/?option=com_content&view=article&id=32';
 const NEWS = '/?option=com_content&view=article&id=27';
 const ARTICLE = '/?option=com_content&view=article&id=43';
-const ARTICLE_DEEP_LINK = `/news-page?path=${encodeURIComponent(ARTICLE)}#intro`;
+const ARTICLE_DEEP_LINK = `/news-page?path=${encodeURIComponent(`${ARTICLE}&Itemid=195`)}#intro`;
 const OWN = window.location.origin;
 
 describe('IframePageComponent', () => {
@@ -58,7 +58,7 @@ describe('IframePageComponent', () => {
       providers: [
         provideRouter([
           {path: 'join', component: IframePageComponent, data: {joomlaPath: JOIN, title: 'Join'}},
-          {path: 'news-page', component: IframePageComponent, data: {joomlaPath: NEWS, title: 'News', openJoomlaPagesInPlace: true}},
+          {path: 'news-page', component: IframePageComponent, data: {joomlaPath: NEWS, title: 'News', itemId: 195, openJoomlaPagesInPlace: true}},
           {path: 'no-page', component: IframePageComponent},
           {path: 'discover', component: BlankComponent},
           {path: 'how-to-start', component: BlankComponent},
@@ -105,7 +105,7 @@ describe('IframePageComponent', () => {
     it('shows the page of a News ?path= deep link, as its links create it', async () => {
       await open(ARTICLE_DEEP_LINK);
 
-      expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=43&tmpl=yootheme#intro');
+      expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=43&Itemid=195&tmpl=yootheme#intro');
     });
 
     it('shows no frame when the route has no page', async () => {
@@ -252,10 +252,16 @@ describe('IframePageComponent', () => {
   describe('on a page that opens other Joomla pages in place (News)', () => {
     beforeEach(() => open('/news-page'));
 
-    it('gives a link to another Joomla page a ?path= deep link of the current route, without the chrome-free parameter', () => {
+    it('gives a link to another Joomla page a ?path= deep link of the current route, with its menu item and without the chrome-free parameter', () => {
       load(`<a id="l" href="${JOOMLA_SITE_ORIGIN}/?option=com_content&view=article&id=43&tmpl=yootheme#intro">article</a>`);
 
       expect(link('#l').getAttribute('href')).toBe(ARTICLE_DEEP_LINK);
+    });
+
+    it('keeps the menu item a link already has', () => {
+      load(`<a id="l" href="${ARTICLE}&Itemid=200">article</a>`);
+
+      expect(link('#l').getAttribute('href')).toBe(`/news-page?path=${encodeURIComponent(`${ARTICLE}&Itemid=200`)}`);
     });
 
     it('loads that page in the frame on click, through the app URL', () => {
