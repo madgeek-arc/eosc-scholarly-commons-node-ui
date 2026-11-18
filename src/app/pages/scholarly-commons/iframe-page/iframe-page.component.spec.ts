@@ -10,6 +10,9 @@ import {JOOMLA_SITE_ORIGIN} from './joomla-path';
 class BlankComponent {}
 
 const JOIN = '/?option=com_content&view=article&id=32';
+const NEWS = '/?option=com_content&view=article&id=27';
+const ARTICLE = '/?option=com_content&view=article&id=43';
+const ARTICLE_DEEP_LINK = `/news-page?path=${encodeURIComponent(ARTICLE)}#intro`;
 const OWN = window.location.origin;
 
 describe('IframePageComponent', () => {
@@ -55,6 +58,7 @@ describe('IframePageComponent', () => {
       providers: [
         provideRouter([
           {path: 'join', component: IframePageComponent, data: {joomlaPath: JOIN, title: 'Join'}},
+          {path: 'news-page', component: IframePageComponent, data: {joomlaPath: NEWS, title: 'News', openJoomlaPagesInPlace: true}},
           {path: 'no-page', component: IframePageComponent},
           {path: 'discover', component: BlankComponent},
           {path: 'how-to-start', component: BlankComponent},
@@ -96,6 +100,12 @@ describe('IframePageComponent', () => {
       await open(`/join#${encodeURIComponent('x" onload="alert(1)')}`);
 
       expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=32&tmpl=yootheme');
+    });
+
+    it('shows the page of a News ?path= deep link, as its links create it', async () => {
+      await open(ARTICLE_DEEP_LINK);
+
+      expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=43&tmpl=yootheme#intro');
     });
 
     it('shows no frame when the route has no page', async () => {
@@ -236,6 +246,35 @@ describe('IframePageComponent', () => {
 
         expect(navigateByUrl).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('on a page that opens other Joomla pages in place (News)', () => {
+    beforeEach(() => open('/news-page'));
+
+    it('gives a link to another Joomla page a ?path= deep link of the current route, without the chrome-free parameter', () => {
+      load(`<a id="l" href="${JOOMLA_SITE_ORIGIN}/?option=com_content&view=article&id=43&tmpl=yootheme#intro">article</a>`);
+
+      expect(link('#l').getAttribute('href')).toBe(ARTICLE_DEEP_LINK);
+    });
+
+    it('loads that page in the frame on click, through the app URL', () => {
+      load(`<a id="l" href="${ARTICLE}&tmpl=yootheme#intro">article</a>`);
+
+      expect(click('#l')).toBe(true);
+      expect(navigateByUrl).toHaveBeenCalledWith(ARTICLE_DEEP_LINK);
+    });
+
+    it('still sends menu pages to their route and other sites to a new tab', () => {
+      load(`
+        <a id="menu" href="/?option=com_content&view=article&id=32">join</a>
+        <a id="out" href="https://example.org/page">out</a>
+      `);
+
+      expect(link('#menu').getAttribute('href')).toBe('/join');
+      expect(click('#out')).toBe(false);
+      expect(link('#out').target).toBe('_blank');
+      expect(navigateByUrl).not.toHaveBeenCalled();
     });
   });
 });

@@ -66,11 +66,28 @@ export function joomlaSiteUrl(path: string, fragment?: string | null): string {
   if (url.origin !== JOOMLA_SITE_ORIGIN) {
     throw new Error(`Not a path on ${JOOMLA_SITE_ORIGIN}: ${path}`);
   }
-  if (url.searchParams.has('tmpl')) {
-    url.searchParams.delete('tmpl');
-  }
+  dropTmpl(url);
   url.hash = fragment ?? '';
   return url.toString();
+}
+
+/**
+ * A validated Joomla path without its `tmpl` parameter, for a `?path=` deep link: `joomlaFrameSrc()` adds
+ * `tmpl=yootheme` back when loading it, so the app's URL stays shorter and the same for every link form.
+ */
+export function withoutTmpl(path: string): string {
+  // The base is only needed to parse a root-relative path.
+  const url = new URL(path, 'http://joomla.invalid');
+  return dropTmpl(url) ? url.pathname + url.search : path;
+}
+
+/** Removes `tmpl` from the URL; the query string is only re-serialised when there is something to drop. */
+function dropTmpl(url: URL): boolean {
+  if (!url.searchParams.has('tmpl')) {
+    return false;
+  }
+  url.searchParams.delete('tmpl');
+  return true;
 }
 
 /** Builds the proxied, chrome-free (`tmpl=yootheme`) iframe URL for an already validated Joomla path. */

@@ -18,6 +18,11 @@ export interface IframePage {
    * and /training.html and /terms-and-policies.html do not exist.
    */
   aliases?: string[];
+  /**
+   * Other pages of the Joomla site linked from this page (e.g. the articles listed on News) load in the
+   * iframe, with a shareable `?path=` deep link in the app's URL, instead of opening the real site in a new tab.
+   */
+  openJoomlaPagesInPlace?: boolean;
 }
 
 export const IFRAME_PAGES: IframePage[] = [
@@ -25,7 +30,7 @@ export const IFRAME_PAGES: IframePage[] = [
   {path: 'about', title: 'About', articleId: 41, itemId: 306},
   {path: 'how-to-start', title: 'How to start', articleId: 25, itemId: 193, aliases: ['/how-to-start.html']},
   {path: 'use-cases', title: 'Use Cases', articleId: 26, itemId: 194, aliases: ['/use-cases.html']},
-  {path: 'news', title: 'News', articleId: 27, itemId: 195},
+  {path: 'news', title: 'News', articleId: 27, itemId: 195, openJoomlaPagesInPlace: true},
   {path: 'training', title: 'Training', articleId: 28, itemId: 196},
   {path: 'terms-and-policies', title: 'Terms & Policies', articleId: 29, itemId: 197},
   {path: 'join', title: 'Join', articleId: 32, itemId: 198},

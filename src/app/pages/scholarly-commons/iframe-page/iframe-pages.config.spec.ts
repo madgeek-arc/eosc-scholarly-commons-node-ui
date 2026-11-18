@@ -12,6 +12,10 @@ describe('IFRAME_PAGES', () => {
     expect(paths).not.toContain('pages');
   });
 
+  it('opens other Joomla pages in place only from News', () => {
+    expect(IFRAME_PAGES.filter((page) => page.openJoomlaPagesInPlace).map((page) => page.path)).toEqual(['news']);
+  });
+
   it.each(IFRAME_PAGES.map((page) => [page.path, page] as const))('finds the route of %s from its own Joomla path', (_path, page) => {
     expect(routeForJoomlaPath(joomlaPathFor(page))).toBe(page.path);
   });

@@ -4,7 +4,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {map} from 'rxjs/operators';
 import {appRouteSegments, isAppPath, routeForJoomlaPath} from './iframe-pages.config';
-import {JOOMLA_SITE_ORIGIN, joomlaFrameSrc, joomlaSiteUrl, toJoomlaFragment, toJoomlaPath} from './joomla-path';
+import {JOOMLA_SITE_ORIGIN, joomlaFrameSrc, joomlaSiteUrl, toJoomlaFragment, toJoomlaPath, withoutTmpl} from './joomla-path';
 
 /** Downloads rather than pages: always opened in a new tab. */
 const FILE_LINK = /\.(pdf|zip|docx?|xlsx?|pptx?|csv|png|jpe?g|gif|svg|webp)$/i;
@@ -21,7 +21,9 @@ type LinkTarget =
  * `/pages` proxy. Because the iframe is same-origin, its links are handled here, with nothing to
  * install on the Joomla side. What a link does depends on what it points at:
  *  - one of the menu pages, or one of the app's own routes: the app navigates there;
- *  - any other page of the Joomla site, other websites and files: a new tab.
+ *  - any other page of the Joomla site: a new tab, except on pages with `openJoomlaPagesInPlace` (News),
+ *    where it loads in the iframe and its path goes into a shareable `?path=` of the current route;
+ *  - other websites and files: a new tab.
  *
  * Link convention for Joomla content: link to a page of the app with the app's own root-relative path,
  * without a host, `.html` alias or `?option=` query: `/discover`, `/join`, `/how-to-start#esc-researcher`.
@@ -196,6 +198,12 @@ export class IframePageComponent {
     }
     if (isAppPath(path, this.appSegments)) {
       return {kind: 'app', url: path + suffix};
+    }
+    if (this.routeData()['openJoomlaPagesInPlace']) {
+      // A deep link into this route: the link gets the app's address (status bar, copy, new tab) and a
+      // click changes `?path=`, which the `target` effect loads into the iframe with location.replace().
+      const tree = this.router.createUrlTree([], {relativeTo: this.route, queryParams: {path: withoutTmpl(path)}, fragment});
+      return {kind: 'app', url: this.router.serializeUrl(tree)};
     }
     return {kind: 'joomla', path, fragment};
   }
