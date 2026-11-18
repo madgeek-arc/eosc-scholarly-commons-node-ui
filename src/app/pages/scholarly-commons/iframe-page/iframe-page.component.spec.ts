@@ -1,10 +1,12 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
+import {Title} from '@angular/platform-browser';
 import {Router, provideRouter} from '@angular/router';
 import {RouterTestingHarness} from '@angular/router/testing';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {IframePageComponent} from './iframe-page.component';
 import {JOOMLA_SITE_ORIGIN} from './joomla-path';
+import {SITE_NAME} from '../../../services/page-meta.service';
 
 @Component({template: '', changeDetection: ChangeDetectionStrategy.OnPush})
 class BlankComponent {}
@@ -33,10 +35,10 @@ describe('IframePageComponent', () => {
   };
 
   // Puts a page in the frame, the way the Joomla page would arrive, and runs the component's load handler.
-  const load = (html: string) => {
+  const load = (html: string, title = '') => {
     // The base lets root-relative links resolve against the app, as they do in the real, proxied page.
     doc().open();
-    doc().write(`<!doctype html><html><head><base href="${OWN}/"></head><body>${html}</body></html>`);
+    doc().write(`<!doctype html><html><head><base href="${OWN}/"><title>${title}</title></head><body>${html}</body></html>`);
     doc().close();
     frame()!.dispatchEvent(new Event('load'));
   };
@@ -106,6 +108,35 @@ describe('IframePageComponent', () => {
       await open(ARTICLE_DEEP_LINK);
 
       expect(frame()?.getAttribute('src')).toBe('/pages/?option=com_content&view=article&id=43&Itemid=195&tmpl=yootheme#intro');
+    });
+
+    describe('title', () => {
+      it('takes the title of a ?path= page once it has loaded, for the frame and the browser tab', async () => {
+        await open(ARTICLE_DEEP_LINK);
+        load('<p>article</p>', ' Node Kick-off ');
+        harness.detectChanges();
+
+        expect(frame()?.getAttribute('title')).toBe('Node Kick-off');
+        expect(TestBed.inject(Title).getTitle()).toBe(`Node Kick-off | ${SITE_NAME}`);
+      });
+
+      it("keeps the route's title for the route's own page", async () => {
+        await open('/join');
+        const tabTitle = TestBed.inject(Title).getTitle();
+        load('<p>join</p>', 'Join us on Joomla');
+        harness.detectChanges();
+
+        expect(frame()?.getAttribute('title')).toBe('Join');
+        expect(TestBed.inject(Title).getTitle()).toBe(tabTitle);
+      });
+
+      it("keeps the route's title when the ?path= page has none", async () => {
+        await open(ARTICLE_DEEP_LINK);
+        load('<p>article</p>');
+        harness.detectChanges();
+
+        expect(frame()?.getAttribute('title')).toBe('News');
+      });
     });
 
     it('shows no frame when the route has no page', async () => {
@@ -269,6 +300,19 @@ describe('IframePageComponent', () => {
 
       expect(click('#l')).toBe(true);
       expect(navigateByUrl).toHaveBeenCalledWith(ARTICLE_DEEP_LINK);
+    });
+
+    it.each([
+      ['a login page', '/?option=com_users&view=login'],
+      ['a category list', '/?option=com_content&view=category&id=8'],
+      ['a SEF page', '/some-page.html'],
+    ])('still opens %s, which is no article, on the real site in a new tab', (_label, path) => {
+      load(`<a id="l" href="${path}">page</a>`);
+
+      expect(click('#l')).toBe(false);
+      expect(link('#l').href).toBe(`${JOOMLA_SITE_ORIGIN}${path}`);
+      expect(link('#l').target).toBe('_blank');
+      expect(navigateByUrl).not.toHaveBeenCalled();
     });
 
     it('still sends menu pages to their route and other sites to a new tab', () => {

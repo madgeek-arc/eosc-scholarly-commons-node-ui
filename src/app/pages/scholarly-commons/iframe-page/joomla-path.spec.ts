@@ -7,6 +7,7 @@ import {
   toJoomlaFragment,
   toJoomlaPath,
   withItemId,
+  withoutTmpl,
 } from './joomla-path';
 
 const ORIGIN = 'https://app.example.org';
@@ -144,5 +145,23 @@ describe('withItemId', () => {
 
   it('leaves the path as it is without a menu item to add', () => {
     expect(withItemId('/?option=com_content&view=article&id=43', undefined)).toBe('/?option=com_content&view=article&id=43');
+  });
+});
+
+describe('withoutTmpl', () => {
+  it('drops the template and keeps the other parameters in order', () => {
+    expect(withoutTmpl('/?option=com_content&tmpl=yootheme&view=article&id=43')).toBe(
+      '/?option=com_content&view=article&id=43'
+    );
+  });
+
+  it('leaves a path without a template exactly as it is', () => {
+    expect(withoutTmpl('/?option=com_content&view=article&id=25:how-to-start')).toBe(
+      '/?option=com_content&view=article&id=25:how-to-start'
+    );
+  });
+
+  it('leaves no empty query behind', () => {
+    expect(withoutTmpl('/news?tmpl=yootheme')).toBe('/news');
   });
 });

@@ -19,9 +19,11 @@ export interface IframePage {
    */
   aliases?: string[];
   /**
-   * Other pages of the Joomla site linked from this page (e.g. the articles listed on News) load in the
+   * Articles of the Joomla site linked from this page (e.g. the ones listed on News) load in the
    * iframe, with a shareable `?path=` deep link in the app's URL, instead of opening the real site in a new tab.
    * A linked page without an `Itemid` gets this page's `itemId`, so it shows with the same theme.
+   * Only articles (see isArticlePath): other Joomla pages, such as logins and forms, need the real site,
+   * since the proxy passes no cookies, and still open there in a new tab.
    */
   openJoomlaPagesInPlace?: boolean;
 }
@@ -59,16 +61,27 @@ export function routeForJoomlaPath(path: string): string | null {
   // The base is only needed to parse a root-relative path.
   const {pathname, searchParams} = new URL(path, 'http://joomla.invalid');
 
-  const isArticleUrl = (pathname === '/' || pathname === '/index.php')
-    && searchParams.get('option') === 'com_content'
-    && searchParams.get('view') === 'article';
-  if (isArticleUrl) {
+  if (isArticlePath(path)) {
     // Joomla also accepts `id=25:how-to-start`.
     const id = /^(\d+)(?::.*)?$/.exec(searchParams.get('id') ?? '')?.[1];
     return IFRAME_PAGES.find(page => String(page.articleId) === id)?.path ?? null;
   }
 
   return IFRAME_PAGES.find(page => page.aliases?.includes(pathname))?.path ?? null;
+}
+
+/**
+ * Whether a validated, root-relative Joomla path is an article in its query form
+ * (`/?option=com_content&view=article&id=N`, also on `/index.php`), as opposed to other Joomla pages:
+ * logins, search, tag or category lists, SEF aliases.
+ */
+export function isArticlePath(path: string): boolean {
+  // The base is only needed to parse a root-relative path.
+  const {pathname, searchParams} = new URL(path, 'http://joomla.invalid');
+  return (pathname === '/' || pathname === '/index.php')
+    && searchParams.get('option') === 'com_content'
+    && searchParams.get('view') === 'article'
+    && /^\d+(?::.*)?$/.test(searchParams.get('id') ?? '');
 }
 
 /**

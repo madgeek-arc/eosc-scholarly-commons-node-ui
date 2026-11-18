@@ -1,6 +1,6 @@
 import type {Routes} from '@angular/router';
 import {describe, expect, it} from 'vitest';
-import {IFRAME_PAGES, appRouteSegments, isAppPath, joomlaPathFor, routeForJoomlaPath} from './iframe-pages.config';
+import {IFRAME_PAGES, appRouteSegments, isAppPath, isArticlePath, joomlaPathFor, routeForJoomlaPath} from './iframe-pages.config';
 
 describe('IFRAME_PAGES', () => {
   it('gives every page its own route path and article, and never the proxied `pages` prefix', () => {
@@ -57,6 +57,29 @@ describe('routeForJoomlaPath', () => {
     ['the front page', '/'],
   ])('finds no route for %s', (_label, path) => {
     expect(routeForJoomlaPath(path)).toBeNull();
+  });
+});
+
+describe('isArticlePath', () => {
+  it.each([
+    ['an article', '/?option=com_content&view=article&id=43'],
+    ['an article with a menu item', '/?option=com_content&view=article&id=43&Itemid=195'],
+    ['an article id with a Joomla alias', '/?option=com_content&view=article&id=43:kick-off'],
+    ['an article on index.php', '/index.php?option=com_content&view=article&id=43'],
+  ])('accepts %s', (_label, path) => {
+    expect(isArticlePath(path)).toBe(true);
+  });
+
+  it.each([
+    ['a login page', '/?option=com_users&view=login'],
+    ['a category list', '/?option=com_content&view=category&id=8'],
+    ['a search', '/?option=com_finder&view=search&q=eosc'],
+    ['an article without an id', '/?option=com_content&view=article'],
+    ['an article with an id that is no number', '/?option=com_content&view=article&id=abc'],
+    ['a SEF alias', '/how-to-start.html'],
+    ['an article query on another path', '/component/content/?option=com_content&view=article&id=43'],
+  ])('rejects %s', (_label, path) => {
+    expect(isArticlePath(path)).toBe(false);
   });
 });
 
