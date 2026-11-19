@@ -5,6 +5,9 @@ apply: always
 # Project: eosc-scholarly-commons-node-ui - Angular
 ## Stack
 - Frontend: Angular 22, TypeScript strict, Signals, LESS
+## Web platform guidance
+- This project's Baseline target is Baseline 2025.
+- UIkit-first and the Angular rules below take precedence over modern-web-guidance. Consult modern-web-guidance for custom CSS/HTML that UIkit doesn't cover (before writing a `// UIkit override attempted:` block) and for performance, accessibility and forms platform APIs.
 ## [CRITICAL] Rules
 - Use signal() for local component state
 - Use computed() for derived state. 
