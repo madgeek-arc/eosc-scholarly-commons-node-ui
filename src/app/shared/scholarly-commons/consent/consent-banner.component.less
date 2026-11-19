@@ -1,0 +1,27 @@
+@import '../theme/scholarly-commons-theme.less';
+
+// UIkit override attempted: uk-position-z-index only sets z-index: 1, and the sticky top menu already uses 20,
+// so the banner and the cookie button would slide under the page. 995 keeps them above the page but under the
+// settings panel (UIkit's offcanvas is 1000), which opens over them.
+.sc-consent,
+.sc-consent-toggle {
+  z-index: 995;
+}
+
+// UIkit override attempted: @icon-button-size sets the size of every uk-icon-button, and the top menu's hamburger
+// must stay at 36px; UIkit has no size modifier for icon buttons. The cookie button is 50px with a 30px icon.
+.sc-consent-toggle {
+  width: 50px;
+  height: 50px;
+
+  .material-icons-outlined {
+    font-size: 30px;
+  }
+}
+
+// The panel's close button and the cookie button lose the browser's focus outline to UIkit; the shared mixin
+// carries the "UIkit override attempted" note.
+.sc-consent-panel .uk-offcanvas-close:focus-visible,
+.sc-consent-toggle:focus-visible {
+  .sc-focus-ring();
+}

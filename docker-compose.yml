@@ -7,6 +7,7 @@ services:
     environment:
       - SERVER_NAME=example.org                                   # edit server name
       - PROXY_API_ENDPOINT=http://example.com/api                 # edit api endpoint
+      - PROXY_PAGES_ENDPOINT=https://innovation.openaire.eu       # Joomla site shown in iframes, no trailing slash
 
     ports:
       - "80:80"

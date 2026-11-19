@@ -34,9 +34,9 @@ export class Page<T> {
 }
 
 export class Sort {
-  empty: boolean
-  sorted: boolean
-  unsorted: boolean
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
 }
 
 export class Pageable {

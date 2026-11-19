@@ -1,11 +1,11 @@
 
-import {Pipe, PipeTransform} from "@angular/core";
-import {DomSanitizer} from "@angular/platform-browser";
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 
-@Pipe({name: "safe"})
+@Pipe({name: 'safe'})
 export class SafePipe implements PipeTransform {
-    constructor(public sanitizer: DomSanitizer) {
-    }
+    sanitizer = inject(DomSanitizer);
+
 
     transform(url: string) {
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);

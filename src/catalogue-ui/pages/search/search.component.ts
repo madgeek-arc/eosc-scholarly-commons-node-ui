@@ -1,18 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {Subscription} from "rxjs";
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {Paging} from '../../domain/paging';
 import {URLParameter} from '../../domain/url-parameter';
 import {PremiumSortFacetsPipe} from '../../shared/pipes/premium-sort.pipe';
-import {SearchService} from "../../services/search.service";
+import {SearchService} from '../../services/search.service';
 
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  providers: [SearchService]
+  providers: [SearchService],
   // styleUrls: ['../../../lib/pages/search/search.component.scss']
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class SearchComponent implements OnInit {
@@ -24,10 +26,10 @@ export class SearchComponent implements OnInit {
   advanced = false;
   foundResults = true;
   errorMessage: string;
-  searchForm: FormGroup;
-  itemPath = '/service/'
+  searchForm: UntypedFormGroup;
+  itemPath = '/service/';
 
-  searchResults: Paging<Object>;
+  searchResults: Paging<object>;
   facetOrder = ['category', 'trl', 'lifeCycleStatus', 'provider'];
 
   //Paging
@@ -44,10 +46,10 @@ export class SearchComponent implements OnInit {
   searchFields: string[] = ['name', 'publisher', 'source'];
   filtersMobileShown = false;
 
-  constructor(public fb: FormBuilder, public route: ActivatedRoute, public searchService: SearchService,
+  constructor(public fb: UntypedFormBuilder, public route: ActivatedRoute, public searchService: SearchService,
               // public authenticationService: AuthenticationService,
               public router: Router) {
-    this.searchForm = fb.group({'query': [''], 'searchFields': ['']});
+    this.searchForm = fb.group({query: [''], searchFields: ['']});
   }
 
   ngOnInit() {
@@ -85,10 +87,10 @@ export class SearchComponent implements OnInit {
     params['query'] = searchValue.query;*/
     searchValue = searchValue.replace(/[;=]/g, '');
     let url = window.location.href;
-    let params: String[] = url.split(';');
+    let params: string[] = url.split(';');
     if (params.length > 1) {
       // let query: String[] = params[1].split('=');
-      let query: String[];
+      let query: string[];
       for (const i of params) {
         query = i.split('=');
         if (query[0] === 'query') {
@@ -110,7 +112,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  updateSearchResultsSnippets(searchResults: Paging<Object>) {
+  updateSearchResultsSnippets(searchResults: Paging<object>) {
 
     // INITIALISATIONS
 
@@ -120,7 +122,7 @@ export class SearchComponent implements OnInit {
     if (this.searchResults.results.length === 0) {
       this.foundResults = false;
     } else {
-      this.sortFacets.transform(this.searchResults.facets,['Portfolios', 'Users', 'TRL', 'Life Cycle Status'])
+      this.sortFacets.transform(this.searchResults.facets,['Portfolios', 'Users', 'TRL', 'Life Cycle Status']);
     }
     // update form values using URLParameters
     for (const urlParameter of this.urlParameters) {
@@ -190,7 +192,7 @@ export class SearchComponent implements OnInit {
   }
 
   updateSearchField(event) {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     const params = this.route.snapshot.params;
     let found = false;
     this.urlParameters = [];
@@ -281,7 +283,7 @@ export class SearchComponent implements OnInit {
   }
 
   navigateUsingParameters() {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     for (const urlParameter of this.urlParameters) {
       map[urlParameter.key] = urlParameter.values.join(',');
     }
@@ -316,7 +318,7 @@ export class SearchComponent implements OnInit {
 
   goToPage(page: number) {
     this.currentPage = page;
-    let from: number = (this.currentPage - 1) * this.pageSize
+    const from: number = (this.currentPage - 1) * this.pageSize;
     this.updatePagingURLParameters(from);
     return this.navigateUsingParameters();
   }

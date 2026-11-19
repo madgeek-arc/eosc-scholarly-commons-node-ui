@@ -1,10 +1,10 @@
-import {Injectable} from "@angular/core";
-import {Router} from "@angular/router";
-import {URLParameter} from "../domain/url-parameter";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Paging} from "../domain/paging";
-import {environment} from "../../environments/environment";
-import {Subject} from "rxjs";
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {URLParameter} from '../domain/url-parameter';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Paging} from '../domain/paging';
+import {environment} from '../../environments/environment';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class SearchService {
@@ -24,7 +24,7 @@ export class SearchService {
       }
     }
     searchQuery.delete('to');
-    return this.http.get<Paging<Object>>(this.base + `/items?resourceType=dataset_type${'&' + searchQuery.toString()}`, this.options);
+    return this.http.get<Paging<object>>(this.base + `/items?resourceType=dataset_type${'&' + searchQuery.toString()}`, this.options);
     // return this.http.get<Paging<Object>>(this.base + `/items?resourceType=dataset_type`, this.options);
   }
 

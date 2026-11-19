@@ -1,25 +1,27 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormControl, FormGroup, FormGroupDirective} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {UntypedFormControl, UntypedFormGroup, FormGroupDirective} from '@angular/forms';
 
 @Component({
   selector: 'app-radio-button-field',
-  templateUrl: './radio-button-field.component.html'
+  templateUrl: './radio-button-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class RadioButtonFieldComponent implements OnInit {
 
   @Input() fieldData: Field;
   @Input() editMode: any;
-  @Input() readonly : boolean = null;
+  @Input() readonly: boolean = null;
   @Input() position?: number = null;
 
   @Output() hasChanges = new EventEmitter<boolean>();
   @Output() handleBitSets = new EventEmitter<Field>();
   @Output() handleBitSetsOfComposite = new EventEmitter<HandleBitSet>();
 
-  formControl!: FormControl;
-  form!: FormGroup;
+  formControl!: UntypedFormControl;
+  form!: UntypedFormGroup;
   hideField: boolean = null;
 
   constructor(private rootFormGroup: FormGroupDirective) {
@@ -28,13 +30,13 @@ export class RadioButtonFieldComponent implements OnInit {
   ngOnInit() {
     // console.log(this.fieldData);
     if (this.position !== null) {
-      this.form = this.rootFormGroup.control.controls[this.position] as FormGroup;
+      this.form = this.rootFormGroup.control.controls[this.position] as UntypedFormGroup;
     } else {
       this.form = this.rootFormGroup.control;
     }
     // console.log(this.form);
 
-    this.formControl = this.form.get(this.fieldData.name) as FormControl;
+    this.formControl = this.form.get(this.fieldData.name) as UntypedFormControl;
     if (this.formControl.value) this.formControl.setValue(this.formControl.value.toString());
     // console.log(this.formControl);
     if(this.fieldData.form.dependsOn) {
@@ -43,7 +45,7 @@ export class RadioButtonFieldComponent implements OnInit {
       // console.log(this.fieldData.name);
       this.form.get(this.fieldData.form.dependsOn.name).valueChanges.subscribe(value => {
         this.enableDisableField(value, this.fieldData.form.dependsOn.value);
-      }, error => {console.log(error)});
+      }, error => {console.error(error);});
     }
   }
 

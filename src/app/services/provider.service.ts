@@ -1,6 +1,5 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {AuthenticationService} from './authentication.service';
 import {Bundle, Datasource, Provider, ProviderBundle, Service} from '../entities/eic-model';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
@@ -9,15 +8,14 @@ import {URLParameter} from '../entities/url-parameter';
 
 @Injectable()
 export class ProviderService {
+  http = inject(HttpClient);
 
-  constructor(public http: HttpClient, public authenticationService: AuthenticationService) {
-  }
 
   private base = environment.API_ENDPOINT;
   private httpOption = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json;charset=UTF-8',
-      'Accept': 'application/json;charset=UTF-8'
+      Accept: 'application/json;charset=UTF-8'
     })
   };
 
@@ -32,15 +30,14 @@ export class ProviderService {
     return url;
   }
 
-  createNewServiceProvider(newProvider: any, providerId?: string) {
-    console.log(`knocking on: ${this.base}/providers`);
+  createNewServiceProvider(newProvider: any) {
     return this.http.post(this.base + '/providers', newProvider, this.options);
   }
 
   createNewServiceProviderWithToken(newProvider: Provider, token: string) {
     let params = new HttpParams();
     params = params.append('invitation', token);
-    return this.http.post<Provider>(this.base + '/providers', newProvider, {params: params});
+    return this.http.post<Provider>(this.base + '/providers', newProvider, {params});
   }
 
   updateServiceProvider(updatedFields: any, providerId?: string): Observable<Provider> {
@@ -48,7 +45,7 @@ export class ProviderService {
     return this.http.put<Provider>(this.base + `/providers/${providerId}`, updatedFields, this.options);
   }
 
-  updateAndPublishPendingProvider(updatedFields: any, providerId?: string): Observable<Provider> {
+  updateAndPublishPendingProvider(updatedFields: any): Observable<Provider> {
     return this.http.put<Provider>(this.base + '/pendingProvider/transform/active', updatedFields, this.options);
   }
 

@@ -1,12 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
-import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
-import {FormControlService} from "../../../../services/form-control.service";
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
+import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {FormControlService} from '../../../../services/form-control.service';
 
 @Component({
   selector: 'app-number-field',
   templateUrl: './number-field.component.html',
-  styles: ['.clear-style { height: 0 !important;}']
+  styles: ['.clear-style { height: 0 !important;}'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class NumberFieldComponent implements OnInit {
@@ -18,22 +20,22 @@ export class NumberFieldComponent implements OnInit {
   @Output() handleBitSets = new EventEmitter<Field>();
   @Output() handleBitSetsOfComposite = new EventEmitter<HandleBitSet>();
 
-  formControl!: FormControl;
-  form!: FormGroup;
+  formControl!: UntypedFormControl;
+  form!: UntypedFormGroup;
   hideField: boolean = null;
 
-  step: string = '';
+  step = '';
 
   constructor(private rootFormGroup: FormGroupDirective, private formControlService: FormControlService) {
   }
 
   ngOnInit() {
     if (this.position !== null) {
-      this.form = this.rootFormGroup.control.controls[this.position] as FormGroup;
+      this.form = this.rootFormGroup.control.controls[this.position] as UntypedFormGroup;
     } else {
       this.form = this.rootFormGroup.control;
     }
-    this.formControl = this.form.get(this.fieldData.name) as FormControl;
+    this.formControl = this.form.get(this.fieldData.name) as UntypedFormControl;
 
     if (this.fieldData.form.dependsOn) {
       // console.log(this.fieldData.form.dependsOn);
@@ -45,14 +47,14 @@ export class NumberFieldComponent implements OnInit {
     }
 
     if (this.fieldData.typeInfo.values) {
-      this.step = this.fieldData.typeInfo.values[0]
+      this.step = this.fieldData.typeInfo.values[0];
     }
   }
 
   /** Handle Arrays --> **/
 
   fieldAsFormArray() {
-    return this.formControl as unknown as FormArray;
+    return this.formControl as unknown as UntypedFormArray;
   }
 
   remove(field: string, i: number) {
@@ -92,7 +94,7 @@ export class NumberFieldComponent implements OnInit {
     if (this.fieldData.typeInfo.values) {
       return this.fieldData.typeInfo.values[0].split('.')[1].length;
     }
-    return 0
+    return 0;
   }
 
   enableDisableField(value, enableValue) {

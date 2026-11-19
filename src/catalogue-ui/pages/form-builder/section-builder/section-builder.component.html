@@ -8,10 +8,9 @@
   <div class="uk-margin">
     <label for="sectionDescription" class="uk-form-label uk-margin-small-bottom">Description *</label>
     <div class="uk-form-controls">
-      <ckeditor id="sectionDescription" [editor]="editor"
-                [(ngModel)]="section.description"
-                [config]="{placeholder: 'Give a short description for the section'}">
-      </ckeditor>
+      <app-rich-text-editor id="sectionDescription" [(ngModel)]="section.description"
+                            placeholder="Give a short description for the section">
+      </app-rich-text-editor>
     </div>
   </div>
 </div>

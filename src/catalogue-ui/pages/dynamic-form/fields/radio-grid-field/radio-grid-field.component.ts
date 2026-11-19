@@ -1,16 +1,18 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {Field} from "../../../../domain/dynamic-form-model";
-import {FormGroup, FormGroupDirective} from "@angular/forms";
+import {Component, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Field} from '../../../../domain/dynamic-form-model';
+import {UntypedFormGroup, FormGroupDirective} from '@angular/forms';
 
 @Component({
   selector: 'app-radio-grid',
-  templateUrl: './radio-grid-field.component.html'
+  templateUrl: './radio-grid-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class RadioGridFieldComponent implements OnInit {
   @Input() fieldData: Field;
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   hideField: boolean = null;
 
 

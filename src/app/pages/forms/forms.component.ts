@@ -1,49 +1,53 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, inject, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Model} from '../../../catalogue-ui/domain/dynamic-form-model';
 import {FormControlService} from '../../../catalogue-ui/services/form-control.service';
 import {SurveyComponent} from '../../../catalogue-ui/pages/dynamic-form/survey.component';
 import {ResourceService} from '../../services/resource.service';
-import {zip} from 'rxjs/internal/observable/zip';
+import {zip} from 'rxjs';
 import {Datasource, Service, Vocabulary} from '../../entities/eic-model';
 import {PremiumSortPipe} from '../../shared/pipes/premium-sort.pipe';
+import {CatalogueUiModule} from '../../../catalogue-ui/catalogue-ui.module';
 
-import * as uikit from 'uikit';
 
 @Component({
   selector: 'app-form',
   templateUrl: 'forms.component.html',
+  imports: [CatalogueUiModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [FormControlService]
 })
 
 export class FormsComponent implements OnInit{
+  private formService = inject(FormControlService);
+  private resourceService = inject(ResourceService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  @ViewChild(SurveyComponent) child: SurveyComponent;
+
+  readonly child = viewChild(SurveyComponent);
 
   tabsHeader: string = null;
   model: Model = null;
   vocabulariesMap: Map<string, object[]> = new Map<string, object[]>();
-  subVocabulariesMap: Map<string, object[]> = null
+  subVocabulariesMap: Map<string, object[]> = null;
   premiumSort = new PremiumSortPipe();
   providerId: string = null;
   resourceId: string = null;
   datasourceId: string = null;
   resourceType: string = null;
   payloadAnswer: object = null; // Find a way to do this better
-  ready: boolean = false
+  ready = false;
   errorMessage: string = null;
-  editMode: boolean = false;
-
-  constructor(private formService: FormControlService, private resourceService: ResourceService,
-              private route: ActivatedRoute, private router: Router ) {}
+  editMode = false;
 
   ngOnInit() {
     this.ready = false;
     this.route.params.subscribe(
       params => {
-        this.providerId = params['providerId']
-        this.resourceId = params['resourceId']
-        this.datasourceId = params['datasourceId']
+        this.providerId = params['providerId'];
+        this.resourceId = params['resourceId'];
+        this.datasourceId = params['datasourceId'];
         if (window.location.pathname.includes('service/add') || window.location.pathname.includes('service/edit')) this.resourceType = 'service';
         if (window.location.pathname.includes('subprofile/add') || window.location.pathname.includes('subprofile/edit')) this.resourceType = 'datasource';
         if (window.location.pathname.includes('service/edit') || window.location.pathname.includes('subprofile/edit')) this.editMode = true;
@@ -53,12 +57,12 @@ export class FormsComponent implements OnInit{
             this.formService.getFormModelByResourceType(this.resourceType),
             this.resourceService.getUiVocabularies()).subscribe(
             next => {
-              this.payloadAnswer = {'answer': {'Service': {}}};
+              this.payloadAnswer = {answer: {Service: {}}};
               this.payloadAnswer['answer'].Service = next[0];
               this.model = next[1].results[0];
               this.vocabulariesMap = next[2];
             },
-            error => {console.log(error)},
+            error => {console.error(error);},
             () => {
               this.prepareVocabularies();
               this.ready = true;
@@ -73,7 +77,7 @@ export class FormsComponent implements OnInit{
               this.model = next[0].results[0];
               this.vocabulariesMap = next[1];
             },
-            error => {console.log(error)},
+            error => {console.error(error);},
             () => {
               this.prepareVocabularies();
               this.ready = true;
@@ -82,14 +86,14 @@ export class FormsComponent implements OnInit{
         }
 
       },
-      error => {console.log(error)}
+      error => {console.error(error);}
     );
   }
 
   submitForm(value) {
     this.ready = false;
     // console.log(value[0].get('Service').value);
-    let service: Service = {...value[0].get('Service').value};
+    const service: Service = {...value[0].get('Service').value};
     // for (const element in value[0].get('Service').controls) {
     //   console.log(element+' is '+ value[0].get('Service').get(element).valid);
     //   console.log(value[0].get('Service').get(element).value);
@@ -103,7 +107,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]);
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. \nError Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -114,7 +118,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]);
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. \nError Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -122,19 +126,19 @@ export class FormsComponent implements OnInit{
       }
     }
     if (this.resourceType === 'datasource') {
-      let datasource: Datasource = {...value[0].get('Service').value};
+      const datasource: Datasource = {...value[0].get('Service').value};
       let id = this.resourceId;
       if (!id) id = this.datasourceId;
       datasource.id = id;
       datasource.serviceId = id;
-      datasource.catalogueId = "openaire";
+      datasource.catalogueId = 'openaire';
       if (value[1]) {
         this.resourceService.editDatasource(datasource).subscribe(
           next => {
             this.router.navigate([`/service/${next.id}/overview`]); //todo change page
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. Error Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -145,7 +149,7 @@ export class FormsComponent implements OnInit{
             this.router.navigate([`/service/${next.id}/overview`]); //todo change page
           },
           error => {
-            console.log(error);
+            console.error(error);
             this.errorMessage = error.error.message + '\nFor more information please provide the error code to the system administrators. Error Code: '+ error.error.transactionId;
             this.ready = true;
           }
@@ -159,7 +163,7 @@ export class FormsComponent implements OnInit{
     this.sortVocabulariesByName(this.vocabulariesMap['Scientific subdomain']);
     this.sortVocabulariesByName(this.vocabulariesMap['Category']);
     this.sortVocabulariesByName(this.vocabulariesMap['Subcategory']);
-    let voc: Vocabulary[] = this.vocabulariesMap['Subcategory'].concat(this.vocabulariesMap['Scientific subdomain']);
+    const voc: Vocabulary[] = this.vocabulariesMap['Subcategory'].concat(this.vocabulariesMap['Scientific subdomain']);
     this.subVocabulariesMap = this.groupByKey(voc, 'parentId');
     this.sortVocabulariesByName(this.vocabulariesMap['Access type']);
     this.sortVocabulariesByName(this.vocabulariesMap['Access mode']);

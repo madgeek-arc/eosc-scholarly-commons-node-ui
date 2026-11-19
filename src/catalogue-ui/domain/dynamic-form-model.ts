@@ -1,4 +1,4 @@
-import BitSet from 'bitset/bitset';
+import BitSet from 'bitset';
 
 export class Required {
   topLevel: number;
@@ -21,7 +21,7 @@ export class TypeInfo {
   type: string;
   values: string[];
   vocabulary: string;
-  multiplicity: boolean
+  multiplicity: boolean;
 
 
   constructor() {
@@ -111,7 +111,7 @@ export class Field {
     this.parent = '';
     this.label = new StyledText();
     this.accessPath = '';
-    this.typeInfo = new TypeInfo()
+    this.typeInfo = new TypeInfo();
     this.includedInSnippet = false;
     this.form = new Form();
     this.display = new Display();

@@ -1,0 +1,52 @@
+@text-large-font-size-medium-max: @global-large-font-size - 2px;
+@text-xsmall-font-size: @global-xsmall-font-size;
+@text-xsmall-line-height: 1.5 * @global-xsmall-font-size;
+@text-small-line-height: 1.5 * @global-small-font-size;
+@text-large-line-height: 1.5 * @global-large-font-size;
+
+/* Meta */
+@text-meta-font-size: inherit;
+@text-meta-line-height: inherit;
+@text-meta-color: @global-meta-color;
+
+/* Background */
+@text-background-gradient: @global-primary-gradient;
+@text-background-color: @global-primary-background;
+
+/* Light grey text*/
+@text-light-grey: @placeholder-color;
+
+/* Bold */
+@text-bold-weight: 600;
+
+.hook-text-background() {
+  background-image: @text-background-gradient;
+}
+
+.hook-text-misc() {
+  .uk-text-bold {
+    font-weight: @text-bold-weight;
+  }
+
+  .uk-text-xsmall {
+    font-size: @text-xsmall-font-size;
+    line-height: @text-xsmall-line-height;
+  }
+
+  .uk-text-light-grey {
+    color: @text-light-grey;
+  }
+
+  .uk-text-transform-none {
+    text-transform: none !important;
+  }
+}
+
+@media only screen and (max-width: @breakpoint-medium-max) {
+  .uk-text-large {
+    font-size: @text-large-font-size-medium-max !important;
+  }
+}
+
+
+

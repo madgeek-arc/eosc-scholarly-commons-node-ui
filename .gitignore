@@ -3,7 +3,6 @@ dist/
 app/**/*.js
 app/**/*.js.map
 nohup.out
-package-lock.json
 stats.json
 **/.DS_Store
 **/Thumbs.db
@@ -98,6 +97,7 @@ typings/
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

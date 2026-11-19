@@ -1,0 +1,88 @@
+// Shared brand partial for the Scholarly Commons redesign (search, service detail, top menu, footer).
+// These are local LESS variables/mixins, not overrides of UIkit's own global theme (that is built
+// from assets/eosc-scholarly-node-theme via styles.less), so redefining UIkit's own variables would
+// re-skin the whole existing app. Each component below imports this partial and applies its mixins
+// locally, kept inside Angular's view encapsulation.
+
+@sc-teal: #0E839E;
+@sc-pink: #D44E7C;
+@sc-ink: #1c2126;
+@sc-muted: #5b6570;
+@sc-faint: #8b93a0;
+@sc-bg: #f7f7f8;
+@sc-border: #E9EBEF;
+@sc-border-soft: #EDEFF2;
+@sc-border-strong: #DCE0E6;
+
+@sc-font-heading: Ubuntu, sans-serif;
+@sc-font-body: 'Nunito Sans Variable', system-ui, sans-serif;
+
+@sc-radius-card: 20px;
+@sc-radius-pill: 999px;
+
+// UIkit override attempted: UIkit sets `outline: none` on :focus for its accordion title, icon and close buttons, nav
+// and subnav links and form inputs, and only shifts a colour or background, which a keyboard user cannot reliably see;
+// it has no focus-ring utility class. This is the one ring (brand teal, 4.3:1 against white) for the controls that lose
+// theirs: apply it under :focus-visible, or :focus-within on a wrapper that draws the border of an input.
+.sc-focus-ring() {
+  outline: 2px solid @sc-teal;
+  outline-offset: 2px;
+}
+
+// UIkit override attempted: UIkit's .uk-button has no pill (fully rounded) variant and no
+// brand teal fill, so the shape/color has to be supplied here rather than via a UIkit class.
+.sc-pill-button(@bg: @sc-teal, @fg: #fff) {
+  border-radius: @sc-radius-pill;
+  background: @bg;
+  color: @fg;
+  font-weight: 700;
+  border: none;
+}
+
+// UIkit override attempted: UIkit card corner radius options stop at "border-rounded" (~5px);
+// the design calls for a much larger 20px radius plus a specific soft shadow.
+.sc-card() {
+  background: #fff;
+  border: 1px solid @sc-border;
+  border-radius: @sc-radius-card;
+  box-shadow: 0 2px 8px rgba(28, 33, 38, .05);
+}
+
+// UIkit override attempted: uk-subnav-pill supplies the hover/focus/active states (the active item is already filled
+// with the theme's primary colour), but has no bordered pill-shaped track or rounded items, and its default negative
+// margin and per-item gutter have to be reset. Apply to the <ul class="uk-subnav uk-subnav-pill">. Deliberately sets
+// no colour on the items, so UIkit's inverse text on the active one is kept.
+.sc-segmented-toggle() {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid @sc-border;
+  border-radius: @sc-radius-pill;
+
+  > li {
+    padding-left: 0;
+  }
+
+  > li > a {
+    padding: 7px 16px;
+    font-size: 14px;
+    border-radius: @sc-radius-pill;
+
+    &:focus-visible {
+      .sc-focus-ring();
+    }
+  }
+}
+
+// UIkit override attempted: UIkit's .uk-label/.uk-badge don't offer a pill shape on the
+// muted grey background this design uses for facet/tag chips.
+.sc-chip(@bg: @sc-bg, @fg: @sc-muted, @border: @sc-border-soft) {
+  font-size: 12.5px;
+  color: @fg;
+  background: @bg;
+  border: 1px solid @border;
+  border-radius: @sc-radius-pill;
+  padding: 6px 14px;
+}

@@ -1,0 +1,44 @@
+import {ORDER_FULLY_OPEN, ORDER_OPEN_ACCESS, ORDER_REQUIRED} from '../service-display';
+
+export type FacetGroupId = 'category' | 'resourceProviders' | 'targetUsers' | 'trl' | 'order';
+
+export interface FacetGroupConfig {
+  id: FacetGroupId;
+  label: string;
+  // Facet `field` returned by GET /node/services. The same name is used as the URL query-param key
+  // and as the request param key, which is how the API filters on it.
+  apiField: string;
+}
+
+// Results per page. 9 fills three rows of the 3-column grid; at other widths the last row may be short.
+export const PAGE_SIZE = 9;
+
+// "Category" is backed by the `portfolios` facet: it is the user-facing grouping already populated on every
+// service. `service_categories` is empty in the API and `subcategories` has roughly one value per service.
+export const CATEGORY_FIELD = 'portfolios';
+
+export const ORDER_FIELD = 'orderType';
+
+// The Provider filter uses the `resourceProviders` facet: its values are provider ids (such as `openaire`, the ids in
+// each service's `resourceProviders`) and its labels are the providers' names.
+export const PROVIDER_FIELD = 'resourceProviders';
+
+export const FACET_GROUPS: FacetGroupConfig[] = [
+  {id: 'category', label: 'Category', apiField: CATEGORY_FIELD},
+  {id: 'resourceProviders', label: 'Provider', apiField: PROVIDER_FIELD},
+  {id: 'targetUsers', label: 'Target user', apiField: 'targetUsers'},
+  {id: 'trl', label: 'Maturity', apiField: 'trl'},
+  {id: 'order', label: 'Order type', apiField: ORDER_FIELD},
+];
+
+export interface OrderGroup {
+  label: string;
+  // `orderType` facet values this option selects together.
+  values: string[];
+}
+
+// Options of the "Show" toggle above the results; each one is a shortcut for a set of `orderType` values.
+export const ORDER_GROUPS: OrderGroup[] = [
+  {label: 'Open to anyone', values: [ORDER_FULLY_OPEN, ORDER_OPEN_ACCESS]},
+  {label: 'Set up for your organisation', values: [ORDER_REQUIRED]},
+];

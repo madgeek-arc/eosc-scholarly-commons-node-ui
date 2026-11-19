@@ -1,25 +1,34 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {DatePipe} from '@angular/common';
+import {Component, OnInit, inject, ChangeDetectionStrategy} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Paging} from '../../../entities/paging';
 import {Bundle, Service, Vocabulary} from '../../../entities/eic-model';
 import {ResourceService} from '../../../services/resource.service';
 import {URLParameter} from '../../../entities/url-parameter';
 import {FacetValue} from '../../../entities/facet';
 
-declare var UIkit: any;
+declare let UIkit: any;
 
 @Component({
   selector: 'app-admin-all-services-dashboard',
-  templateUrl: 'all-services.component.html'
+  templateUrl: 'all-services.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [DatePipe, FormsModule, NgSelectModule, RouterLink],
 })
 
 export class AllServicesDashboardComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private resourceService = inject(ResourceService);
+
 
   services: Paging<Bundle<Service>> = null;
   selectedService: Bundle<Service> = null;
   resourceState: Vocabulary[] = null;
-  providerFacet: FacetValue[] = []
-  queryParams: URLParameter[] = []
+  providerFacet: FacetValue[] = [];
+  queryParams: URLParameter[] = [];
 
   // Paging
   pages: number[] = [];
@@ -30,15 +39,13 @@ export class AllServicesDashboardComponent implements OnInit {
 
   // Filter
   order: string = null;
-  activeStatus: string = '';
+  activeStatus = '';
   status: string = null;
   provider: string = null;
 
   showLoader = false;
   errorMessage: string;
   loadingMessage = '';
-
-  constructor(private route: ActivatedRoute, private router: Router, private resourceService: ResourceService) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -163,7 +170,7 @@ export class AllServicesDashboardComponent implements OnInit {
       value = value['$ngOptionValue'];
     }
     if (value === null) {
-      this.queryParams = this.queryParams.filter(params => {return params.key != key});
+      this.queryParams = this.queryParams.filter(params => {return params.key !== key;});
       return;
     }
     for (const urlParameter of this.queryParams) {
@@ -172,11 +179,11 @@ export class AllServicesDashboardComponent implements OnInit {
         return;
       }
     }
-    this.queryParams.push({key: key, values: [value]});
+    this.queryParams.push({key, values: [value]});
   }
 
   navigateUsingParameters() {
-    const map: { [name: string]: string; } = {};
+    const map: { [name: string]: string } = {};
     for (const urlParameter of this.queryParams) {
       map[urlParameter.key] = urlParameter.values.join(',');
     }
@@ -206,8 +213,8 @@ export class AllServicesDashboardComponent implements OnInit {
 
   verifyService(id, active, status) {
     this.resourceService.verifyService(id, active, status).subscribe(
-      res => this.getResources(),
-      err => console.log(err),
+      () => this.getResources(),
+      err => console.error(err),
       () => {}
     );
   }
@@ -220,7 +227,7 @@ export class AllServicesDashboardComponent implements OnInit {
     }
     this.showLoader = true;
     this.resourceService.publishService(bundle.id, !bundle.active).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error.error ;
@@ -242,7 +249,7 @@ export class AllServicesDashboardComponent implements OnInit {
   deleteService(bundle: Bundle<Service>) {
     this.showLoader = true;
     this.resourceService.deleteService(bundle.id).subscribe(
-      res => {},
+      () => {},
       error => {
         this.showLoader = false;
         this.errorMessage = 'Something went bad. ' + error.error ;

@@ -1,19 +1,21 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {LandingPageService} from "../../../services/landing-page.service";
-import {Subscriber} from "rxjs";
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {LandingPageService} from '../../../services/landing-page.service';
+import {Subscriber} from 'rxjs';
 
 
 @Component({
   selector: 'app-dataset',
   templateUrl: 'dataset-landing-page.component.html',
-  providers: [LandingPageService]
+  providers: [LandingPageService],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class LandingPageComponent implements OnInit, OnDestroy {
   subscriptions = [];
-  dataset: Object = null;
-  instances: Object[] = null;
+  dataset: object = null;
+  instances: object[] = null;
 
   constructor(protected route: ActivatedRoute,
               protected landingPageService: LandingPageService) {}

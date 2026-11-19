@@ -1,10 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {FormControl, FormGroup, FormGroupDirective} from "@angular/forms";
-import {Field, HandleBitSet} from "../../../../domain/dynamic-form-model";
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {UntypedFormControl, UntypedFormGroup, FormGroupDirective} from '@angular/forms';
+import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-large-text-field',
-  templateUrl: './large-text-field.component.html'
+  templateUrl: './large-text-field.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class LargeTextFieldComponent implements OnInit {
@@ -17,8 +19,8 @@ export class LargeTextFieldComponent implements OnInit {
   @Output() handleBitSets = new EventEmitter<Field>();
   @Output() handleBitSetsOfComposite = new EventEmitter<HandleBitSet>();
 
-  formControl!: FormControl;
-  form!: FormGroup;
+  formControl!: UntypedFormControl;
+  form!: UntypedFormGroup;
   hideField: boolean = null;
 
   constructor(private rootFormGroup: FormGroupDirective) {
@@ -26,13 +28,13 @@ export class LargeTextFieldComponent implements OnInit {
 
   ngOnInit() {
     if (this.position !== null) {
-      this.form = this.rootFormGroup.control.controls[this.position] as FormGroup;
+      this.form = this.rootFormGroup.control.controls[this.position] as UntypedFormGroup;
     } else {
       this.form = this.rootFormGroup.control;
     }
     // console.log(this.form);
 
-    this.formControl = this.form.get(this.fieldData.name) as FormControl;
+    this.formControl = this.form.get(this.fieldData.name) as UntypedFormControl;
     // console.log(this.formControl);
 
     if(this.fieldData.form.dependsOn) {
@@ -43,7 +45,7 @@ export class LargeTextFieldComponent implements OnInit {
         value => {
           this.enableDisableField(value, this.fieldData.form.dependsOn.value);
         },
-        error => {console.log(error)}
+        error => {console.error(error);}
       );
     }
   }

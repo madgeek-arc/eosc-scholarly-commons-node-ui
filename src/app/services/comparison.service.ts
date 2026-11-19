@@ -1,15 +1,17 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {NavigationService} from './navigation.service';
 import {Service} from '../entities/eic-model';
 
-declare var UIkit;
+declare let UIkit;
 
 @Injectable()
 export class ComparisonService {
+  router = inject(NavigationService);
+
 
   public servicesToCompare: Service[] = [];
 
-  constructor(public router: NavigationService) {
+  constructor() {
     this.servicesToCompare = JSON.parse(sessionStorage.getItem('compareServices') || '[]');
   }
 
@@ -34,6 +36,7 @@ export class ComparisonService {
     if (go) {
       return this.go();
     }
+    return undefined;
   }
 
   clearAll() {
@@ -47,5 +50,6 @@ export class ComparisonService {
     } else {
       this.router.search({});
     }
+    return undefined;
   }
 }

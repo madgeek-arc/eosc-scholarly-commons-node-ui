@@ -1,82 +1,41 @@
-import {APP_INITIALIZER, ErrorHandler, NgModule} from "@angular/core";
-import {Router} from "@angular/router";
-import * as Sentry from "@sentry/angular-ivy";
+import {APP_INITIALIZER, ApplicationRef, ErrorHandler, inject, NgModule, provideAppInitializer} from '@angular/core';
+import {Router, TitleStrategy} from '@angular/router';
+import {BrowserModule} from '@angular/platform-browser';
+import * as Sentry from '@sentry/angular';
 import {CommonModule, DatePipe, LowerCasePipe} from '@angular/common';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app.routing';
-import {AuthenticationService} from './services/authentication.service';
-import {CanActivateViaAuthGuard} from './services/can-activate-auth-guard.service';
-import {NavigationService} from './services/navigation.service';
 import {ResourceService} from './services/resource.service';
-import {CanActivateViaPubGuard} from './services/can-activate-pub-guard.service';
-import {AireTopMenuComponent} from './shared/topmenu/topmenu.component';
-import {AireFooterComponent} from './shared/footer/footer.component';
 import {ReusableComponentsModule} from './shared/reusablecomponents/reusable-components.module';
 import {ProviderService} from './services/provider.service';
 import {ComparisonService} from './services/comparison.service';
-import {SearchAireComponent} from './pages/search/search.aire.component';
-import {CookieLawModule} from './shared/reusablecomponents/cookie-law/cookie-law.module';
-import {HomeAireComponent} from './pages/home/home.aire.component';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {ProviderModule} from './pages/provider/provider.module';
-import {MatomoModule} from 'ngx-matomo';
-import {HighchartsChartModule} from 'highcharts-angular';
+import {NgxMatomoModule, NgxMatomoRouterModule} from 'ngx-matomo-client';
 import {environment} from '../environments/environment';
-import {PortfolioItemComponent} from './pages/landingpages/portfolio/portfolio-item.component';
-import {UserItemComponent} from './pages/landingpages/user/user-item.component';
 import {DataSharingService} from './services/data-sharing.service';
 import {AuthenticationInterceptor} from './services/authentication-interceptor';
-import {FormsComponent} from './pages/forms/forms.component';
-import {CatalogueUiModule} from '../catalogue-ui/catalogue-ui.module';
-import {DatasourceSearchComponent} from './pages/search/datasources-search/datasourceSearch.component';
-import {Datasource} from './pages/landingpages/datasource/datasource';
 import {ServiceWorkerModule} from '@angular/service-worker';
-import {UserService} from './services/user.service';
+import {TrackingService} from './services/tracking.service';
+import {PageTitleStrategy} from './services/page-title.strategy';
 
-
-declare var require: any;
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeAireComponent,
-    SearchAireComponent,
-    DatasourceSearchComponent,
-    Datasource,
-    PortfolioItemComponent,
-    UserItemComponent,
-    // ServiceLandingPageComponent,
-    AireTopMenuComponent,
-    AireFooterComponent,
-    FormsComponent
-  ],
+  declarations: [],
   imports: [
+    BrowserModule,
+    AppComponent,
     CommonModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     ReusableComponentsModule,
     SharedModule,
-    ProviderModule,
-    HighchartsChartModule,
-    CookieLawModule,
     NgSelectModule,
-    MatomoModule.forRoot({
-      scriptUrl: environment.MATOMO_URL + 'matomo.js',
-      trackers: [
-        {
-          trackerUrl: environment.MATOMO_URL + 'matomo.php',
-          siteId: environment.MATOMO_SITE
-        }
-      ],
-      routeTracking: {
-        enable: true
-      }
-    }),
-    CatalogueUiModule,
+    // The Matomo script is loaded by TrackingService once the visitor has agreed to statistics.
+    NgxMatomoModule.forRoot({mode: 'deferred'}),
+    NgxMatomoRouterModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -86,20 +45,15 @@ declare var require: any;
     }),
   ],
   providers: [
-    AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
       multi: true
     },
     ComparisonService,
-    CanActivateViaAuthGuard,
-    CanActivateViaPubGuard,
     ResourceService,
-    UserService,
     ProviderService,
     DataSharingService,
-    NavigationService,
     DatePipe,
     {
       provide: ErrorHandler,
@@ -117,13 +71,21 @@ declare var require: any;
       deps: [Sentry.TraceService],
       multi: true,
     },
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
+    // Sets the document title and meta tags from the `title` of the route on screen.
+    {provide: TitleStrategy, useExisting: PageTitleStrategy},
+    // Creates TrackingService, which starts Matomo and Sentry if consent was given on an earlier visit.
+    provideAppInitializer(() => {
+      inject(TrackingService);
+    }),
   ],
   exports: [
-    AireFooterComponent,
-    AireTopMenuComponent,
     LowerCasePipe
   ],
-  bootstrap: [AppComponent]
 })
 export class AppModule {
+  // A standalone component cannot go in the `bootstrap` array of an NgModule.
+  ngDoBootstrap(appRef: ApplicationRef): void {
+    appRef.bootstrap(AppComponent);
+  }
 }

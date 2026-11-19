@@ -1,6 +1,14 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
+  "navigationUrls": [
+    "/**",
+    "!/**/*.*",
+    "!/**/*__*",
+    "!/**/*__*/**",
+    "!/pages/**",
+    "!/api/**"
+  ],
   "assetGroups": [
     {
       "name": "app",
@@ -23,6 +31,7 @@
       "resources": {
         "files": [
           "/assets/**",
+          "/app-media/**",
           "/*.(eot|svg|cur|jpg|jpeg|mp4|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
       }

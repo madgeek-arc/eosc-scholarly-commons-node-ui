@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {CanActivateViaAuthGuard} from '../../services/can-activate-auth-guard.service';
+import {authGuard} from '../../services/auth.guard';
 import {AdminDashboardComponent} from './admin-dashboard.component';
 import {AllProvidersDashboardComponent} from './providers/all-providers.component';
 import {AllServicesDashboardComponent} from './services/all-services.component';
@@ -19,7 +19,7 @@ const adminRoutes: Routes = [
       {
         path: 'providers',
         component: AllProvidersDashboardComponent,
-        canActivate: [CanActivateViaAuthGuard],
+        canActivate: [authGuard],
         data: {
           dashboardMode: true
         },
@@ -27,7 +27,7 @@ const adminRoutes: Routes = [
       {
         path: 'services',
         component: AllServicesDashboardComponent,
-        canActivate: [CanActivateViaAuthGuard],
+        canActivate: [authGuard],
         data: {
           dashboardMode: true
         },
@@ -35,7 +35,7 @@ const adminRoutes: Routes = [
       {
         path: 'datasources',
         component: AllDatasourcesDashboardComponent,
-        canActivate: [CanActivateViaAuthGuard],
+        canActivate: [authGuard],
         data: {
           dashboardMode: true
         },

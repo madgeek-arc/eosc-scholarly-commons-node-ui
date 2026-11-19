@@ -5,17 +5,21 @@
       <app-side-menu class="uk-width-1-5" [chapterModel]="formBuilder" (showChapterOrSection)="updateView($event)"></app-side-menu>
       <div class="uk-width-3-5">
         <ul id="chapter-tabs" class="uk-switcher">
-          <li *ngFor="let chapter of formBuilder">
-            <app-chapter-builder [chapter]="chapter" [ngClass]="{'uk-display-none': show !== 'chapter'}"></app-chapter-builder>
-            <ul id="section-tabs" class="uk-switcher" [ngClass]="{'uk-display-none': show !== 'section'}">
-              <li *ngFor="let section of chapter.subSections">
-                <app-section-builder [section]="section"></app-section-builder>
-                <ng-container *ngFor="let field of section.fields; let i = index">
-                  <app-field-builder [field]="field"></app-field-builder>
-                </ng-container>
-              </li>
-            </ul>
-          </li>
+          @for (chapter of formBuilder; track chapter) {
+            <li>
+              <app-chapter-builder [chapter]="chapter" [ngClass]="{'uk-display-none': show !== 'chapter'}"></app-chapter-builder>
+              <ul id="section-tabs" class="uk-switcher" [ngClass]="{'uk-display-none': show !== 'section'}">
+                @for (section of chapter.subSections; track section) {
+                  <li>
+                    <app-section-builder [section]="section"></app-section-builder>
+                    @for (field of section.fields; track field; let i = $index) {
+                      <app-field-builder [field]="field"></app-field-builder>
+                    }
+                  </li>
+                }
+              </ul>
+            </li>
+          }
         </ul>
       </div>
 

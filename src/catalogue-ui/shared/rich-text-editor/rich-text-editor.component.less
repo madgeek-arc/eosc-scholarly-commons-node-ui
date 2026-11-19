@@ -1,0 +1,10 @@
+// UIkit override attempted: uk-textarea styles the editable area, but UIkit has no placeholder for a contenteditable
+// element, so the text that the Placeholder extension puts in data-placeholder is drawn here. The rule has to reach the
+// elements that ProseMirror creates, which carry no Angular attribute, hence the view encapsulation is off.
+app-rich-text-editor .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}

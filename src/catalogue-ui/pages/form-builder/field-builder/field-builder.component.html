@@ -18,15 +18,15 @@
     </div>
 
     <div class="uk-width-1-1 uk-margin-bottom uk-form-controls uk-animation-scale-up" [ngClass]="{'uk-display-none' : !showDescription}">
-      <ckeditor [editor]="editor" [config]="{placeholder: 'Give a short description for the field'}"
-                [(ngModel)]="field.form.description.text">
-      </ckeditor>
+      <app-rich-text-editor placeholder="Give a short description for the field"
+                            [(ngModel)]="field.form.description.text">
+      </app-rich-text-editor>
     </div>
 
     <div class="uk-width-1-1 uk-margin-bottom uk-form-controls uk-animation-scale-up" [ngClass]="{'uk-display-none' : !showSuggestion}">
-      <ckeditor [editor]="editor" [config]="{placeholder: 'Give a short suggestion for the field'}"
-                [(ngModel)]="field.form.suggestion.text">
-      </ckeditor>
+      <app-rich-text-editor placeholder="Give a short suggestion for the field"
+                            [(ngModel)]="field.form.suggestion.text">
+      </app-rich-text-editor>
     </div>
     <div class="uk-width-1-1">
       <app-type-selector [typeInfo]="field.typeInfo"></app-type-selector>

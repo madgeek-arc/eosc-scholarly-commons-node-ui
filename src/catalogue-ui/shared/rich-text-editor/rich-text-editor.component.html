@@ -1,0 +1,48 @@
+<div class="uk-width-1-1" (focusout)="markTouched()">
+  <div class="uk-flex uk-flex-wrap uk-flex-middle" role="toolbar" aria-label="Text formatting">
+    <select class="uk-select uk-form-small uk-form-width-small uk-margin-small-right uk-margin-small-bottom"
+            aria-label="Text style" [value]="headingLevel()" [disabled]="disabled()" (change)="setHeading($event)">
+      <option value="0">Paragraph</option>
+      @for (level of headingLevels; track level) {
+        <option [value]="level">Heading {{ level }}</option>
+      }
+    </select>
+    @for (group of toolbar; track $index) {
+      <div class="uk-button-group uk-margin-small-right uk-margin-small-bottom">
+        @for (button of group; track button.title) {
+          <button type="button" class="uk-button uk-button-default uk-button-small" [class.uk-active]="button.active?.()"
+                  [attr.aria-pressed]="button.active ? button.active() : null" [attr.aria-label]="button.title"
+                  [title]="button.title" [disabled]="!isEnabled(button)" (click)="button.run()">
+            <span class="material-icons">{{ button.icon }}</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (isActive('table')) {
+    <div class="uk-flex uk-flex-wrap uk-margin-small-bottom" role="toolbar" aria-label="Table">
+      @for (tool of tableTools; track tool.label) {
+        <button type="button" class="uk-button uk-button-default uk-button-small uk-margin-small-right uk-margin-small-bottom"
+                [disabled]="disabled()" (click)="tool.run()">{{ tool.label }}</button>
+      }
+    </div>
+  }
+
+  @if (urlMode(); as mode) {
+    <div class="uk-flex uk-flex-wrap uk-flex-middle uk-margin-small-bottom">
+      <input #urlInput class="uk-input uk-form-small uk-width-expand uk-margin-small-right" type="url" [attr.aria-label]="urlLabel(mode)"
+             [placeholder]="urlLabel(mode)" [value]="urlValue()" (input)="urlValue.set(valueOf($event))"
+             (keydown.enter)="$event.preventDefault(); applyUrl()" (keydown.escape)="closeUrl()">
+      @if (mode === 'image') {
+        <input class="uk-input uk-form-small uk-form-width-medium uk-margin-small-right" type="text" aria-label="Alternative text"
+               placeholder="Alternative text" [value]="altValue()" (input)="altValue.set(valueOf($event))"
+               (keydown.enter)="$event.preventDefault(); applyUrl()" (keydown.escape)="closeUrl()">
+      }
+      <button type="button" class="uk-button uk-button-primary uk-button-small uk-margin-small-right" (click)="applyUrl()">OK</button>
+      <button type="button" class="uk-button uk-button-default uk-button-small" (click)="closeUrl()">Cancel</button>
+    </div>
+  }
+
+  <tiptap-editor class="uk-display-block" [editor]="editor" [formControl]="inner" />
+</div>

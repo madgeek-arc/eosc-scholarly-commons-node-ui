@@ -8,14 +8,14 @@ export const oneDecimal = /^(\d)*(\.)?([0-9]{1})?$/;    //Only digits and one de
 
 export function URLValidator(): ValidatorFn { //TODO Please validate me
   return (control: AbstractControl): ValidationErrors | null => {
-    let pattern = /^(https?:\/\/.+){0,1}$/;
+    const pattern = /^(https?:\/\/.+){0,1}$/;
     const url = pattern.test(control.value);
     return url ? {url: {value: control.value}} : null;
   };
 }
 
 /** Increase time var to reduce server calls **/
-export const urlAsyncValidator = (formControlService: FormControlService, time: number = 0) => {
+export const urlAsyncValidator = (formControlService: FormControlService, time = 0) => {
   return (control: AbstractControl): Observable<ValidationErrors> => {
     if (control.value === '' || control.value === null) {
       return timer(time).pipe(map(res => {

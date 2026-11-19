@@ -1,18 +1,20 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, Output, ChangeDetectionStrategy} from '@angular/core';
+import {UntypedFormGroup} from '@angular/forms';
 import {Field, HandleBitSet} from '../../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-field',
-  templateUrl: './dynamic-form-fields.component.html'
+  templateUrl: './dynamic-form-fields.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class DynamicFormFieldsComponent {
   @Input() fieldData: Field;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() vocabularies: Map<string, object[]>;
   @Input() subVocabularies: Map<string, object[]> = null;
   @Input() editMode: any;
-  @Input() readonly : boolean = null;
+  @Input() readonly: boolean = null;
 
   @Output() hasChanges = new EventEmitter<boolean>();
   @Output() handleBitSets = new EventEmitter<Field>();
@@ -30,7 +32,7 @@ export class DynamicFormFieldsComponent {
 
   updateBitSetOfComposite(fieldData: Field, position: number) {
     if (fieldData.form.mandatory) {
-      let tmp = new HandleBitSet();
+      const tmp = new HandleBitSet();
       tmp.field = fieldData;
       tmp.position = position;
       this.handleBitSetsOfComposite.emit(tmp);

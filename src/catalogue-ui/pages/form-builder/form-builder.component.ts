@@ -1,15 +1,17 @@
-import {Component, OnInit} from "@angular/core";
-import {Section} from "../../domain/dynamic-form-model";
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Section} from '../../domain/dynamic-form-model';
 
 @Component({
   selector: 'app-form-builder',
-  templateUrl: 'form-builder.component.html'
+  templateUrl: 'form-builder.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class FormBuilderComponent implements OnInit {
 
   formBuilder: Section[] = [];
-  show: string = 'chapter';
+  show = 'chapter';
 
   ngOnInit() {
     // this.formBuilder.push();
