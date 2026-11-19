@@ -38,7 +38,7 @@
         <div class="uk-margin">
           <label class="uk-form-label" for="textarea">Text</label>
           <div class="uk-form-controls">
-            <textarea class="uk-textarea" id="textarea" rows="4" formControlName="message"
+            <textarea class="uk-textarea email-modal__message" id="textarea" rows="4" formControlName="message"
               [class.uk-form-danger]="!emailForm.get('message').valid && emailForm.get('message').dirty">
             </textarea>
           </div>

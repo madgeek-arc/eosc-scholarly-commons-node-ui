@@ -11,6 +11,7 @@ declare let UIkit: any;
 @Component({
   selector: 'app-email-modal',
   templateUrl: './email-modal.component.html',
+  styleUrl: './email-modal.component.less',
   providers: [EmailService],
   imports: [ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,

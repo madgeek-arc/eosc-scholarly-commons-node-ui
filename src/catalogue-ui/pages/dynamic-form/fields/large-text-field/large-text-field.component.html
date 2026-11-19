@@ -15,7 +15,7 @@
       <!--To add multiplicity if needed-->
     </div>
   } @else {
-    <textarea [formControlName]="fieldData.name" [id]="fieldData.name" class="uk-textarea uk-width-9-10 uk-animation-scale-up"
+    <textarea [formControlName]="fieldData.name" [id]="fieldData.name" class="uk-textarea uk-width-9-10 uk-animation-scale-up large-text-field__input"
       [placeholder]="fieldData.form.placeholder ? fieldData.form.placeholder : ''"
       [maxlength]="fieldData.typeInfo.values ? fieldData.typeInfo.values[0] : null"
       (input)="updateBitSet(fieldData); unsavedChangesPrompt()"

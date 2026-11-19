@@ -5,6 +5,7 @@ import {Field, HandleBitSet} from '../../../../domain/dynamic-form-model';
 @Component({
   selector: 'app-large-text-field',
   templateUrl: './large-text-field.component.html',
+  styleUrl: './large-text-field.component.less',
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })

@@ -1,0 +1,13 @@
+// Shared by components whose textareas should grow with their content.
+// Not part of _import.less: import it from the component's own stylesheet.
+
+// UIkit override attempted: uk-textarea has a fixed height (from rows) and no auto-grow option, and the
+// .hook-form-multi-line() hook also targets select[multiple]/select[size] and applies globally, so auto-grow is
+// opt-in per component. field-sizing is Baseline since 2026 (newer than our 2025 target), so browsers without it
+// keep the fixed rows height; no fallback is needed (the uk-textarea width: 100% keeps the width stable).
+// 14px = UIkit's multi-line vertical padding (2 x 6px) + border (2 x 1px), so @min-lines lines really fit.
+.textarea-auto-grow(@min-lines: 3; @max-lines: 10) {
+  field-sizing: content;
+  min-block-size: ~"calc(@{min-lines}lh + 14px)";
+  max-block-size: ~"calc(@{max-lines}lh + 14px)";
+}
